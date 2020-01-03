@@ -1,10 +1,13 @@
 package dev.andrybak.fuladve;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +32,8 @@ public class EveryDayCalendar {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
 	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
+	private static final String POSITIVE_AUDIO = "positive.wav";
+	private static final String NEGATIVE_AUDIO = "negative.wav";
 
 	private final AdventHistory history;
 	private final Path statePath;
@@ -65,9 +70,11 @@ public class EveryDayCalendar {
 				if (b.isSelected()) {
 					System.out.println("Turned on " + d);
 					history.turnOn(d);
+					playSound(POSITIVE_AUDIO);
 				} else {
 					System.out.println("Turned off " + d);
 					history.turnOff(d);
+					playSound(NEGATIVE_AUDIO);
 				}
 				System.out.println(history.serialize().toString());
 			});
@@ -139,6 +146,22 @@ public class EveryDayCalendar {
 		if (s.length() < 20)
 			return s;
 		return s.substring(0, 20);
+	}
+
+	private static void playSound(String resourceName) {
+		System.out.println("Playing sound: " + resourceName);
+		try (
+			InputStream resource = EveryDayCalendar.class.getResourceAsStream(resourceName);
+			BufferedInputStream buffered = new BufferedInputStream(resource);
+			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
+		) {
+			Clip c = AudioSystem.getClip(null);
+			c.open(a);
+			c.start();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			System.err.println("Could not play sound.");
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String... args) {
