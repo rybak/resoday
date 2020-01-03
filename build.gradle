@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+}
+
+mainClassName = 'dev.andrybak.fuladve.EveryDayCalendar'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+}
