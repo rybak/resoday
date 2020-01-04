@@ -10,6 +10,7 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableCollection;
@@ -33,25 +34,23 @@ public class YearHistory {
 			System.out.println("No saved state.");
 			return new YearHistory();
 		}
-		try {
-			List<String> lines = Files.readAllLines(statePath);
-			System.out.println("\tRead " + lines.size() + " lines...");
-			if (lines.isEmpty())
-				return new YearHistory();
-			List<LocalDate> dates = new ArrayList<>();
-			for (String line : lines) {
-				try {
-					TemporalAccessor t = CALENDAR_DAY_FORMATTER.parse(line);
-					LocalDate candidate = LocalDate.of(
-						t.get(ChronoField.YEAR),
-						t.get(ChronoField.MONTH_OF_YEAR),
-						t.get(ChronoField.DAY_OF_MONTH)
-					);
-					dates.add(candidate);
-				} catch (DateTimeException | ArithmeticException e) {
-					System.err.println("Could not read value: " + sanitize(line));
-				}
-			}
+		try (Stream<String> lines = Files.lines(statePath)) {
+			List<LocalDate> dates = lines
+				.map(line -> {
+					try {
+						TemporalAccessor t = CALENDAR_DAY_FORMATTER.parse(line);
+						return LocalDate.of(
+							t.get(ChronoField.YEAR),
+							t.get(ChronoField.MONTH_OF_YEAR),
+							t.get(ChronoField.DAY_OF_MONTH)
+						);
+					} catch (DateTimeException | ArithmeticException e) {
+						System.err.println("Could not read value: " + sanitize(line));
+						return null;
+					}
+				})
+				.filter(Objects::nonNull)
+				.collect(toList());
 			return new YearHistory(dates);
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
