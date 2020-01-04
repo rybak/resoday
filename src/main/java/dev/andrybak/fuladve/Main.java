@@ -35,7 +35,7 @@ public class Main {
 	private static final String POSITIVE_AUDIO = "positive.wav";
 	private static final String NEGATIVE_AUDIO = "negative.wav";
 
-	private final AdventHistory history;
+	private final YearHistory history;
 	private final Path statePath;
 
 	private final JFrame window = new JFrame("Every Day Calendar " + currentYear);
@@ -82,16 +82,16 @@ public class Main {
 		}
 	}
 
-	private static AdventHistory readState(Path statePath) {
+	private static YearHistory readState(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
-			return new AdventHistory();
+			return new YearHistory();
 		}
 		try {
 			List<String> lines = Files.readAllLines(statePath);
 			System.out.println("\tRead " + lines.size() + " lines...");
 			if (lines.isEmpty())
-				return new AdventHistory();
+				return new YearHistory();
 			List<LocalDate> dates = new ArrayList<>();
 			for (String line : lines) {
 				try {
@@ -106,10 +106,10 @@ public class Main {
 					System.err.println("Could not read value: " + sanitize(line));
 				}
 			}
-			return new AdventHistory(dates);
+			return new YearHistory(dates);
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
-			return new AdventHistory();
+			return new YearHistory();
 		}
 	}
 

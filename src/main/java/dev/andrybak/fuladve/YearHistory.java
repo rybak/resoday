@@ -8,14 +8,14 @@ import static java.util.Collections.*;
 /**
  * @author Andrei Rybak
  */
-public class AdventHistory {
+public class YearHistory {
 	private final Set<LocalDate> dates;
 
-	AdventHistory() {
+	YearHistory() {
 		this(emptySet());
 	}
 
-	AdventHistory(Collection<LocalDate> dates) {
+	YearHistory(Collection<LocalDate> dates) {
 		this.dates = new HashSet<>(dates);
 	}
 
