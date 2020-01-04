@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
 	private static final String APP_NAME = "Every Day Calendar";
@@ -12,9 +14,9 @@ public class Main {
 	private final JPanel content;
 	private final HistoryPanel historyPanel;
 
-	Main(String statePathStr) {
+	Main(Path statePath) {
 		content = new JPanel(new BorderLayout());
-		historyPanel = new HistoryPanel(statePathStr);
+		historyPanel = new HistoryPanel(statePath);
 		content.add(historyPanel, BorderLayout.CENTER);
 	}
 
@@ -24,7 +26,7 @@ public class Main {
 			System.exit(1);
 			return;
 		}
-		new Main(args[0]).go();
+		new Main(Paths.get(args[0])).go();
 	}
 
 	private void go() {

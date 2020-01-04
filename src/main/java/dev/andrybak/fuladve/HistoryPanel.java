@@ -7,7 +7,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Year;
 import java.util.Comparator;
 
@@ -22,10 +21,10 @@ class HistoryPanel extends JPanel {
 	private Year shownYear;
 	private JPanel shownYearPanel;
 
-	HistoryPanel(String statePathStr) {
+	HistoryPanel(Path statePath) {
 		super(new BorderLayout());
-		statePath = Paths.get(statePathStr);
-		history = YearHistory.read(statePath);
+		this.statePath = statePath;
+		history = YearHistory.read(this.statePath);
 		System.out.println("Read " + history.size() + " dates.");
 
 		JButton pastButton = new JButton("<");
