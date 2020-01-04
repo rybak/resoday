@@ -22,9 +22,6 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-/**
- * @author Andrei Rybak
- */
 public class Main {
 	private static final Year currentYear = Year.now();
 

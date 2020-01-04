@@ -5,9 +5,6 @@ import java.util.*;
 
 import static java.util.Collections.*;
 
-/**
- * @author Andrei Rybak
- */
 public class YearHistory {
 	private final Set<LocalDate> dates;
 
