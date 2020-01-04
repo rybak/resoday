@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -30,8 +29,6 @@ public class Main {
 	private static final Year currentYear = Year.now();
 
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
-	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
 	private static final String POSITIVE_AUDIO = "positive.wav";
 	private static final String NEGATIVE_AUDIO = "negative.wav";
 
@@ -45,41 +42,12 @@ public class Main {
 		statePath = Paths.get(statePathStr);
 		history = readState(statePath);
 		System.out.println("Read " + history.size() + " dates.");
-		content = new JPanel(new GridBagLayout());
-		fillInUI(currentYear);
-	}
-
-	private void fillInUI(Year year) {
-		GridBagConstraints gbc = new GridBagConstraints();
-
-		for (Month m : Month.values()) {
-			gbc.gridx = m.getValue() - 1;
-			gbc.gridy = 0;
-			content.add(new JLabel(MONTH_LABEL_FORMATTER.format(m)), gbc);
-		}
-
-		LocalDate currentYearStart = LocalDate.ofYearDay(year.getValue(), 1);
-		LocalDate nextYearStart = LocalDate.ofYearDay(year.plusYears(1).getValue(), 1);
-		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
-			final LocalDate d = i; // for final inside lambdas
-			gbc.gridx = d.getMonthValue() - 1;
-			gbc.gridy = d.getDayOfMonth();
-			JToggleButton b = new JToggleButton(DAY_BUTTON_FORMATTER.format(d));
-			b.setSelected(history.isTurnedOn(d));
-			b.addActionListener(ignored -> {
-				if (b.isSelected()) {
-					System.out.println("Turned on " + d);
-					history.turnOn(d);
-					playSound(POSITIVE_AUDIO);
-				} else {
-					System.out.println("Turned off " + d);
-					history.turnOff(d);
-					playSound(NEGATIVE_AUDIO);
-				}
-				System.out.println(history.serialize().toString());
-			});
-			content.add(b, gbc);
-		}
+		content = new JPanel(new BorderLayout());
+		YearPanel yearPanel = new YearPanel(history, currentYear,
+			d -> playSound(POSITIVE_AUDIO),
+			d -> playSound(NEGATIVE_AUDIO)
+		);
+		content.add(yearPanel, BorderLayout.CENTER);
 	}
 
 	private static YearHistory readState(Path statePath) {

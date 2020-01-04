@@ -1,0 +1,47 @@
+package dev.andrybak.fuladve;
+
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
+
+class YearPanel extends JPanel {
+	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
+	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
+
+	YearPanel(YearHistory history, Year year, Consumer<LocalDate> turnOnListener, Consumer<LocalDate> turnOffListener) {
+		super(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		for (Month m : Month.values()) {
+			gbc.gridx = m.getValue() - 1;
+			gbc.gridy = 0;
+			add(new JLabel(MONTH_LABEL_FORMATTER.format(m)), gbc);
+		}
+
+		LocalDate currentYearStart = LocalDate.ofYearDay(year.getValue(), 1);
+		LocalDate nextYearStart = LocalDate.ofYearDay(year.plusYears(1).getValue(), 1);
+		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
+			final LocalDate d = i; // for final inside lambdas
+			gbc.gridx = d.getMonthValue() - 1;
+			gbc.gridy = d.getDayOfMonth();
+			JToggleButton b = new JToggleButton(DAY_BUTTON_FORMATTER.format(d));
+			b.setSelected(history.isTurnedOn(d));
+			b.addActionListener(ignored -> {
+				if (b.isSelected()) {
+					System.out.println("Turned on " + d);
+					history.turnOn(d);
+					turnOnListener.accept(d);
+				} else {
+					System.out.println("Turned off " + d);
+					history.turnOff(d);
+					turnOffListener.accept(d);
+				}
+			});
+			add(b, gbc);
+		}
+	}
+}
