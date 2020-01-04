@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 public class Main {
 	private static final Year currentYear = Year.now();
 
+	private static final String APP_NAME = "Every Day Calendar";
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static final String POSITIVE_AUDIO = "positive.wav";
 	private static final String NEGATIVE_AUDIO = "negative.wav";
@@ -32,7 +33,7 @@ public class Main {
 	private final YearHistory history;
 	private final Path statePath;
 
-	private final JFrame window = new JFrame("Every Day Calendar " + currentYear);
+	private final JFrame window = new JFrame(APP_NAME);
 	private final JPanel content;
 
 	Main(String statePathStr) {
@@ -47,7 +48,8 @@ public class Main {
 		content.add(yearPanel, BorderLayout.CENTER);
 	}
 
-	private static YearHistory readState(Path statePath) {
+	private YearHistory readState(Path statePath) {
+		window.setTitle(statePath.getFileName() + " - " + APP_NAME);
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
 			return new YearHistory();
