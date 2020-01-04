@@ -1,4 +1,4 @@
-package dev.andrybak.fuladve;
+package dev.andrybak.resoday;
 
 import java.io.IOException;
 import java.nio.file.Files;

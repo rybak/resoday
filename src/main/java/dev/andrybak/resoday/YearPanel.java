@@ -1,4 +1,4 @@
-package dev.andrybak.fuladve;
+package dev.andrybak.resoday;
 
 import javax.swing.*;
 import java.awt.*;

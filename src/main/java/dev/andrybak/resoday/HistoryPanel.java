@@ -1,4 +1,4 @@
-package dev.andrybak.fuladve;
+package dev.andrybak.resoday;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
