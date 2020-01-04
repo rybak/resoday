@@ -32,12 +32,11 @@ public class Main {
 	private static final String NEGATIVE_AUDIO = "negative.wav";
 
 	private final YearHistory history;
-	private Year shownYear;
-	private JPanel shownYearPanel;
 	private final Path statePath;
-
 	private final JFrame window = new JFrame(APP_NAME);
 	private final JPanel content;
+	private Year shownYear;
+	private JPanel shownYearPanel;
 
 	Main(String statePathStr) {
 		statePath = Paths.get(statePathStr);
@@ -67,6 +66,37 @@ public class Main {
 			.map(Year::of)
 			.orElse(currentYear);
 		createShownYearPanel();
+	}
+
+	private static String sanitize(String s) {
+		if (s.length() < 20)
+			return s;
+		return s.substring(0, 20);
+	}
+
+	private static void playSound(String resourceName) {
+		System.out.println("Playing sound: " + resourceName);
+		try (
+			InputStream resource = Main.class.getResourceAsStream(resourceName);
+			BufferedInputStream buffered = new BufferedInputStream(resource);
+			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
+		) {
+			Clip c = AudioSystem.getClip(null);
+			c.open(a);
+			c.start();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			System.err.println("Could not play sound.");
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String... args) {
+		if (args.length < 1) {
+			System.err.println("Which file to open?");
+			System.exit(1);
+			return;
+		}
+		new Main(args[0]).go();
 	}
 
 	private void createShownYearPanel() {
@@ -151,36 +181,5 @@ public class Main {
 				saveState(statePath);
 			}
 		});
-	}
-
-	private static String sanitize(String s) {
-		if (s.length() < 20)
-			return s;
-		return s.substring(0, 20);
-	}
-
-	private static void playSound(String resourceName) {
-		System.out.println("Playing sound: " + resourceName);
-		try (
-			InputStream resource = Main.class.getResourceAsStream(resourceName);
-			BufferedInputStream buffered = new BufferedInputStream(resource);
-			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
-		) {
-			Clip c = AudioSystem.getClip(null);
-			c.open(a);
-			c.start();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			System.err.println("Could not play sound.");
-			e.printStackTrace();
-		}
-	}
-
-	public static void main(String... args) {
-		if (args.length < 1) {
-			System.err.println("Which file to open?");
-			System.exit(1);
-			return;
-		}
-		new Main(args[0]).go();
 	}
 }

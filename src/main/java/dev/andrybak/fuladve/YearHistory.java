@@ -1,10 +1,13 @@
 package dev.andrybak.fuladve;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.IntStream;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableCollection;
 
 public class YearHistory {
 	private final Set<LocalDate> dates;
