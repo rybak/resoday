@@ -13,15 +13,23 @@ class YearPanel extends JPanel {
 	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
 
 	YearPanel(YearHistory history, Year year, Consumer<LocalDate> turnOnListener, Consumer<LocalDate> turnOffListener) {
-		super(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+		super(new BorderLayout());
 
+		JPanel yearLabelWrapper = new JPanel(new BorderLayout());
+		{
+			JLabel yearLabel = new JLabel(year.toString(), SwingConstants.CENTER);
+			yearLabel.setFont(yearLabel.getFont().deriveFont(yearLabel.getFont().getSize() * 2.0f));
+			yearLabelWrapper.add(yearLabel, BorderLayout.CENTER);
+		}
+		this.add(yearLabelWrapper, BorderLayout.NORTH);
+
+		JPanel buttonPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 		for (Month m : Month.values()) {
 			gbc.gridx = m.getValue() - 1;
 			gbc.gridy = 0;
-			add(new JLabel(MONTH_LABEL_FORMATTER.format(m)), gbc);
+			buttonPanel.add(new JLabel(MONTH_LABEL_FORMATTER.format(m)), gbc);
 		}
-
 		LocalDate currentYearStart = LocalDate.ofYearDay(year.getValue(), 1);
 		LocalDate nextYearStart = LocalDate.ofYearDay(year.plusYears(1).getValue(), 1);
 		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
@@ -41,7 +49,8 @@ class YearPanel extends JPanel {
 					turnOffListener.accept(d);
 				}
 			});
-			add(b, gbc);
+			buttonPanel.add(b, gbc);
 		}
+		this.add(buttonPanel, BorderLayout.CENTER);
 	}
 }
