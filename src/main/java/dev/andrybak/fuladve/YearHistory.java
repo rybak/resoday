@@ -2,6 +2,7 @@ package dev.andrybak.fuladve;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static java.util.Collections.*;
 
@@ -34,5 +35,11 @@ public class YearHistory {
 
 	int size() {
 		return dates.size();
+	}
+
+	IntStream years() {
+		return dates.stream()
+			.mapToInt(LocalDate::getYear)
+			.distinct();
 	}
 }

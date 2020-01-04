@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +32,8 @@ public class Main {
 	private static final String NEGATIVE_AUDIO = "negative.wav";
 
 	private final YearHistory history;
+	private Year shownYear;
+	private JPanel shownYearPanel;
 	private final Path statePath;
 
 	private final JFrame window = new JFrame(APP_NAME);
@@ -41,11 +44,53 @@ public class Main {
 		history = readState(statePath);
 		System.out.println("Read " + history.size() + " dates.");
 		content = new JPanel(new BorderLayout());
-		YearPanel yearPanel = new YearPanel(history, currentYear,
+
+		JButton pastButton = new JButton("<");
+		pastButton.addActionListener(ignored -> {
+			shownYear = shownYear.minusYears(1);
+			recreateShownYearPanel();
+		});
+		setArrowButtonWidth(pastButton);
+		content.add(pastButton, BorderLayout.WEST);
+
+		JButton futureButton = new JButton(">");
+		futureButton.addActionListener(ignored -> {
+			shownYear = shownYear.plusYears(1);
+			recreateShownYearPanel();
+		});
+		setArrowButtonWidth(futureButton);
+		content.add(futureButton, BorderLayout.EAST);
+
+		shownYear = history.years()
+			.boxed()
+			.min(Comparator.comparingInt(y -> Math.abs(currentYear.getValue() - y)))
+			.map(Year::of)
+			.orElse(currentYear);
+		createShownYearPanel();
+	}
+
+	private void createShownYearPanel() {
+		shownYearPanel = new YearPanel(history, shownYear,
 			d -> playSound(POSITIVE_AUDIO),
 			d -> playSound(NEGATIVE_AUDIO)
 		);
-		content.add(yearPanel, BorderLayout.CENTER);
+		content.add(shownYearPanel, BorderLayout.CENTER);
+	}
+
+	private void recreateShownYearPanel() {
+		content.remove(shownYearPanel);
+		createShownYearPanel();
+		content.revalidate();
+		content.repaint();
+	}
+
+	private void setArrowButtonWidth(JButton b) {
+		Dimension size = new Dimension(
+			(int) new JLabel("XXXXXXXX").getPreferredSize().getWidth(),
+			Short.MAX_VALUE
+		);
+		b.setPreferredSize(size);
+		b.setMinimumSize(size);
 	}
 
 	private YearHistory readState(Path statePath) {
@@ -96,10 +141,9 @@ public class Main {
 
 	private void go() {
 		window.setMinimumSize(new Dimension(640, 480));
-		window.setSize(800, 600);
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		window.pack();
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {
 			@Override
@@ -139,5 +183,4 @@ public class Main {
 		}
 		new Main(args[0]).go();
 	}
-
 }
