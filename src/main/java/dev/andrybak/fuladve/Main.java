@@ -46,10 +46,10 @@ public class Main {
 		history = readState(statePath);
 		System.out.println("Read " + history.size() + " dates.");
 		content = new JPanel(new GridBagLayout());
-		fillInUI();
+		fillInUI(currentYear);
 	}
 
-	private void fillInUI() {
+	private void fillInUI(Year year) {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		for (Month m : Month.values()) {
@@ -58,8 +58,8 @@ public class Main {
 			content.add(new JLabel(MONTH_LABEL_FORMATTER.format(m)), gbc);
 		}
 
-		LocalDate currentYearStart = LocalDate.ofYearDay(currentYear.getValue(), 1);
-		LocalDate nextYearStart = LocalDate.ofYearDay(currentYear.plusYears(1).getValue(), 1);
+		LocalDate currentYearStart = LocalDate.ofYearDay(year.getValue(), 1);
+		LocalDate nextYearStart = LocalDate.ofYearDay(year.plusYears(1).getValue(), 1);
 		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
 			final LocalDate d = i; // for final inside lambdas
 			gbc.gridx = d.getMonthValue() - 1;
