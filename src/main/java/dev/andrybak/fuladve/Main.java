@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * @author Andrei Rybak
  */
-public class EveryDayCalendar {
+public class Main {
 	private static final Year currentYear = Year.now();
 
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -41,7 +41,7 @@ public class EveryDayCalendar {
 	private final JFrame window = new JFrame("Every Day Calendar " + currentYear);
 	private final JPanel content;
 
-	EveryDayCalendar(String statePathStr) {
+	Main(String statePathStr) {
 		statePath = Paths.get(statePathStr);
 		history = readState(statePath);
 		System.out.println("Read " + history.size() + " dates.");
@@ -151,7 +151,7 @@ public class EveryDayCalendar {
 	private static void playSound(String resourceName) {
 		System.out.println("Playing sound: " + resourceName);
 		try (
-			InputStream resource = EveryDayCalendar.class.getResourceAsStream(resourceName);
+			InputStream resource = Main.class.getResourceAsStream(resourceName);
 			BufferedInputStream buffered = new BufferedInputStream(resource);
 			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
 		) {
@@ -170,7 +170,7 @@ public class EveryDayCalendar {
 			System.exit(1);
 			return;
 		}
-		new EveryDayCalendar(args[0]).go();
+		new Main(args[0]).go();
 	}
 
 }

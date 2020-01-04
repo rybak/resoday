@@ -4,7 +4,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'dev.andrybak.fuladve.EveryDayCalendar'
+mainClassName = 'dev.andrybak.fuladve.Main'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
