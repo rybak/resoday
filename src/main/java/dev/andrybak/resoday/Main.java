@@ -2,8 +2,7 @@ package dev.andrybak.resoday;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +42,10 @@ public class Main {
 		updateWindowTitle(tabs);
 
 		content.add(tabs, BorderLayout.CENTER);
+
+		initKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK), () ->
+			historyPanels.get(tabs.getSelectedIndex()).markToday()
+		);
 	}
 
 	public static void main(String... args) {
@@ -63,6 +66,19 @@ public class Main {
 	private void updateWindowTitle(JTabbedPane tabs) {
 		HistoryPanel historyPanel = historyPanels.get(tabs.getSelectedIndex());
 		window.setTitle(historyPanel.getPath().getFileName() + " - " + APP_NAME);
+	}
+
+	private void initKeyStroke(KeyStroke nextKeyStroke, Runnable runnable) {
+		SwingUtilities.invokeLater(() -> {
+			Object cmd = new Object();
+			content.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(nextKeyStroke, cmd);
+			content.getActionMap().put(cmd, new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					runnable.run();
+				}
+			});
+		});
 	}
 
 	private void go() {

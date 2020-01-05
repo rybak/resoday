@@ -6,13 +6,19 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 class YearPanel extends JPanel {
 	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
 	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
 
+	private final Map<LocalDate, JToggleButton> buttons = new HashMap<>();
+	private final YearHistory history;
+
 	YearPanel(YearHistory history, Year year) {
 		super(new BorderLayout());
+		this.history = history;
 
 		JPanel yearLabelWrapper = new JPanel(new BorderLayout());
 		{
@@ -36,6 +42,7 @@ class YearPanel extends JPanel {
 			gbc.gridx = d.getMonthValue() - 1;
 			gbc.gridy = d.getDayOfMonth();
 			JToggleButton b = new JToggleButton(DAY_BUTTON_FORMATTER.format(d));
+			buttons.put(d, b);
 			b.setSelected(history.isTurnedOn(d));
 			b.addActionListener(ignored -> {
 				if (b.isSelected()) {
@@ -49,5 +56,14 @@ class YearPanel extends JPanel {
 			buttonPanel.add(b, gbc);
 		}
 		this.add(buttonPanel, BorderLayout.CENTER);
+	}
+
+	void updateButtonToggle(LocalDate d) {
+		JToggleButton maybeButton = buttons.get(d);
+		if (maybeButton == null) // date might be from a different year
+			return;
+		if (maybeButton.isSelected() == history.isTurnedOn(d))
+			return;
+		maybeButton.setSelected(history.isTurnedOn(d));
 	}
 }

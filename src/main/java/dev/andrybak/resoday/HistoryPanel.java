@@ -3,6 +3,7 @@ package dev.andrybak.resoday;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.Comparator;
 
@@ -12,13 +13,14 @@ class HistoryPanel extends JPanel {
 	private final YearHistory history;
 	private final Path statePath;
 	private Year shownYear;
-	private JPanel shownYearPanel;
+	private YearPanel shownYearPanel;
 
 	HistoryPanel(Path statePath) {
 		super(new BorderLayout());
 		this.statePath = statePath;
 		history = YearHistory.read(this.statePath);
 		history.addListener(new AudioPlayer());
+		history.addListener(new ButtonStateUpkeep());
 		System.out.println("Read " + history.size() + " dates.");
 
 		JButton pastButton = new JButton("<");
@@ -73,5 +75,30 @@ class HistoryPanel extends JPanel {
 
 	Path getPath() {
 		return statePath;
+	}
+
+	void markToday() {
+		LocalDate today = LocalDate.now();
+		if (history.isTurnedOn(today)) {
+			history.turnOff(today);
+		} else {
+			history.turnOn(today);
+		}
+	}
+
+	private class ButtonStateUpkeep implements YearHistoryListener {
+		@Override
+		public void onTurnOn(LocalDate d) {
+			updateButton(d);
+		}
+
+		@Override
+		public void onTurnOff(LocalDate d) {
+			updateButton(d);
+		}
+
+		private void updateButton(LocalDate d) {
+			shownYearPanel.updateButtonToggle(d);
+		}
 	}
 }
