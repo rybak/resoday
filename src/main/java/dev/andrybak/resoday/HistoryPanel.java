@@ -1,20 +1,13 @@
 package dev.andrybak.resoday;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.Year;
 import java.util.Comparator;
 
 class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
-
-	private static final String POSITIVE_AUDIO = "positive.wav";
-	private static final String NEGATIVE_AUDIO = "negative.wav";
 
 	private final YearHistory history;
 	private final Path statePath;
@@ -25,6 +18,7 @@ class HistoryPanel extends JPanel {
 		super(new BorderLayout());
 		this.statePath = statePath;
 		history = YearHistory.read(this.statePath);
+		history.addListener(new AudioPlayer());
 		System.out.println("Read " + history.size() + " dates.");
 
 		JButton pastButton = new JButton("<");
@@ -51,27 +45,8 @@ class HistoryPanel extends JPanel {
 		createShownYearPanel();
 	}
 
-	private static void playSound(String resourceName) {
-		System.out.println("Playing sound: " + resourceName);
-		try (
-			InputStream resource = Main.class.getResourceAsStream(resourceName);
-			BufferedInputStream buffered = new BufferedInputStream(resource);
-			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
-		) {
-			Clip c = AudioSystem.getClip(null);
-			c.open(a);
-			c.start();
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			System.err.println("Could not play sound.");
-			e.printStackTrace();
-		}
-	}
-
 	private void createShownYearPanel() {
-		shownYearPanel = new YearPanel(history, shownYear,
-			d -> playSound(POSITIVE_AUDIO),
-			d -> playSound(NEGATIVE_AUDIO)
-		);
+		shownYearPanel = new YearPanel(history, shownYear);
 		this.add(shownYearPanel, BorderLayout.CENTER);
 	}
 

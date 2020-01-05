@@ -20,6 +20,7 @@ public class YearHistory {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private final Set<LocalDate> dates;
+	private final List<YearHistoryListener> listeners = new ArrayList<>();
 
 	YearHistory() {
 		this(emptySet());
@@ -66,10 +67,12 @@ public class YearHistory {
 
 	void turnOn(LocalDate d) {
 		dates.add(d);
+		listeners.forEach(l -> l.onTurnOn(d));
 	}
 
 	void turnOff(LocalDate d) {
 		dates.remove(d);
+		listeners.forEach(l -> l.onTurnOff(d));
 	}
 
 	boolean isTurnedOn(LocalDate d) {
@@ -102,5 +105,9 @@ public class YearHistory {
 		} catch (IOException e) {
 			System.err.println("Could not save current state in '" + statePath + "'.");
 		}
+	}
+
+	void addListener(YearHistoryListener listener) {
+		listeners.add(listener);
 	}
 }

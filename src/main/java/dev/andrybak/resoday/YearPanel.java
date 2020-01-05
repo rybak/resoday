@@ -6,13 +6,12 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
-import java.util.function.Consumer;
 
 class YearPanel extends JPanel {
 	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
 	private static final DateTimeFormatter DAY_BUTTON_FORMATTER = DateTimeFormatter.ofPattern("dd");
 
-	YearPanel(YearHistory history, Year year, Consumer<LocalDate> turnOnListener, Consumer<LocalDate> turnOffListener) {
+	YearPanel(YearHistory history, Year year) {
 		super(new BorderLayout());
 
 		JPanel yearLabelWrapper = new JPanel(new BorderLayout());
@@ -42,11 +41,9 @@ class YearPanel extends JPanel {
 				if (b.isSelected()) {
 					System.out.println("Turned on " + d);
 					history.turnOn(d);
-					turnOnListener.accept(d);
 				} else {
 					System.out.println("Turned off " + d);
 					history.turnOff(d);
-					turnOffListener.accept(d);
 				}
 			});
 			buttonPanel.add(b, gbc);
