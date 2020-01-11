@@ -3,6 +3,7 @@ package dev.andrybak.resoday;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -95,15 +96,19 @@ public class YearHistory {
 
 	void saveTo(Path statePath) {
 		try {
-			Files.write(statePath,
+			Path tmpFile = Files.createTempFile("resoday", ".habit");
+			Files.write(tmpFile,
 				serialize().stream()
 					.map(CALENDAR_DAY_FORMATTER::format)
 					.collect(toList())
 			);
+			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 			System.out.println("Saved state.");
 			System.out.println(size() + " dates.");
 		} catch (IOException e) {
 			System.err.println("Could not save current state in '" + statePath + "'.");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
