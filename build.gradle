@@ -4,7 +4,10 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'dev.andrybak.resoday.Main'
+application {
+    mainClassName = 'dev.andrybak.resoday.Main'
+    applicationName = 'resoday'
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
