@@ -7,16 +7,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class Main {
 	private static final String APP_NAME = "Every Day Calendar";
+	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 
 	private final JFrame window = new JFrame(APP_NAME);
 	private final JPanel content;
 	private final List<HistoryPanel> historyPanels = new ArrayList<>();
+	private final Timer autoSaveTimer;
 
 	Main(Path dir) {
 		content = new JPanel(new BorderLayout());
@@ -46,6 +49,8 @@ public class Main {
 		initKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK), () ->
 			historyPanels.get(tabs.getSelectedIndex()).markToday()
 		);
+
+		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
 	}
 
 	public static void main(String... args) {
@@ -90,9 +95,17 @@ public class Main {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				autoSaveTimer.stop();
 				save();
 			}
 		});
+		autoSaveTimer.start();
+	}
+
+	private void autoSave() {
+		System.out.println("Auto-saving...");
+		save();
+		System.out.println("Auto-saving complete.");
 	}
 
 	private void save() {
