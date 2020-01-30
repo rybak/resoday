@@ -8,6 +8,7 @@ import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.IntUnaryOperator;
 
 class YearPanel extends JPanel {
 	private static final DateTimeFormatter MONTH_LABEL_FORMATTER = DateTimeFormatter.ofPattern("MMM");
@@ -29,6 +30,7 @@ class YearPanel extends JPanel {
 		}
 		LocalDate currentYearStart = LocalDate.ofYearDay(year.getValue(), 1);
 		LocalDate nextYearStart = LocalDate.ofYearDay(year.plusYears(1).getValue(), 1);
+		LocalDate today = LocalDate.now();
 		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
 			final LocalDate d = i; // for final inside lambdas
 			gbc.gridx = d.getMonthValue() - 1;
@@ -46,8 +48,28 @@ class YearPanel extends JPanel {
 				}
 			});
 			buttonPanel.add(b, gbc);
+			if (d.equals(today)) {
+				makeFontBold(b);
+			} else {
+				makeFontNonBold(b);
+			}
 		}
 		this.add(buttonPanel, BorderLayout.CENTER);
+	}
+
+	private static void makeFontBold(JComponent c) {
+		updateFontStyle(c, style -> style | Font.BOLD);
+	}
+
+	private static void makeFontNonBold(JComponent c) {
+		updateFontStyle(c, style -> style & ~Font.BOLD);
+	}
+
+	private static void updateFontStyle(JComponent c, IntUnaryOperator styleUpdate) {
+		if (c == null)
+			return;
+		//noinspection MagicConstant
+		c.setFont(c.getFont().deriveFont(styleUpdate.applyAsInt(c.getFont().getStyle())));
 	}
 
 	void updateButtonToggle(LocalDate d) {
@@ -57,5 +79,15 @@ class YearPanel extends JPanel {
 		if (maybeButton.isSelected() == history.isTurnedOn(d))
 			return;
 		maybeButton.setSelected(history.isTurnedOn(d));
+	}
+
+	/**
+	 * Update decorations (bells and whistles) of this panel, which may depend on current time.
+	 */
+	void updateDecorations() {
+		LocalDate today = LocalDate.now();
+		LocalDate yesterday = today.minusDays(1);
+		makeFontBold(buttons.get(today));
+		makeFontNonBold(buttons.get(yesterday));
 	}
 }

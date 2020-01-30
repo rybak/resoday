@@ -51,6 +51,7 @@ public class Main {
 		);
 
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
+		autoSaveTimer.addActionListener(ignored -> historyPanels.forEach(HistoryPanel::updateDecorations));
 	}
 
 	public static void main(String... args) {

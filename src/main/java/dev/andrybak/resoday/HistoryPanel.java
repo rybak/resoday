@@ -86,6 +86,13 @@ class HistoryPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Update UI decorations (bells and whistles) of this panel, which may depend on current time.
+	 */
+	void updateDecorations() {
+		shownYearPanel.updateDecorations();
+	}
+
 	private class ButtonStateUpkeep implements YearHistoryListener {
 		@Override
 		public void onTurnOn(LocalDate d) {
