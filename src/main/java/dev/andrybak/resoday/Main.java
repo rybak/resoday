@@ -90,8 +90,12 @@ public class Main {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				historyPanels.forEach(HistoryPanel::save);
+				save();
 			}
 		});
+	}
+
+	private void save() {
+		historyPanels.forEach(HistoryPanel::save);
 	}
 }
