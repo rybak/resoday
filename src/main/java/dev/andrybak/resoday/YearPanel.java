@@ -20,14 +20,6 @@ class YearPanel extends JPanel {
 		super(new BorderLayout());
 		this.history = history;
 
-		JPanel yearLabelWrapper = new JPanel(new BorderLayout());
-		{
-			JLabel yearLabel = new JLabel(year.toString(), SwingConstants.CENTER);
-			yearLabel.setFont(yearLabel.getFont().deriveFont(yearLabel.getFont().getSize() * 2.0f));
-			yearLabelWrapper.add(yearLabel, BorderLayout.CENTER);
-		}
-		this.add(yearLabelWrapper, BorderLayout.NORTH);
-
 		JPanel buttonPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		for (Month m : Month.values()) {

@@ -13,6 +13,10 @@ class HistoryPanel extends JPanel {
 	private final YearHistory history;
 	private final Path statePath;
 	private Year shownYear;
+	/**
+	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
+	 */
+	private JLabel shownYearLabel;
 	private YearPanel shownYearPanel;
 
 	HistoryPanel(Path statePath) {
@@ -39,6 +43,10 @@ class HistoryPanel extends JPanel {
 		setArrowButtonWidth(futureButton);
 		this.add(futureButton, BorderLayout.EAST);
 
+		shownYearLabel = new JLabel("", SwingConstants.CENTER);
+		shownYearLabel.setFont(shownYearLabel.getFont().deriveFont(shownYearLabel.getFont().getSize() * 2.0f));
+		this.add(shownYearLabel, BorderLayout.NORTH);
+
 		shownYear = history.years()
 			.boxed()
 			.min(Comparator.comparingInt(y -> Math.abs(currentYear.getValue() - y)))
@@ -48,6 +56,7 @@ class HistoryPanel extends JPanel {
 	}
 
 	private void createShownYearPanel() {
+		shownYearLabel.setText(shownYear.toString());
 		shownYearPanel = new YearPanel(history, shownYear);
 		this.add(shownYearPanel, BorderLayout.CENTER);
 	}
