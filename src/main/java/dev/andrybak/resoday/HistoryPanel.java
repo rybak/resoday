@@ -32,20 +32,21 @@ class HistoryPanel extends JPanel {
 			shownYear = shownYear.minusYears(1);
 			recreateShownYearPanel();
 		});
-		setArrowButtonWidth(pastButton);
-		this.add(pastButton, BorderLayout.WEST);
 
 		JButton futureButton = new JButton(">");
 		futureButton.addActionListener(ignored -> {
 			shownYear = shownYear.plusYears(1);
 			recreateShownYearPanel();
 		});
-		setArrowButtonWidth(futureButton);
-		this.add(futureButton, BorderLayout.EAST);
 
 		shownYearLabel = new JLabel("", SwingConstants.CENTER);
 		shownYearLabel.setFont(shownYearLabel.getFont().deriveFont(shownYearLabel.getFont().getSize() * 2.0f));
-		this.add(shownYearLabel, BorderLayout.NORTH);
+
+		JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		topPanel.add(pastButton);
+		topPanel.add(shownYearLabel);
+		topPanel.add(futureButton);
+		this.add(topPanel, BorderLayout.NORTH);
 
 		shownYear = history.years()
 			.boxed()
@@ -66,15 +67,6 @@ class HistoryPanel extends JPanel {
 		createShownYearPanel();
 		this.revalidate();
 		this.repaint();
-	}
-
-	private void setArrowButtonWidth(JButton b) {
-		Dimension size = new Dimension(
-			(int) new JLabel("XXXXXXXX").getPreferredSize().getWidth(),
-			Short.MAX_VALUE
-		);
-		b.setPreferredSize(size);
-		b.setMinimumSize(size);
 	}
 
 	void save() {
