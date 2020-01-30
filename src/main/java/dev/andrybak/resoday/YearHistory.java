@@ -96,6 +96,7 @@ public class YearHistory {
 
 	void saveTo(Path statePath) {
 		try {
+			System.out.println("\tSaving to '" + statePath + "'...");
 			Path tmpFile = Files.createTempFile("resoday", ".habit");
 			Files.write(tmpFile,
 				serialize().stream()
@@ -103,8 +104,7 @@ public class YearHistory {
 					.collect(toList())
 			);
 			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-			System.out.println("Saved state.");
-			System.out.println(size() + " dates.");
+			System.out.println(String.format("\tSaved %d dates.", size()));
 		} catch (IOException e) {
 			System.err.println("Could not save current state in '" + statePath + "'.");
 			System.err.println(e.getMessage());

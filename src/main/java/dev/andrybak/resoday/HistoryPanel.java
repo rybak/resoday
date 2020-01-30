@@ -70,7 +70,6 @@ class HistoryPanel extends JPanel {
 	}
 
 	void save() {
-		System.out.println("Saving '" + statePath + "'...");
 		history.saveTo(statePath);
 	}
 
