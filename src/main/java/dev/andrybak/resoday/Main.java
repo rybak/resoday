@@ -13,10 +13,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Main {
-	private static final String APP_NAME = "Every Day Calendar";
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 
-	private final JFrame window = new JFrame(APP_NAME);
+	private final JFrame window = new JFrame(StringConstants.APP_NAME);
 	private final JPanel content;
 	private final List<HistoryPanel> historyPanels = new ArrayList<>();
 	private final Timer autoSaveTimer;
@@ -71,7 +70,7 @@ public class Main {
 
 	private void updateWindowTitle(JTabbedPane tabs) {
 		HistoryPanel historyPanel = historyPanels.get(tabs.getSelectedIndex());
-		window.setTitle(historyPanel.getPath().getFileName() + " - " + APP_NAME);
+		window.setTitle(historyPanel.getPath().getFileName() + " - " + StringConstants.APP_NAME);
 	}
 
 	private void initKeyStroke(KeyStroke nextKeyStroke, Runnable runnable) {
