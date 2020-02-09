@@ -21,6 +21,8 @@ public class Main {
 	private final Timer autoSaveTimer;
 
 	Main(Path dir) {
+		setUpMenuBar();
+
 		content = new JPanel(new BorderLayout());
 
 		JTabbedPane tabs = new JTabbedPane();
@@ -66,6 +68,18 @@ public class Main {
 			System.exit(1);
 		}
 		new Main(dir).go();
+	}
+
+	private void setUpMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic('H');
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		aboutMenuItem.setMnemonic('A');
+		aboutMenuItem.addActionListener(ignored -> AboutDialog.show(window));
+		helpMenu.add(aboutMenuItem);
+		menuBar.add(helpMenu);
+		window.setJMenuBar(menuBar);
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {
