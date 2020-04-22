@@ -1,7 +1,11 @@
 package dev.andrybak.resoday;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Year;
