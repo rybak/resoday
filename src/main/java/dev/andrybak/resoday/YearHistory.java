@@ -102,7 +102,7 @@ public class YearHistory {
 	void saveTo(Path statePath) {
 		try {
 			System.out.println("\tSaving to '" + statePath + "'...");
-			Path tmpFile = Files.createTempFile("resoday", ".habit");
+			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
 			Files.write(tmpFile,
 				serialize().stream()
 					.map(CALENDAR_DAY_FORMATTER::format)
