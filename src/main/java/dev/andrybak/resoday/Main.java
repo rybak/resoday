@@ -100,7 +100,7 @@ public class Main {
 
 	private void updateWindowTitle(JTabbedPane tabs) {
 		HistoryPanel historyPanel = historyPanels.get(tabs.getSelectedIndex());
-		window.setTitle(historyPanel.getPath().getFileName() + " - " + StringConstants.APP_NAME);
+		window.setTitle(historyPanel.getPath().getFileName() + " – " + StringConstants.APP_NAME);
 	}
 
 	private void initKeyStroke(KeyStroke nextKeyStroke, Runnable runnable) {
