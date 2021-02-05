@@ -17,6 +17,7 @@ import java.util.List;
 class AudioPlayer implements YearHistoryListener {
 	private static final String POSITIVE_AUDIO = "positive.wav";
 	private static final String NEGATIVE_AUDIO = "negative.wav";
+	private static final int MAX_SOUNDS = 10;
 	/**
 	 * Assume that all audio clips are shorter than 10 seconds.
 	 */
@@ -35,6 +36,8 @@ class AudioPlayer implements YearHistoryListener {
 	}
 
 	private void playSound(String resourceName) {
+		if (toClose.size() >= MAX_SOUNDS)
+			return;
 		System.out.println("Playing sound: " + resourceName);
 		Clip c = null;
 		try (
