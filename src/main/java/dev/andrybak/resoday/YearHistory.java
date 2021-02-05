@@ -27,6 +27,12 @@ public class YearHistory {
 
 	private final Set<LocalDate> dates;
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
+	/**
+	 * Whether or not this {@code YearHistory} has any changes since last {@linkplain #saveTo saving}.
+	 *
+	 * @implSpec All methods which modify {@link #dates} must set this flag to true.
+	 */
+	private boolean hasChanges = true;
 
 	YearHistory() {
 		this(emptySet());
@@ -72,11 +78,13 @@ public class YearHistory {
 	}
 
 	void turnOn(LocalDate d) {
+		hasChanges = true;
 		dates.add(d);
 		listeners.forEach(l -> l.onTurnOn(d));
 	}
 
 	void turnOff(LocalDate d) {
+		hasChanges = true;
 		dates.remove(d);
 		listeners.forEach(l -> l.onTurnOff(d));
 	}
@@ -100,6 +108,8 @@ public class YearHistory {
 	}
 
 	void saveTo(Path statePath) {
+		if (!hasChanges)
+			return;
 		try {
 			System.out.println("\tSaving to '" + statePath + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
@@ -115,6 +125,7 @@ public class YearHistory {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
+		hasChanges = false;
 	}
 
 	void addListener(YearHistoryListener listener) {
