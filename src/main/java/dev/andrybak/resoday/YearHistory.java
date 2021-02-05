@@ -109,7 +109,7 @@ public class YearHistory {
 					.collect(toList())
 			);
 			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-			System.out.println(String.format("\tSaved %d dates.", size()));
+			System.out.printf("\tSaved %d dates.%n", size());
 		} catch (IOException e) {
 			System.err.println("Could not save current state in '" + statePath + "'.");
 			System.err.println(e.getMessage());

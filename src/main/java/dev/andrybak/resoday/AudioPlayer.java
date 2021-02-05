@@ -24,10 +24,10 @@ class AudioPlayer implements YearHistoryListener {
 	private static final Duration AUDIO_TIMEOUT = Duration.ofSeconds(10);
 
 	private final Timer closeTimer;
-	private List<Clip> toClose = new ArrayList<>();
+	private final List<Clip> toClose = new ArrayList<>();
 
 	AudioPlayer() {
-		closeTimer = new Timer((int)AUDIO_TIMEOUT.toMillis(), ignored -> {
+		closeTimer = new Timer(Math.toIntExact(AUDIO_TIMEOUT.toMillis()), ignored -> {
 			for (Clip c : toClose)
 				c.close(); // avoid leaking OS audio resources
 			toClose.clear();
@@ -43,7 +43,7 @@ class AudioPlayer implements YearHistoryListener {
 		try (
 			InputStream resource = Main.class.getResourceAsStream(resourceName);
 			BufferedInputStream buffered = new BufferedInputStream(resource);
-			AudioInputStream a = AudioSystem.getAudioInputStream(buffered);
+			AudioInputStream a = AudioSystem.getAudioInputStream(buffered)
 		) {
 			c = AudioSystem.getClip(null);
 			c.open(a);

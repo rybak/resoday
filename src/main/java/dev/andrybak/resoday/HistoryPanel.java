@@ -20,7 +20,7 @@ class HistoryPanel extends JPanel {
 	/**
 	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
 	 */
-	private JLabel shownYearLabel;
+	private final JLabel shownYearLabel;
 	private YearPanel shownYearPanel;
 
 	HistoryPanel(Path statePath) {
