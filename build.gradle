@@ -20,3 +20,11 @@ jar {
         )
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'dev.dirs:directories:23' // https://github.com/dirs-dev/directories-jvm
+}
