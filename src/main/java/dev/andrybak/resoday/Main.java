@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -96,6 +97,11 @@ public class Main {
 		JMenuItem aboutMenuItem = new JMenuItem("About");
 		aboutMenuItem.setMnemonic('A');
 		aboutMenuItem.addActionListener(ignored -> AboutDialog.show(window));
+		if (Desktop.isDesktopSupported()) {
+			Desktop desktop = Desktop.getDesktop();
+			if (desktop.isSupported(Desktop.Action.APP_ABOUT))
+				desktop.setAboutHandler(ignored -> AboutDialog.show(window));
+		}
 		helpMenu.add(aboutMenuItem);
 		menuBar.add(helpMenu);
 		window.setJMenuBar(menuBar);
