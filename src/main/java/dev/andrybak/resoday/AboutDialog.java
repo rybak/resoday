@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -48,9 +49,11 @@ class AboutDialog {
 			"<a href=\"https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s\">Veritasium video titled " +
 			"<i>Why Most Resolutions Fail &amp; How To Succeed</i></a>.");
 		textPane.setEditable(false);
-		setUpHyperLinkListener(textPane);
+		JTextField urlFallbackDisplay = new JTextField("");
+		setUpHyperlinkListener(textPane, urlFallbackDisplay);
 		textPane.setBackground(label.getBackground());
 		content.add(textPane);
+		content.add(urlFallbackDisplay);
 		content.add(Box.createVerticalStrut(10));
 
 		d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -73,7 +76,9 @@ class AboutDialog {
 		return d;
 	}
 
-	private static void setUpHyperLinkListener(JTextPane textPane) {
+	private static void setUpHyperlinkListener(JTextPane textPane, JTextField urlFallbackDisplay) {
+		urlFallbackDisplay.setVisible(false);
+		urlFallbackDisplay.setEditable(false);
 		textPane.addHyperlinkListener(hyperlinkEvent -> {
 			HyperlinkEvent.EventType eventType = hyperlinkEvent.getEventType();
 			if (HyperlinkEvent.EventType.ENTERED.equals(eventType)) {
@@ -82,15 +87,33 @@ class AboutDialog {
 				textPane.setCursor(Cursor.getDefaultCursor());
 			} else if (HyperlinkEvent.EventType.ACTIVATED.equals(eventType)) {
 				URL url = hyperlinkEvent.getURL();
-				if (url == null)
-					return;
-				try {
-					Desktop.getDesktop().browse(url.toURI());
-				} catch (IOException | URISyntaxException e) {
-					throw new IllegalStateException("Bad URLs in about text", e);
-				}
+				showUrl(url, () -> showUrlFallback(urlFallbackDisplay, url));
 			}
 		});
+	}
+
+	private static void showUrl(URL url, Runnable fallback) {
+		if (url == null)
+			return;
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			try {
+				Desktop.getDesktop().browse(url.toURI());
+			} catch (IOException | URISyntaxException e) {
+				throw new IllegalStateException("Bad URLs in about text", e);
+			} catch (UnsupportedOperationException e) {
+				fallback.run();
+			}
+		} else {
+			fallback.run();
+		}
+	}
+
+	private static void showUrlFallback(JTextField urlField, URL url) {
+		System.out.println("Fallback for " + url);
+		urlField.setText(url.toString());
+		urlField.setVisible(true);
+		urlField.getParent().revalidate();
+		urlField.getParent().repaint();
 	}
 
 	private static void setUpEscapeKeyClosing(JDialog d, JPanel content) {
