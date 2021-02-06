@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 public class Main {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
+	private static final String HABIT_FILE_EXT = ".habit";
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
 	private final JPanel content;
@@ -46,11 +47,13 @@ public class Main {
 			paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
-				.filter(p -> p.getFileName().toString().endsWith(".habit"))
+				.filter(p -> p.getFileName().toString().endsWith(HABIT_FILE_EXT))
 				.forEach(p -> {
 					HistoryPanel historyPanel = new HistoryPanel(p);
 					historyPanels.add(historyPanel);
-					tabs.addTab(p.getFileName().toString(), historyPanel);
+					String fn = p.getFileName().toString();
+					String tabName = fn.substring(0, fn.length() - HABIT_FILE_EXT.length());
+					tabs.addTab(tabName, historyPanel);
 				});
 		} catch (IOException e) {
 			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "'. Aborting.");
