@@ -48,23 +48,7 @@ class AboutDialog {
 			"<a href=\"https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s\">Veritasium video titled " +
 			"<i>Why Most Resolutions Fail &amp; How To Succeed</i></a>.");
 		textPane.setEditable(false);
-		textPane.addHyperlinkListener(hyperlinkEvent -> {
-			HyperlinkEvent.EventType eventType = hyperlinkEvent.getEventType();
-			if (HyperlinkEvent.EventType.ENTERED.equals(eventType)) {
-				textPane.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			} else if (HyperlinkEvent.EventType.EXITED.equals(eventType)) {
-				textPane.setCursor(Cursor.getDefaultCursor());
-			} else if (HyperlinkEvent.EventType.ACTIVATED.equals(eventType)) {
-				URL url = hyperlinkEvent.getURL();
-				if (url == null)
-					return;
-				try {
-					Desktop.getDesktop().browse(url.toURI());
-				} catch (IOException | URISyntaxException e) {
-					throw new IllegalStateException("Bad URLs in about text", e);
-				}
-			}
-		});
+		setUpHyperLinkListener(textPane);
 		textPane.setBackground(label.getBackground());
 		content.add(textPane);
 		content.add(Box.createVerticalStrut(10));
@@ -87,6 +71,26 @@ class AboutDialog {
 		d.setVisible(true);
 
 		return d;
+	}
+
+	private static void setUpHyperLinkListener(JTextPane textPane) {
+		textPane.addHyperlinkListener(hyperlinkEvent -> {
+			HyperlinkEvent.EventType eventType = hyperlinkEvent.getEventType();
+			if (HyperlinkEvent.EventType.ENTERED.equals(eventType)) {
+				textPane.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			} else if (HyperlinkEvent.EventType.EXITED.equals(eventType)) {
+				textPane.setCursor(Cursor.getDefaultCursor());
+			} else if (HyperlinkEvent.EventType.ACTIVATED.equals(eventType)) {
+				URL url = hyperlinkEvent.getURL();
+				if (url == null)
+					return;
+				try {
+					Desktop.getDesktop().browse(url.toURI());
+				} catch (IOException | URISyntaxException e) {
+					throw new IllegalStateException("Bad URLs in about text", e);
+				}
+			}
+		});
 	}
 
 	private static void setUpEscapeKeyClosing(JDialog d, JPanel content) {
