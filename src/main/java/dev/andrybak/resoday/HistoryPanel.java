@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.Comparator;
+import java.util.Optional;
 
 class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
@@ -23,10 +24,17 @@ class HistoryPanel extends JPanel {
 	private final JLabel shownYearLabel;
 	private YearPanel shownYearPanel;
 
-	HistoryPanel(Path statePath) {
+	static Optional<HistoryPanel> fromPath(Path statePath) {
+		Optional<YearHistory> maybeHistory = YearHistory.read(statePath);
+		if (maybeHistory.isEmpty())
+			return Optional.empty();
+		return Optional.of(new HistoryPanel(statePath, maybeHistory.get()));
+	}
+
+	private HistoryPanel(Path statePath, YearHistory history) {
 		super(new BorderLayout());
 		this.statePath = statePath;
-		history = YearHistory.read(this.statePath);
+		this.history = history;
 		history.addListener(new AudioPlayer());
 		history.addListener(new ButtonStateUpkeep());
 		System.out.println("Read " + history.size() + " dates.");

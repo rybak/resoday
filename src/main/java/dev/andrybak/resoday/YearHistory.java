@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -42,10 +43,10 @@ public class YearHistory {
 		this.dates = new HashSet<>(dates);
 	}
 
-	static YearHistory read(Path statePath) {
+	static Optional<YearHistory> read(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
-			return new YearHistory();
+			return Optional.of(new YearHistory());
 		}
 		try (Stream<String> lines = Files.lines(statePath)) {
 			List<LocalDate> dates = lines
@@ -64,10 +65,10 @@ public class YearHistory {
 				})
 				.filter(Objects::nonNull)
 				.collect(toList());
-			return new YearHistory(dates);
+			return Optional.of(new YearHistory(dates));
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
-			return new YearHistory();
+			return Optional.empty();
 		}
 	}
 

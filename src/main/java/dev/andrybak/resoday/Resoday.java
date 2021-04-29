@@ -52,7 +52,10 @@ public class Resoday {
 				.filter(Files::isReadable)
 				.filter(p -> p.getFileName().toString().endsWith(HABIT_FILE_EXT))
 				.forEach(p -> {
-					HistoryPanel historyPanel = new HistoryPanel(p);
+					Optional<HistoryPanel> maybePanel = HistoryPanel.fromPath(p);
+					if (maybePanel.isEmpty())
+						return;
+					HistoryPanel historyPanel = maybePanel.get();
 					historyPanels.add(historyPanel);
 					String fn = p.getFileName().toString();
 					String tabName = fn.substring(0, fn.length() - HABIT_FILE_EXT.length());
