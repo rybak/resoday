@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Resoday {
@@ -77,7 +78,7 @@ public class Resoday {
 	}
 
 	private void markTodayInCurrentTab(JTabbedPane tabs) {
-		historyPanels.get(tabs.getSelectedIndex()).markToday();
+		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markToday);
 	}
 
 	public static void main(String... args) {
@@ -120,8 +121,24 @@ public class Resoday {
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {
-		HistoryPanel historyPanel = historyPanels.get(tabs.getSelectedIndex());
-		window.setTitle(historyPanel.getPath().getFileName() + " – " + StringConstants.APP_NAME_GUI);
+		Optional<HistoryPanel> maybeHistoryPanel = getCurrentHistoryPanel(tabs);
+		final String title;
+		if (maybeHistoryPanel.isPresent()) {
+			HistoryPanel historyPanel = maybeHistoryPanel.get();
+			title = historyPanel.getPath().getFileName() + " – " + StringConstants.APP_NAME_GUI;
+		} else {
+			title = StringConstants.APP_NAME_GUI;
+		}
+		window.setTitle(title);
+	}
+
+	private Optional<HistoryPanel> getCurrentHistoryPanel(JTabbedPane tabs) {
+		final int currentTabIndex = tabs.getSelectedIndex();
+		if (currentTabIndex >= 0) {
+			return Optional.of(historyPanels.get(currentTabIndex));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	private void initKeyStroke(KeyStroke nextKeyStroke, Runnable runnable) {
