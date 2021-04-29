@@ -50,14 +50,12 @@ public class Resoday {
 			paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
-				.filter(p -> p.getFileName().toString().endsWith(HABIT_FILE_EXT))
-				.forEach(p -> {
-					Optional<HistoryPanel> maybePanel = HistoryPanel.fromPath(p);
-					if (maybePanel.isEmpty())
-						return;
-					HistoryPanel historyPanel = maybePanel.get();
+				.filter(path -> path.getFileName().toString().endsWith(HABIT_FILE_EXT))
+				.map(HistoryPanel::fromPath)
+				.flatMap(Optional::stream)
+				.forEach(historyPanel -> {
 					historyPanels.add(historyPanel);
-					String fn = p.getFileName().toString();
+					String fn = historyPanel.getPath().getFileName().toString();
 					String tabName = fn.substring(0, fn.length() - HABIT_FILE_EXT.length());
 					tabs.addTab(tabName, historyPanel);
 				});
