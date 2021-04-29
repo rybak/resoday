@@ -4,8 +4,9 @@ plugins {
     id 'application'
 }
 
+final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
 application {
-    mainClassName = 'dev.andrybak.resoday.Main'
+    mainClass.set(resodayMainClassName)
     applicationName = 'resoday'
 }
 
@@ -16,7 +17,7 @@ tasks.withType(JavaCompile) {
 jar {
     manifest {
         attributes(
-                'Main-Class': mainClassName
+                'Main-Class': resodayMainClassName
         )
     }
 }

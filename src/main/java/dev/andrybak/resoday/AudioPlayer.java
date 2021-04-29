@@ -41,7 +41,7 @@ class AudioPlayer implements YearHistoryListener {
 		System.out.println("Playing sound: " + resourceName);
 		Clip c = null;
 		try (
-			InputStream resource = Main.class.getResourceAsStream(resourceName);
+			InputStream resource = Resoday.class.getResourceAsStream(resourceName);
 			BufferedInputStream buffered = new BufferedInputStream(resource);
 			AudioInputStream a = AudioSystem.getAudioInputStream(buffered)
 		) {

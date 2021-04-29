@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Main {
+public class Resoday {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 	private static final String HABIT_FILE_EXT = ".habit";
 
@@ -40,9 +40,8 @@ public class Main {
 	private final List<HistoryPanel> historyPanels = new ArrayList<>();
 	private final Timer autoSaveTimer;
 
-	Main(Path dir) {
+	Resoday(Path dir) {
 		setUpMenuBar();
-
 		content = new JPanel(new BorderLayout());
 
 		JTabbedPane tabs = new JTabbedPane();
@@ -96,7 +95,7 @@ public class Main {
 			System.err.println("'" + dir.toAbsolutePath() + "' is not a directory. Aborting.");
 			System.exit(1);
 		}
-		new Main(dir).go();
+		new Resoday(dir).go();
 	}
 
 	private void setUpMenuBar() {
