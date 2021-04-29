@@ -7,7 +7,11 @@
       </option>
     </JavaCodeStyleSettings>
     <codeStyleSettings language="JAVA">
+      <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
+      <option name="CLASS_BRACE_STYLE" value="5" />
+      <option name="INDENT_CASE_FROM_SWITCH" value="false" />
       <option name="SPACE_AFTER_TYPE_CAST" value="false" />
+      <option name="IF_BRACE_FORCE" value="3" />
       <indentOptions>
         <option name="CONTINUATION_INDENT_SIZE" value="4" />
         <option name="USE_TAB_CHARACTER" value="true" />
