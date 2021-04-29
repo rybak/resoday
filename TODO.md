@@ -62,12 +62,14 @@
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
     * [ ] Add save button
     * [ ] Disable after autosave/Enable after edit
+- Add shortcut for opening the habit file via Desktop.open
+- Add intro panel when zero habit files exist
+    > Intro panel may use the same UI as the "Add habit" dialog.
+    * [ ] use CardLayout to swap between JTabbedPane and intro panel
 
 ## In dev
 
-- UI to delete habit files
-    > Menu item which deletes the habit file corresponding to the  currently opened tab.
-    * [ ] disable menu item when nothing to delete
+- See stashes
 - Rewrite disk storage
     > Current approach with filenames has problems.  Filenames should be programatically generated to avoid issues from user input.  User input, on the other hand, shouldn't be restricted without a reason.
     * [ ] use JSON?
@@ -75,6 +77,9 @@
     * [ ] store habit name in the file as a field
     * [ ] store version of Resoday in the file as a field
     * [ ] don't forget to migrate your own resoday files in the process
+- UI to delete habit files
+    > Menu item which deletes the habit file corresponding to the  currently opened tab.
+    * [ ] disable menu item when nothing to delete
 
 ## Done
 
