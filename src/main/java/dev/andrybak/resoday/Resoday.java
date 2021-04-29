@@ -69,11 +69,15 @@ public class Resoday {
 		content.add(tabs, BorderLayout.CENTER);
 
 		initKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK), () ->
-			historyPanels.get(tabs.getSelectedIndex()).markToday()
+			markTodayInCurrentTab(tabs)
 		);
 
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
 		autoSaveTimer.addActionListener(ignored -> historyPanels.forEach(HistoryPanel::updateDecorations));
+	}
+
+	private void markTodayInCurrentTab(JTabbedPane tabs) {
+		historyPanels.get(tabs.getSelectedIndex()).markToday();
 	}
 
 	public static void main(String... args) {
