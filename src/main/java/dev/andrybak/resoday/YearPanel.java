@@ -46,10 +46,8 @@ class YearPanel extends JPanel {
 			b.setSelected(history.isTurnedOn(d));
 			b.addActionListener(ignored -> {
 				if (b.isSelected()) {
-					System.out.println("Turned on " + d);
 					history.turnOn(d);
 				} else {
-					System.out.println("Turned off " + d);
 					history.turnOff(d);
 				}
 			});

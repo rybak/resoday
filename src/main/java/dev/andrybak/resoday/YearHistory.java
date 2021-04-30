@@ -79,12 +79,14 @@ public class YearHistory {
 	}
 
 	void turnOn(LocalDate d) {
+		System.out.println("Turned on " + d);
 		hasChanges = true;
 		dates.add(d);
 		listeners.forEach(l -> l.onTurnOn(d));
 	}
 
 	void turnOff(LocalDate d) {
+		System.out.println("Turned off " + d);
 		hasChanges = true;
 		dates.remove(d);
 		listeners.forEach(l -> l.onTurnOff(d));
