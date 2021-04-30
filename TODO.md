@@ -70,6 +70,7 @@
 ## In dev
 
 - See stashes
+    * [ ] unit tests for sanitization---during storage rewrite, sanitization is only needed for control characters (including Unicode ones, preferrably)
 - Rewrite disk storage
     > Current approach with filenames has problems.  Filenames should be programatically generated to avoid issues from user input.  User input, on the other hand, shouldn't be restricted without a reason.
     * [ ] use JSON?
@@ -77,9 +78,13 @@
     * [ ] store habit name in the file as a field
     * [ ] store version of Resoday in the file as a field
     * [ ] don't forget to migrate your own resoday files in the process
+- UI to create habit files
+    * [ ] Make a functional (FP) API for the dialog---implementation in stash has bad API
 - UI to delete habit files
     > Menu item which deletes the habit file corresponding to the  currently opened tab.
     * [ ] disable menu item when nothing to delete
+- Refactor getting current tab
+    > Probably makes sense to extract it into a private method
 
 ## Done
 
@@ -104,4 +109,5 @@
 - Saving/reading data to/from $XDG_DATA_HOME
     * [x] read XDG base directory spec
     * [x] check what defaulting to $HOME/.local/... means when $HOME is null/empty
-- UI to create habit files
+- Manually test the changes from 2021-04-29
+- Double check how audio resources are closed
