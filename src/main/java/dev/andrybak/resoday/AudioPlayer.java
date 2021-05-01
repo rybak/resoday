@@ -20,8 +20,9 @@ class AudioPlayer implements YearHistoryListener {
 	private int currentlyPlaying = 0;
 
 	private void playSound(String resourceName) {
-		if (currentlyPlaying >= MAX_SOUNDS)
+		if (currentlyPlaying >= MAX_SOUNDS) {
 			return;
+		}
 		currentlyPlaying++;
 		System.out.println("Playing sound: " + resourceName);
 		Clip c = null;
@@ -43,8 +44,9 @@ class AudioPlayer implements YearHistoryListener {
 			});
 			c.start();
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			if (c != null)
+			if (c != null) {
 				c.close(); // it's autocloseable, but we want sound to _play_ for its duration before closing
+			}
 			System.err.println("Could not play sound.");
 			e.printStackTrace();
 			currentlyPlaying--;

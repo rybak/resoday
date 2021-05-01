@@ -73,8 +73,9 @@ public class YearHistory {
 	}
 
 	private static String sanitize(String s) {
-		if (s.length() < 20)
+		if (s.length() < 20) {
 			return s;
+		}
 		return s.substring(0, 20);
 	}
 
@@ -111,8 +112,9 @@ public class YearHistory {
 	}
 
 	void saveTo(Path statePath) {
-		if (!hasChanges)
+		if (!hasChanges) {
 			return;
+		}
 		try {
 			System.out.println("\tSaving to '" + statePath + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");

@@ -88,8 +88,9 @@ class MainGui {
 		aboutMenuItem.addActionListener(ignored -> AboutDialog.show(window));
 		if (Desktop.isDesktopSupported()) {
 			Desktop desktop = Desktop.getDesktop();
-			if (desktop.isSupported(Desktop.Action.APP_ABOUT))
+			if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
 				desktop.setAboutHandler(ignored -> AboutDialog.show(window));
+			}
 		}
 		helpMenu.add(aboutMenuItem);
 		menuBar.add(helpMenu);

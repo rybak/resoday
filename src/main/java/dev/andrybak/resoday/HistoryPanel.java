@@ -17,19 +17,12 @@ class HistoryPanel extends JPanel {
 
 	private final YearHistory history;
 	private final Path statePath;
-	private Year shownYear;
 	/**
 	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
 	 */
 	private final JLabel shownYearLabel;
+	private Year shownYear;
 	private YearPanel shownYearPanel;
-
-	static Optional<HistoryPanel> fromPath(Path statePath) {
-		Optional<YearHistory> maybeHistory = YearHistory.read(statePath);
-		if (maybeHistory.isEmpty())
-			return Optional.empty();
-		return Optional.of(new HistoryPanel(statePath, maybeHistory.get()));
-	}
 
 	private HistoryPanel(Path statePath, YearHistory history) {
 		super(new BorderLayout());
@@ -66,6 +59,14 @@ class HistoryPanel extends JPanel {
 			.map(Year::of)
 			.orElse(currentYear);
 		createShownYearPanel();
+	}
+
+	static Optional<HistoryPanel> fromPath(Path statePath) {
+		Optional<YearHistory> maybeHistory = YearHistory.read(statePath);
+		if (maybeHistory.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(new HistoryPanel(statePath, maybeHistory.get()));
 	}
 
 	private void createShownYearPanel() {

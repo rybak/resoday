@@ -93,8 +93,9 @@ class AboutDialog {
 	}
 
 	private static void showUrl(URL url, Runnable fallback) {
-		if (url == null)
+		if (url == null) {
 			return;
+		}
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try {
 				Desktop.getDesktop().browse(url.toURI());

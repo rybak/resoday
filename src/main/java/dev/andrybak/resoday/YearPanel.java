@@ -70,18 +70,21 @@ class YearPanel extends JPanel {
 	}
 
 	private static void updateFontStyle(JComponent c, IntUnaryOperator styleUpdate) {
-		if (c == null)
+		if (c == null) {
 			return;
+		}
 		//noinspection MagicConstant
 		c.setFont(c.getFont().deriveFont(styleUpdate.applyAsInt(c.getFont().getStyle())));
 	}
 
 	void updateButtonToggle(LocalDate d) {
 		JToggleButton maybeButton = buttons.get(d);
-		if (maybeButton == null) // date might be from a different year
+		if (maybeButton == null) { // date might be from a different year
 			return;
-		if (maybeButton.isSelected() == history.isTurnedOn(d))
+		}
+		if (maybeButton.isSelected() == history.isTurnedOn(d)) {
 			return;
+		}
 		maybeButton.setSelected(history.isTurnedOn(d));
 	}
 
