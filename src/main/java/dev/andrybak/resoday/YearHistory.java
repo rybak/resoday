@@ -1,5 +1,10 @@
 package dev.andrybak.resoday;
 
+import com.google.gson.JsonParseException;
+import dev.andrybak.resoday.storage.SerializableYearHistory;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,8 +12,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +23,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.Collections.emptySet;
-import static java.util.Collections.unmodifiableCollection;
 import static java.util.stream.Collectors.toList;
 
 public class YearHistory {
@@ -48,16 +50,26 @@ public class YearHistory {
 			System.out.println("No saved state.");
 			return Optional.of(new YearHistory());
 		}
+		try (BufferedReader r = Files.newBufferedReader(statePath)) {
+			return Optional.of(new YearHistory(SerializableYearHistory.fromJson(r).getDates()));
+		} catch (IOException e) {
+			System.err.println("Could not read " + statePath);
+			return Optional.empty();
+		} catch (JsonParseException e) {
+			// fallback to version 0 of storage
+			return readV0(statePath);
+		}
+	}
+
+	/**
+	 * For backward compatibility
+	 */
+	private static Optional<YearHistory> readV0(Path statePath) {
 		try (Stream<String> lines = Files.lines(statePath)) {
 			List<LocalDate> dates = lines
 				.map(line -> {
 					try {
-						TemporalAccessor t = CALENDAR_DAY_FORMATTER.parse(line);
-						return LocalDate.of(
-							t.get(ChronoField.YEAR),
-							t.get(ChronoField.MONTH_OF_YEAR),
-							t.get(ChronoField.DAY_OF_MONTH)
-						);
+						return LocalDate.parse(line, CALENDAR_DAY_FORMATTER);
 					} catch (DateTimeException | ArithmeticException e) {
 						System.err.println("Could not read value: " + sanitize(line));
 						return null;
@@ -97,10 +109,6 @@ public class YearHistory {
 		return dates.contains(d);
 	}
 
-	Collection<LocalDate> serialize() {
-		return unmodifiableCollection(dates);
-	}
-
 	int size() {
 		return dates.size();
 	}
@@ -118,11 +126,10 @@ public class YearHistory {
 		try {
 			System.out.println("\tSaving to '" + statePath + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
-			Files.write(tmpFile,
-				serialize().stream()
-					.map(CALENDAR_DAY_FORMATTER::format)
-					.collect(toList())
-			);
+			SerializableYearHistory toSave = new SerializableYearHistory(dates);
+			try (BufferedWriter w = Files.newBufferedWriter(tmpFile)) {
+				toSave.writeToJson(w);
+			}
 			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 			System.out.printf("\tSaved %d dates.%n", size());
 		} catch (IOException e) {
