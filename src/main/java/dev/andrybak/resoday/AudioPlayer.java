@@ -26,7 +26,7 @@ class AudioPlayer implements YearHistoryListener {
 		System.out.println("Playing sound: " + resourceName);
 		Clip c = null;
 		try (
-			InputStream resource = Resoday.class.getResourceAsStream(resourceName);
+			InputStream resource = MainGui.class.getResourceAsStream(resourceName);
 			BufferedInputStream buffered = new BufferedInputStream(Objects.requireNonNull(resource,
 				() -> "Could not find resource '" + resourceName + "'"
 			));
