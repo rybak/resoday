@@ -1,4 +1,6 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.gui;
+
+import dev.andrybak.resoday.StringConstants;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;

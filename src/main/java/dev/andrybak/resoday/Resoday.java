@@ -1,5 +1,6 @@
 package dev.andrybak.resoday;
 
+import dev.andrybak.resoday.gui.MainGui;
 import dev.dirs.ProjectDirectories;
 
 import java.io.IOException;

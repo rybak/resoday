@@ -1,4 +1,6 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.gui;
+
+import dev.andrybak.resoday.YearHistoryListener;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

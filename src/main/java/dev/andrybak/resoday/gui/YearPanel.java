@@ -1,4 +1,6 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.gui;
+
+import dev.andrybak.resoday.YearHistory;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;

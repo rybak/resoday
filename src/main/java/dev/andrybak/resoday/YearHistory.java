@@ -41,21 +41,21 @@ public class YearHistory {
 	 */
 	private boolean hasChanges = true;
 
-	YearHistory(Path statePath, String name) {
+	private YearHistory(Path statePath, String name) {
 		this(statePath, emptySet(), name);
 	}
 
-	YearHistory(Path statePath, Collection<LocalDate> dates, String name) {
+	private YearHistory(Path statePath, Collection<LocalDate> dates, String name) {
 		this.statePath = statePath;
 		this.dates = new HashSet<>(dates);
 		this.name = name;
 	}
 
-	YearHistory(Path statePath, SerializableYearHistory serializableYearHistory) {
+	private YearHistory(Path statePath, SerializableYearHistory serializableYearHistory) {
 		this(statePath, serializableYearHistory.getDates(), serializableYearHistory.getName());
 	}
 
-	static Optional<YearHistory> read(Path statePath) {
+	public static Optional<YearHistory> read(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
 			return Optional.of(new YearHistory(statePath, HabitFiles.pathToName(statePath)));
@@ -107,35 +107,31 @@ public class YearHistory {
 		return s.substring(0, 20);
 	}
 
-	void turnOn(LocalDate d) {
+	public void turnOn(LocalDate d) {
 		System.out.println("Turned on " + d);
 		hasChanges = true;
 		dates.add(d);
 		listeners.forEach(l -> l.onTurnOn(d));
 	}
 
-	void turnOff(LocalDate d) {
+	public void turnOff(LocalDate d) {
 		System.out.println("Turned off " + d);
 		hasChanges = true;
 		dates.remove(d);
 		listeners.forEach(l -> l.onTurnOff(d));
 	}
 
-	boolean isTurnedOn(LocalDate d) {
+	public boolean isTurnedOn(LocalDate d) {
 		return dates.contains(d);
 	}
 
-	int size() {
-		return dates.size();
-	}
-
-	IntStream years() {
+	public IntStream years() {
 		return dates.stream()
 			.mapToInt(LocalDate::getYear)
 			.distinct();
 	}
 
-	void save() {
+	public void save() {
 		if (!hasChanges) {
 			return;
 		}
@@ -147,7 +143,7 @@ public class YearHistory {
 				toSave.writeToJson(w);
 			}
 			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-			System.out.printf("\tSaved %d dates.%n", size());
+			System.out.printf("\tSaved %d dates for habit '%s'.%n", dates.size(), getName());
 		} catch (IOException e) {
 			System.err.println("Could not save current state in '" + statePath.toAbsolutePath() + "': " + e);
 			e.printStackTrace();
@@ -155,11 +151,11 @@ public class YearHistory {
 		hasChanges = false;
 	}
 
-	void addListener(YearHistoryListener listener) {
+	public void addListener(YearHistoryListener listener) {
 		listeners.add(listener);
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 }

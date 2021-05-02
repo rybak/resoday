@@ -1,5 +1,7 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.gui;
 
+import dev.andrybak.resoday.StringConstants;
+import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.storage.HabitFiles;
 
 import javax.swing.AbstractAction;
@@ -31,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-class MainGui {
+public class MainGui {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
@@ -39,7 +41,7 @@ class MainGui {
 	private final List<HistoryPanel> historyPanels = new ArrayList<>();
 	private final Timer autoSaveTimer;
 
-	MainGui(Path dir) {
+	public MainGui(Path dir) {
 		setUpMenuBar();
 		content = new JPanel(new BorderLayout());
 
@@ -131,7 +133,7 @@ class MainGui {
 		});
 	}
 
-	void go() {
+	public void go() {
 		window.setMinimumSize(new Dimension(640, 480));
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

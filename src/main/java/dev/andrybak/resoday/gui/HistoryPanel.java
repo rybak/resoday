@@ -1,4 +1,7 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.gui;
+
+import dev.andrybak.resoday.YearHistory;
+import dev.andrybak.resoday.YearHistoryListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -6,11 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.Comparator;
-import java.util.Optional;
 
 class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
@@ -28,7 +29,6 @@ class HistoryPanel extends JPanel {
 		this.history = history;
 		history.addListener(new AudioPlayer());
 		history.addListener(new ButtonStateUpkeep());
-		System.out.println("Read " + history.size() + " dates.");
 
 		JButton pastButton = new JButton("<");
 		pastButton.addActionListener(ignored -> {
