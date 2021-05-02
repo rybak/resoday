@@ -1,6 +1,7 @@
 package dev.andrybak.resoday;
 
 import com.google.gson.JsonParseException;
+import dev.andrybak.resoday.storage.HabitFiles;
 import dev.andrybak.resoday.storage.SerializableYearHistory;
 
 import java.io.BufferedReader;
@@ -30,6 +31,7 @@ public class YearHistory {
 
 	private final Set<LocalDate> dates;
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
+	private final String name;
 	/**
 	 * Whether or not this {@code YearHistory} has any changes since last {@linkplain #saveTo saving}.
 	 *
@@ -37,25 +39,27 @@ public class YearHistory {
 	 */
 	private boolean hasChanges = true;
 
-	YearHistory() {
-		this(emptySet());
+	YearHistory(String name) {
+		this(emptySet(), name);
 	}
 
-	YearHistory(Collection<LocalDate> dates) {
+	YearHistory(Collection<LocalDate> dates, String name) {
 		this.dates = new HashSet<>(dates);
+		this.name = name;
 	}
 
 	YearHistory(SerializableYearHistory serializableYearHistory) {
-		this(serializableYearHistory.getDates());
+		this(serializableYearHistory.getDates(), serializableYearHistory.getName());
 	}
 
 	static Optional<YearHistory> read(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
-			return Optional.of(new YearHistory());
+			return Optional.of(new YearHistory(HabitFiles.pathToName(statePath)));
 		}
 		try (BufferedReader r = Files.newBufferedReader(statePath)) {
-			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r);
+			String name = HabitFiles.pathToName(statePath);
+			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r, name);
 			return Optional.of(new YearHistory(serializableYearHistory));
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
@@ -82,7 +86,7 @@ public class YearHistory {
 				})
 				.filter(Objects::nonNull)
 				.collect(toList());
-			return Optional.of(new YearHistory(dates));
+			return Optional.of(new YearHistory(dates, HabitFiles.pathToName(statePath)));
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
 			return Optional.empty();
@@ -131,7 +135,7 @@ public class YearHistory {
 		try {
 			System.out.println("\tSaving to '" + statePath + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
-			SerializableYearHistory toSave = new SerializableYearHistory(dates);
+			SerializableYearHistory toSave = new SerializableYearHistory(dates, name);
 			try (BufferedWriter w = Files.newBufferedWriter(tmpFile)) {
 				toSave.writeToJson(w);
 			}
@@ -147,5 +151,9 @@ public class YearHistory {
 
 	void addListener(YearHistoryListener listener) {
 		listeners.add(listener);
+	}
+
+	String getName() {
+		return name;
 	}
 }

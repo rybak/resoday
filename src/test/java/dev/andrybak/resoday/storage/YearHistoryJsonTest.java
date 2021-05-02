@@ -3,6 +3,7 @@ package dev.andrybak.resoday.storage;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -22,8 +23,16 @@ class YearHistoryJsonTest {
 			LocalDate.of(2021, 5, 1),
 			LocalDate.of(1961, 1, 1),
 			LocalDate.of(2121, 12, 31)
-		));
+		), "Testing123");
 
-		testJsonRoundTrip(SerializableYearHistory::toJson, SerializableYearHistory::fromJson, history);
+		testJsonRoundTrip(SerializableYearHistory::toJson, s -> SerializableYearHistory.fromJson(s, "UniqueId.habit"), history);
+	}
+
+	@Test
+	void testThatEmptyVersionZeroFileCanBeDeserialized() {
+		String fileContent = "";
+		SerializableYearHistory actual = SerializableYearHistory.fromJson(fileContent, "Foobar");
+		SerializableYearHistory expected = new SerializableYearHistory(Collections.emptyList(), "Foobar");
+		assertEquals(expected, actual);
 	}
 }

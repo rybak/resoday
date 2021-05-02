@@ -106,6 +106,10 @@ class HistoryPanel extends JPanel {
 		shownYearPanel.updateDecorations();
 	}
 
+	String getHistoryName() {
+		return history.getName();
+	}
+
 	private class ButtonStateUpkeep implements YearHistoryListener {
 		@Override
 		public void onTurnOn(LocalDate d) {

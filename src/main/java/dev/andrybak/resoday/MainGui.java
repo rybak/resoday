@@ -53,8 +53,7 @@ class MainGui {
 				.flatMap(Optional::stream)
 				.forEach(historyPanel -> {
 					historyPanels.add(historyPanel);
-					String tabName = HabitFiles.pathToName(historyPanel.getPath());
-					tabs.addTab(tabName, historyPanel);
+					tabs.addTab(historyPanel.getHistoryName(), historyPanel);
 				});
 		} catch (IOException e) {
 			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "'. Aborting.");

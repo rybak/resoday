@@ -34,31 +34,45 @@ public final class SerializableYearHistory implements Serializable {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private final List<LocalDate> dates;
+	private final String name;
 
-	public SerializableYearHistory(Collection<LocalDate> dates) {
+	public SerializableYearHistory(Collection<LocalDate> dates, String name) {
 		this.dates = new ArrayList<>(Objects.requireNonNull(dates));
+		this.name = Objects.requireNonNull(name);
 	}
 
-	public static SerializableYearHistory fromJson(String s) throws JsonParseException {
+	public static SerializableYearHistory fromJson(String s, String name) throws JsonParseException {
 		VersionedYearHistory versionedHistory = GSON.fromJson(s, VersionedYearHistory.class);
-		return convert(versionedHistory);
+		return convert(versionedHistory, name);
 	}
 
-	public static SerializableYearHistory fromJson(Reader r) throws JsonParseException {
+	public static SerializableYearHistory fromJson(Reader r, String name) throws JsonParseException {
 		VersionedYearHistory versionedHistory = GSON.fromJson(r, VersionedYearHistory.class);
-		return convert(versionedHistory);
+		return convert(versionedHistory, name);
 	}
 
-	private static SerializableYearHistory convert(VersionedYearHistory versionedHistory) {
+	private static SerializableYearHistory convert(VersionedYearHistory versionedHistory, String name) {
 		if (versionedHistory == null) {
 			// empty version 0 file
-			return new SerializableYearHistory(Collections.emptyList());
+			return new SerializableYearHistory(Collections.emptyList(), name);
 		}
-		return versionedHistory.data;
+		SerializableYearHistory deserialized = versionedHistory.data;
+		if (deserialized.name == null) {
+			return deserialized.withNewName(name);
+		}
+		return deserialized;
+	}
+
+	private SerializableYearHistory withNewName(String name) {
+		return new SerializableYearHistory(getDates(), name);
 	}
 
 	public Collection<LocalDate> getDates() {
 		return Collections.unmodifiableList(dates);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	@Override
