@@ -62,7 +62,7 @@ public class YearHistory {
 			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r, name);
 			return Optional.of(new YearHistory(serializableYearHistory));
 		} catch (IOException e) {
-			System.err.println("Could not read " + statePath);
+			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
 		} catch (JsonParseException e) {
 			// fallback to version 0 of storage
@@ -88,7 +88,7 @@ public class YearHistory {
 				.collect(toList());
 			return Optional.of(new YearHistory(dates, HabitFiles.pathToName(statePath)));
 		} catch (IOException e) {
-			System.err.println("Could not read " + statePath);
+			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
 		}
 	}
@@ -133,7 +133,7 @@ public class YearHistory {
 			return;
 		}
 		try {
-			System.out.println("\tSaving to '" + statePath + "'...");
+			System.out.println("\tSaving to '" + statePath.toAbsolutePath() + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
 			SerializableYearHistory toSave = new SerializableYearHistory(dates, name);
 			try (BufferedWriter w = Files.newBufferedWriter(tmpFile)) {
@@ -142,8 +142,7 @@ public class YearHistory {
 			Files.move(tmpFile, statePath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 			System.out.printf("\tSaved %d dates.%n", size());
 		} catch (IOException e) {
-			System.err.println("Could not save current state in '" + statePath + "'.");
-			System.err.println(e.getMessage());
+			System.err.println("Could not save current state in '" + statePath.toAbsolutePath() + "': " + e);
 			e.printStackTrace();
 		}
 		hasChanges = false;

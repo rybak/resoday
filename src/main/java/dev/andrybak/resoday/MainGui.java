@@ -56,8 +56,8 @@ class MainGui {
 					tabs.addTab(historyPanel.getHistoryName(), historyPanel);
 				});
 		} catch (IOException e) {
-			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "'. Aborting.");
-			e.printStackTrace();
+			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "': " + e);
+			System.err.println("Aborting.");
 			System.exit(1);
 		}
 
