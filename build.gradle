@@ -1,39 +1,39 @@
 plugins {
-    id 'java'
-    id 'idea'
-    id 'application'
+	id 'java'
+	id 'idea'
+	id 'application'
 }
 
 final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
 application {
-    mainClass.set(resodayMainClassName)
-    applicationName = 'resoday'
+	mainClass.set(resodayMainClassName)
+	applicationName = 'resoday'
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 }
 
 jar {
-    manifest {
-        attributes(
-                'Main-Class': resodayMainClassName
-        )
-    }
+	manifest {
+		attributes(
+			'Main-Class': resodayMainClassName
+		)
+	}
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation 'dev.dirs:directories:23' // https://github.com/dirs-dev/directories-jvm
-    implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'dev.dirs:directories:23' // https://github.com/dirs-dev/directories-jvm
+	implementation 'com.google.code.gson:gson:2.8.6'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
