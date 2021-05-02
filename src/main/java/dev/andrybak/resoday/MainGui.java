@@ -1,5 +1,7 @@
 package dev.andrybak.resoday;
 
+import dev.andrybak.resoday.storage.HabitFiles;
+
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -31,7 +33,6 @@ import java.util.stream.Stream;
 
 class MainGui {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
-	private static final String HABIT_FILE_EXT = ".habit";
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
 	private final JPanel content;
@@ -47,13 +48,12 @@ class MainGui {
 			paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
-				.filter(path -> path.getFileName().toString().endsWith(HABIT_FILE_EXT))
+				.filter(HabitFiles.IS_HABIT_FILE)
 				.map(HistoryPanel::fromPath)
 				.flatMap(Optional::stream)
 				.forEach(historyPanel -> {
 					historyPanels.add(historyPanel);
-					String fn = historyPanel.getPath().getFileName().toString();
-					String tabName = fn.substring(0, fn.length() - HABIT_FILE_EXT.length());
+					String tabName = HabitFiles.pathToName(historyPanel.getPath());
 					tabs.addTab(tabName, historyPanel);
 				});
 		} catch (IOException e) {
