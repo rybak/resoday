@@ -45,13 +45,18 @@ public class YearHistory {
 		this.dates = new HashSet<>(dates);
 	}
 
+	YearHistory(SerializableYearHistory serializableYearHistory) {
+		this(serializableYearHistory.getDates());
+	}
+
 	static Optional<YearHistory> read(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
 			return Optional.of(new YearHistory());
 		}
 		try (BufferedReader r = Files.newBufferedReader(statePath)) {
-			return Optional.of(new YearHistory(SerializableYearHistory.fromJson(r).getDates()));
+			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r);
+			return Optional.of(new YearHistory(serializableYearHistory));
 		} catch (IOException e) {
 			System.err.println("Could not read " + statePath);
 			return Optional.empty();
