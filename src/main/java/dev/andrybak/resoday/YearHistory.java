@@ -58,6 +58,10 @@ public class YearHistory {
 			System.out.println("No saved state.");
 			return Optional.of(new YearHistory(HabitFiles.pathToName(statePath)));
 		}
+		if (!Files.isRegularFile(statePath) || !Files.isReadable(statePath)) {
+			System.err.println("Can't read '" + statePath + "' as file.");
+			return Optional.empty();
+		}
 		try (BufferedReader r = Files.newBufferedReader(statePath)) {
 			String name = HabitFiles.pathToName(statePath);
 			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r, name);
