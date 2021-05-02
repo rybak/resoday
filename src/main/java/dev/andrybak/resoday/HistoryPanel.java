@@ -16,7 +16,6 @@ class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
 
 	private final YearHistory history;
-	private final Path statePath;
 	/**
 	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
 	 */
@@ -24,9 +23,8 @@ class HistoryPanel extends JPanel {
 	private Year shownYear;
 	private YearPanel shownYearPanel;
 
-	private HistoryPanel(Path statePath, YearHistory history) {
+	HistoryPanel(YearHistory history) {
 		super(new BorderLayout());
-		this.statePath = statePath;
 		this.history = history;
 		history.addListener(new AudioPlayer());
 		history.addListener(new ButtonStateUpkeep());
@@ -61,14 +59,6 @@ class HistoryPanel extends JPanel {
 		createShownYearPanel();
 	}
 
-	static Optional<HistoryPanel> fromPath(Path statePath) {
-		Optional<YearHistory> maybeHistory = YearHistory.read(statePath);
-		if (maybeHistory.isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(new HistoryPanel(statePath, maybeHistory.get()));
-	}
-
 	private void createShownYearPanel() {
 		shownYearLabel.setText(shownYear.toString());
 		shownYearPanel = new YearPanel(history, shownYear);
@@ -83,7 +73,7 @@ class HistoryPanel extends JPanel {
 	}
 
 	void save() {
-		history.saveTo(statePath);
+		history.save();
 	}
 
 	void markToday() {

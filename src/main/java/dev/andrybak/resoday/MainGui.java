@@ -49,11 +49,12 @@ class MainGui {
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
 				.filter(HabitFiles.IS_HABIT_FILE)
-				.map(HistoryPanel::fromPath)
+				.map(YearHistory::read)
 				.flatMap(Optional::stream)
-				.forEach(historyPanel -> {
+				.forEach(yearHistory -> {
+					HistoryPanel historyPanel = new HistoryPanel(yearHistory);
 					historyPanels.add(historyPanel);
-					tabs.addTab(historyPanel.getHistoryName(), historyPanel);
+					tabs.addTab(yearHistory.getName(), historyPanel);
 				});
 		} catch (IOException e) {
 			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "': " + e);

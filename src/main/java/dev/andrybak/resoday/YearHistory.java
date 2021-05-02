@@ -30,33 +30,35 @@ import static java.util.stream.Collectors.toList;
 public class YearHistory {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+	private final Path statePath;
 	private final Set<LocalDate> dates;
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
 	private final String name;
 	/**
-	 * Whether or not this {@code YearHistory} has any changes since last {@linkplain #saveTo saving}.
+	 * Whether or not this {@code YearHistory} has any changes since last {@linkplain #save saving}.
 	 *
 	 * @implSpec All methods which modify {@link #dates} must set this flag to true.
 	 */
 	private boolean hasChanges = true;
 
-	YearHistory(String name) {
-		this(emptySet(), name);
+	YearHistory(Path statePath, String name) {
+		this(statePath, emptySet(), name);
 	}
 
-	YearHistory(Collection<LocalDate> dates, String name) {
+	YearHistory(Path statePath, Collection<LocalDate> dates, String name) {
+		this.statePath = statePath;
 		this.dates = new HashSet<>(dates);
 		this.name = name;
 	}
 
-	YearHistory(SerializableYearHistory serializableYearHistory) {
-		this(serializableYearHistory.getDates(), serializableYearHistory.getName());
+	YearHistory(Path statePath, SerializableYearHistory serializableYearHistory) {
+		this(statePath, serializableYearHistory.getDates(), serializableYearHistory.getName());
 	}
 
 	static Optional<YearHistory> read(Path statePath) {
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
-			return Optional.of(new YearHistory(HabitFiles.pathToName(statePath)));
+			return Optional.of(new YearHistory(statePath, HabitFiles.pathToName(statePath)));
 		}
 		if (!Files.isRegularFile(statePath) || !Files.isReadable(statePath)) {
 			System.err.println("Can't read '" + statePath + "' as file.");
@@ -65,7 +67,7 @@ public class YearHistory {
 		try (BufferedReader r = Files.newBufferedReader(statePath)) {
 			String name = HabitFiles.pathToName(statePath);
 			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r, name);
-			return Optional.of(new YearHistory(serializableYearHistory));
+			return Optional.of(new YearHistory(statePath, serializableYearHistory));
 		} catch (IOException e) {
 			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
@@ -91,7 +93,7 @@ public class YearHistory {
 				})
 				.filter(Objects::nonNull)
 				.collect(toList());
-			return Optional.of(new YearHistory(dates, HabitFiles.pathToName(statePath)));
+			return Optional.of(new YearHistory(statePath, dates, HabitFiles.pathToName(statePath)));
 		} catch (IOException | UncheckedIOException e) {
 			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
@@ -133,7 +135,7 @@ public class YearHistory {
 			.distinct();
 	}
 
-	void saveTo(Path statePath) {
+	void save() {
 		if (!hasChanges) {
 			return;
 		}
