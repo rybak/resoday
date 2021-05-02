@@ -72,7 +72,7 @@
 - Rewrite disk storage
     > Current approach with filenames has problems.  Filenames should be programatically generated to avoid issues from user input.  User input, on the other hand, shouldn't be restricted without a reason.
     * [ ] use UUIDs for filenames
-    * [ ] store habit name in the file as a field
+    * [x] store habit name in the file as a field
     * [x] use JSON?
     * [x] store version of Resoday in the file as a field
     * [x] don't forget to migrate your own resoday files in the process
