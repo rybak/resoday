@@ -86,10 +86,6 @@ class HistoryPanel extends JPanel {
 		history.saveTo(statePath);
 	}
 
-	Path getPath() {
-		return statePath;
-	}
-
 	void markToday() {
 		LocalDate today = LocalDate.now();
 		if (history.isTurnedOn(today)) {

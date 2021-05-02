@@ -101,7 +101,7 @@ class MainGui {
 		final String title;
 		if (maybeHistoryPanel.isPresent()) {
 			HistoryPanel historyPanel = maybeHistoryPanel.get();
-			title = historyPanel.getPath().getFileName() + " – " + StringConstants.APP_NAME_GUI;
+			title = historyPanel.getHistoryName() + " – " + StringConstants.APP_NAME_GUI;
 		} else {
 			title = StringConstants.APP_NAME_GUI;
 		}
