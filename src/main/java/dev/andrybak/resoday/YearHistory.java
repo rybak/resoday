@@ -7,6 +7,7 @@ import dev.andrybak.resoday.storage.SerializableYearHistory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -87,7 +88,7 @@ public class YearHistory {
 				.filter(Objects::nonNull)
 				.collect(toList());
 			return Optional.of(new YearHistory(dates, HabitFiles.pathToName(statePath)));
-		} catch (IOException e) {
+		} catch (IOException | UncheckedIOException e) {
 			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
 		}
