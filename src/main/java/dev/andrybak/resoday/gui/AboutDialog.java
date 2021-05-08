@@ -27,7 +27,7 @@ import java.net.URL;
 
 class AboutDialog {
 
-	static JDialog show(Component parentComponent) {
+	private static JDialog create(Component parentComponent) {
 		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), "About " + StringConstants.APP_NAME_GUI,
 			Dialog.ModalityType.MODELESS);
 
@@ -69,9 +69,13 @@ class AboutDialog {
 		d.setSize(((int)(screenSize.getWidth() / 4.5)), ((int)(screenSize.getHeight() / 5)));
 		d.setResizable(false);
 		d.setLocationRelativeTo(parentComponent);
-		d.setVisible(true);
 
 		return d;
+	}
+
+	public static void show(Component parentComponent) {
+		JDialog d = create(parentComponent);
+		d.setVisible(true);
 	}
 
 	private static void setUpHyperlinkListener(JTextPane textPane, JTextField urlFallbackDisplay) {
@@ -119,18 +123,19 @@ class AboutDialog {
 	 * Used for testing.
 	 */
 	public static void main(String... args) {
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("About dialog demo");
 		JPanel content = new JPanel();
 		frame.setContentPane(content);
 		frame.setVisible(true);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((int)(screenSize.getWidth() / 2), (int)(screenSize.getHeight() / 2));
-		JDialog aboutDialog = show(content);
+		JDialog aboutDialog = create(content);
 		aboutDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				frame.dispose();
 			}
 		});
+		aboutDialog.setVisible(true);
 	}
 }
