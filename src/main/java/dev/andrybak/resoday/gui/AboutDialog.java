@@ -2,7 +2,6 @@ package dev.andrybak.resoday.gui;
 
 import dev.andrybak.resoday.StringConstants;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -11,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
@@ -21,8 +19,6 @@ import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -59,7 +55,7 @@ class AboutDialog {
 		content.add(Box.createVerticalStrut(10));
 
 		d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setUpEscapeKeyClosing(d, content);
+		Dialogs.setUpEscapeKeyClosing(d, content);
 		d.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
@@ -117,17 +113,6 @@ class AboutDialog {
 		urlField.setVisible(true);
 		urlField.getParent().revalidate();
 		urlField.getParent().repaint();
-	}
-
-	private static void setUpEscapeKeyClosing(JDialog d, JPanel content) {
-		Object escapeCloseActionKey = new Object();
-		content.getActionMap().put(escapeCloseActionKey, new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				d.dispose();
-			}
-		});
-		content.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), escapeCloseActionKey);
 	}
 
 	/**
