@@ -1,6 +1,7 @@
 package dev.andrybak.resoday.storage;
 
 import java.nio.file.Path;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class HabitFiles {
@@ -16,5 +17,14 @@ public class HabitFiles {
 	public static String pathToName(Path p) {
 		String fn = p.getFileName().toString();
 		return fn.substring(0, fn.length() - HABIT_FILE_EXT.length());
+	}
+
+	public static String createNewFilename(String habitName) {
+		habitName = habitName.trim();
+		if (habitName.isEmpty()) {
+			habitName = "unnamed";
+		}
+		UUID uuid = UUID.randomUUID();
+		return uuid + "-" + habitName.replaceAll("\\W+", "-") + HABIT_FILE_EXT;
 	}
 }

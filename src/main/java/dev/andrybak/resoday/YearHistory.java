@@ -41,7 +41,7 @@ public class YearHistory {
 	 */
 	private boolean hasChanges = true;
 
-	private YearHistory(Path statePath, String name) {
+	public YearHistory(Path statePath, String name) {
 		this(statePath, emptySet(), name);
 	}
 

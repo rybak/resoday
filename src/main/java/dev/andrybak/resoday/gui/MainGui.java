@@ -31,7 +31,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toSet;
 
 public class MainGui {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
@@ -42,7 +45,6 @@ public class MainGui {
 	private final Timer autoSaveTimer;
 
 	public MainGui(Path dir) {
-		setUpMenuBar();
 		content = new JPanel(new BorderLayout());
 
 		JTabbedPane tabs = new JTabbedPane();
@@ -75,14 +77,23 @@ public class MainGui {
 
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
 		autoSaveTimer.addActionListener(ignored -> historyPanels.forEach(HistoryPanel::updateDecorations));
+
+		setUpMenuBar(dir, tabs);
 	}
 
 	private void markTodayInCurrentTab(JTabbedPane tabs) {
 		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markToday);
 	}
 
-	private void setUpMenuBar() {
+	private void setUpMenuBar(Path dir, JTabbedPane tabs) {
 		JMenuBar menuBar = new JMenuBar();
+
+		JMenu mainMenu = new JMenu("Main");
+		JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
+		addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
+		mainMenu.add(addHabitMenuItem);
+		menuBar.add(mainMenu);
+
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
 		JMenuItem aboutMenuItem = new JMenuItem("About");
@@ -96,7 +107,23 @@ public class MainGui {
 		}
 		helpMenu.add(aboutMenuItem);
 		menuBar.add(helpMenu);
+
 		window.setJMenuBar(menuBar);
+	}
+
+	private void openAddHabitDialog(Path dir, JTabbedPane tabs) {
+		Set<String> names = historyPanels.stream()
+			.map(HistoryPanel::getHistoryName)
+			.collect(toSet());
+		AddHabitDialog.show(window, names::contains, habitName -> {
+			String filename = HabitFiles.createNewFilename(habitName);
+			Path newHabitPath = dir.resolve(filename);
+			YearHistory newHistory = new YearHistory(newHabitPath, habitName);
+			HistoryPanel newPanel = new HistoryPanel(newHistory);
+			historyPanels.add(newPanel);
+			tabs.addTab(habitName, newPanel);
+			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
+		});
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {
