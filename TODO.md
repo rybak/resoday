@@ -69,15 +69,6 @@
 
 ## In dev
 
-- Rewrite disk storage
-    > Current approach with filenames has problems.  Filenames should be programatically generated to avoid issues from user input.  User input, on the other hand, shouldn't be restricted without a reason.
-    * [ ] use UUIDs for filenames
-    * [x] store habit name in the file as a field
-    * [x] use JSON?
-    * [x] store version of Resoday in the file as a field
-    * [x] don't forget to migrate your own resoday files in the process
-- UI to create habit files
-    * [ ] Make a functional (FP) API for the dialog---implementation in stash has bad API
 - UI to delete habit files
     > Menu item which deletes the habit file corresponding to the  currently opened tab.
     * [ ] disable menu item when nothing to delete
@@ -111,3 +102,12 @@
     > Probably makes sense to extract it into a private method
 - See stashes
     * [x] unit tests for sanitization---during storage rewrite, sanitization is only needed for control characters (including Unicode ones, preferrably)
+- Rewrite disk storage
+    > Current approach with filenames has problems.  Filenames should be programatically generated to avoid issues from user input.  User input, on the other hand, shouldn't be restricted without a reason.
+    * [x] use UUIDs for filenames
+    * [x] store habit name in the file as a field
+    * [x] use JSON?
+    * [x] store version of Resoday in the file as a field
+    * [x] don't forget to migrate your own resoday files in the process
+- UI to create habit files
+    * [x] Make a functional (FP) API for the dialog---implementation in stash has bad API
