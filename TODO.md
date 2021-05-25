@@ -72,6 +72,7 @@
 - UI to delete habit files
     > Menu item which deletes the habit file corresponding to the  currently opened tab.
     * [x] dialog
+    * [ ] "hidden" should be a property saved in the files
     * [ ] disable menu item when nothing to delete
     * [ ] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
 
