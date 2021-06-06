@@ -10,6 +10,7 @@
     > Since there are no dependencies, distZip is not needed---just a jar file is OK.
     * [ ] check if any libraries are used already
     * [ ] if habit file structure is overhauled (e.g. JSON all the things) then a fat jar will be needed to include the JSON library at least.
+    * [ ] Gradle task to generate fat jar from(configurations.implementation)
 - Commit README, LICENSE, etc
     * [ ] depends on Gradle rewrite for jar file building
     * [ ] Write README
@@ -28,9 +29,7 @@
     * [ ] Add licensing information -- this is probably even required for GPL "compliancy"
     * [ ] Add version info from baked jar MANIFEST
     * [ ] Add attribution for used libraries
-- UI to hide/show habit files
-    > Introduce a new field in the file. UI is a list of all files which are either shown or hidden, with "show/hide" button alongside.
-    * [ ] depends on the JSON rewrite
+- Introduce Help > Help
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -62,18 +61,18 @@
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
     * [ ] Add save button
     * [ ] Disable after autosave/Enable after edit
-- Add shortcut for opening the habit file via Desktop.open
+- Add shortcut for opening the habit directory via Desktop.open
 - Add intro panel when zero habit files exist
     > Intro panel may use the same UI as the "Add habit" dialog.
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
 
 ## In dev
 
-- UI to delete habit files
-    > Menu item which deletes the habit file corresponding to the  currently opened tab.
-    * [x] dialog
+- UI to hide/show habit files
+    > Introduce a new field in the file. UI is a list of all files which are either shown or hidden, with "show/hide" button alongside.
+    * [x] depends on the JSON rewrite
+    * [ ] Think how HabitHolder class is going to work
     * [ ] "hidden" should be a property saved in the files
-    * [ ] disable menu item when nothing to delete
     * [ ] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
 
 ## Done
