@@ -1,11 +1,5 @@
 ## TODO
 
-- File format versioning
-    > YES! Just saving the file format version in the file allows to migrate in the future more easily.
-    * [ ] extract file reading to separate package
-    * [ ] develop v1 of the file format
-- Rename menu "Habits" to "Main"
-    > see Chatty's UI
 - Simplify build instructions
     > Since there are no dependencies, distZip is not needed---just a jar file is OK.
     * [ ] check if any libraries are used already
@@ -20,7 +14,7 @@
 - Checkout Chatty's source code
     > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
     * [ ] browser opening
-    * [ ] directory for saving (~/.chatty)
+    * [x] directory for saving (~/.chatty)
     * [ ] something else?
     * [ ] icon for JAR file
 - Improve Help > About
@@ -41,19 +35,17 @@
     * [ ] https://stackoverflow.com/a/62959016/1083697
     * [ ] Is GSON library modularized?
 - Habit description
-    * [ ] depends on the JSON rewrite
+    * [x] depends on the JSON rewrite
     * [ ] add field for habit description
 - Improve .habit format
-    * [ ] Idea: <name>/YYYY.habit
     * [ ] Compress size somehow
-    * [ ] Add magic tag to the plain text format
-- Should we sort the tabs by filename? Allows for simple 01 02 03 filename prefix ordering
 - Do we need reordering of tabs/files?
 - different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
 - Streak animation 
 - Starter interface (suggest three habits)
+    * [ ] or just show contents of "Add habit" dialog in the main window instead of tabs
 - When adding more than (some small number) of habits, warn the user
 - Config in $XDG_CONFIG_HOME
     > Still not clear what exactly should be saved in the config.  There are no changeable settings at the moment
@@ -65,6 +57,8 @@
 - Add intro panel when zero habit files exist
     > Intro panel may use the same UI as the "Add habit" dialog.
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
+- README: add screenshot
+- gitignore
 
 ## In dev
 
@@ -113,3 +107,16 @@
     * [x] don't forget to migrate your own resoday files in the process
 - UI to create habit files
     * [x] Make a functional (FP) API for the dialog---implementation in stash has bad API
+- App icon
+    * [x] draw icon
+    * [x] green code
+    * [x] add icon
+    * [x] test
+- File format versioning
+    > YES! Just saving the file format version in the file allows to migrate in the future more easily.
+    * [x] extract file reading to separate package
+    * [x] develop v1 of the file format
+- Rename menu "Habits" to "Main"
+    > see Chatty's UI
+- Should we sort the tabs by filename? Allows for simple 01 02 03 filename prefix ordering
+    * [x] better to allow reordering
