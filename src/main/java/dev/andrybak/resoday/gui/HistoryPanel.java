@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.Comparator;
 
+/**
+ * Shows to the user a single {@link YearHistory history}, with access to one year at a time.
+ */
 final class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
 

@@ -107,7 +107,9 @@ public final class SerializableYearHistory implements Serializable {
 		static final String DATA_KEY = "data";
 
 		@Override
-		public VersionedYearHistory deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		public VersionedYearHistory deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			throws JsonParseException
+		{
 			int version = json.getAsJsonObject().get(VERSION_KEY).getAsInt();
 			JsonElement data = json.getAsJsonObject().get(DATA_KEY);
 			if (version == CURRENT_FORMAT_VERSION) {
@@ -123,7 +125,9 @@ public final class SerializableYearHistory implements Serializable {
 		INSTANCE;
 
 		@Override
-		public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+			throws JsonParseException
+		{
 			try {
 				return LocalDate.parse(json.getAsString(), CALENDAR_DAY_FORMATTER);
 			} catch (DateTimeParseException e) {

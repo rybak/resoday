@@ -27,6 +27,9 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Main business logic class. Keeps track of which dates are turned on and which are turned off on the calendar.
+ */
 public final class YearHistory {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -35,7 +38,7 @@ public final class YearHistory {
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
 	private final String name;
 	/**
-	 * Whether or not this {@code YearHistory} has any changes since last {@linkplain #save saving}.
+	 * Whether this {@code YearHistory} has any changes since last {@linkplain #save saving}.
 	 *
 	 * @implSpec All methods which modify {@link #dates} must set this flag to true.
 	 */
