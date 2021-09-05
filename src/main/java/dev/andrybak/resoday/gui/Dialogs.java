@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 
 class Dialogs {
 	private Dialogs() {
+		throw new UnsupportedOperationException();
 	}
 
 	static void setUpEscapeKeyClosing(JDialog d, JComponent c) {

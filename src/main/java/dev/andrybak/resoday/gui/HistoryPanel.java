@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.Comparator;
 
-class HistoryPanel extends JPanel {
+final class HistoryPanel extends JPanel {
 	private static final Year currentYear = Year.now();
 
 	private final YearHistory history;

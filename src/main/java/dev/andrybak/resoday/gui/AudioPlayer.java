@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Objects;
 
-class AudioPlayer implements YearHistoryListener {
+final class AudioPlayer implements YearHistoryListener {
 	private static final String POSITIVE_AUDIO = "positive.wav";
 	private static final String NEGATIVE_AUDIO = "negative.wav";
 	private static final int MAX_SOUNDS = 10;

@@ -9,6 +9,7 @@ public class HabitFiles {
 	public static final Predicate<Path> IS_HABIT_FILE = p -> p.getFileName().toString().endsWith(HABIT_FILE_EXT);
 
 	private HabitFiles() {
+		throw new UnsupportedOperationException();
 	}
 
 	/**

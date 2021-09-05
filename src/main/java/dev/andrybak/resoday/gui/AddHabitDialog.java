@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-class AddHabitDialog {
+final class AddHabitDialog {
 	private static final String NEW_HABIT_NAME_BASE = "New habit";
 
 	private AddHabitDialog() {

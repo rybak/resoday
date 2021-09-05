@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
-public class MainGui {
+public final class MainGui {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
