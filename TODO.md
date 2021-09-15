@@ -59,6 +59,7 @@
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
 - README: add screenshot
 - gitignore
+- https://openjdk.java.net/jeps/392 ?
 
 ## In dev
 
