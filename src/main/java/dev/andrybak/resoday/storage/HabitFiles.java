@@ -9,6 +9,7 @@ import java.util.function.Predicate;
  */
 public class HabitFiles {
 	public static final String HABIT_FILE_EXT = ".habit";
+	public static final String HIDDEN_HABIT_FILE_EXT = ".habit.hidden";
 	public static final Predicate<Path> IS_HABIT_FILE = p -> p.getFileName().toString().endsWith(HABIT_FILE_EXT);
 
 	private HabitFiles() {
@@ -30,5 +31,9 @@ public class HabitFiles {
 		}
 		UUID uuid = UUID.randomUUID();
 		return uuid + "-" + habitName.replaceAll("\\W+", "-") + HABIT_FILE_EXT;
+	}
+
+	public static Path toHidden(Path p) {
+		return p.resolveSibling(p.getFileName().toString() + ".hidden");
 	}
 }

@@ -7,12 +7,12 @@ import javax.swing.KeyStroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-class Dialogs {
+public class Dialogs {
 	private Dialogs() {
 		throw new UnsupportedOperationException();
 	}
 
-	static void setUpEscapeKeyClosing(JDialog d, JComponent c) {
+	public static void setUpEscapeKeyClosing(JDialog d, JComponent c) {
 		Object escapeCloseActionKey = new Object();
 		c.getActionMap().put(escapeCloseActionKey, new AbstractAction() {
 			@Override

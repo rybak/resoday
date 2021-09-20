@@ -2,6 +2,7 @@ package dev.andrybak.resoday.gui;
 
 import dev.andrybak.resoday.StringConstants;
 import dev.andrybak.resoday.YearHistory;
+import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.storage.HabitFiles;
 
 import javax.swing.AbstractAction;
@@ -97,6 +98,9 @@ public final class MainGui {
 		JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
 		addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
 		mainMenu.add(addHabitMenuItem);
+		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
+		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
+		mainMenu.add(hideHabitMenuItem);
 		menuBar.add(mainMenu);
 
 		JMenu helpMenu = new JMenu("Help");
@@ -129,6 +133,30 @@ public final class MainGui {
 			tabs.addTab(habitName, newPanel);
 			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
 		});
+	}
+
+	private void openHideHabitDialog(JTabbedPane tabs) {
+		Optional<HistoryPanel> maybeHistoryPanel = getCurrentHistoryPanel(tabs);
+		if (maybeHistoryPanel.isEmpty()) {
+			return;
+		}
+
+		HistoryPanel historyPanel = maybeHistoryPanel.get();
+		switch (HideHabitDialog.show(window, historyPanel.getHistoryName())) {
+		case YES:
+			hideHabit(tabs, historyPanel);
+			break;
+		case NO:
+			break;
+		}
+	}
+
+	private void hideHabit(JTabbedPane tabs, HistoryPanel historyPanel) {
+		historyPanel.hideFile();
+		int i = historyPanels.indexOf(historyPanel);
+		assert i >= 0;
+		historyPanels.remove(i);
+		tabs.removeTabAt(i);
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {

@@ -39,7 +39,7 @@ test {
 
 	testLogging { // add stdout logging for running `./gradlew test`
 		lifecycle {
-			events 'failed'
+			events "passed", "skipped", "failed"
 			exceptionFormat 'full'
 
 			afterSuite { description, result ->

@@ -79,6 +79,10 @@ final class HistoryPanel extends JPanel {
 		history.save();
 	}
 
+	void hideFile() {
+		history.hideFile();
+	}
+
 	void markToday() {
 		LocalDate today = LocalDate.now();
 		if (history.isTurnedOn(today)) {

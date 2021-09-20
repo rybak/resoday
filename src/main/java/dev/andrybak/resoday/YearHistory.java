@@ -154,6 +154,17 @@ public final class YearHistory {
 		hasChanges = false;
 	}
 
+	public void hideFile() {
+		System.out.println("Hiding '" + statePath.toAbsolutePath() + "'...");
+		Path hidden = HabitFiles.toHidden(statePath);
+		try {
+			Files.move(statePath, hidden);
+		} catch (IOException e) {
+			System.err.println("Could not move '" + statePath.toAbsolutePath() + "' to '" + hidden.toAbsolutePath() +
+				"': " + e);
+		}
+	}
+
 	public void addListener(YearHistoryListener listener) {
 		listeners.add(listener);
 	}
