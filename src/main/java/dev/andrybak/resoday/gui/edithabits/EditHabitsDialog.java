@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Allows editing names and visibility status of habits.
  */
-class EditHabitsDialog extends JDialog {
+public class EditHabitsDialog extends JDialog {
 
 	private final Map<String, Row> rows;
 	private JPanel rowsPanel;
@@ -180,11 +180,11 @@ class EditHabitsDialog extends JDialog {
 		repaint();
 	}
 
-	interface Owner {
+	public interface Owner {
 		Window getParent();
 	}
 
-	static final class Row {
+	public static final class Row {
 		private final String id;
 		private final String name;
 		private Status status;
@@ -266,7 +266,7 @@ class EditHabitsDialog extends JDialog {
 			return index;
 		}
 
-		enum Status {
+		public enum Status {
 			HIDDEN,
 			VISIBLE,
 			// TODO maybe "Deleted"?

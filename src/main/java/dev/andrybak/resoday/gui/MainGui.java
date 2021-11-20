@@ -32,7 +32,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -47,7 +46,7 @@ public final class MainGui {
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
 	private final JPanel content;
-	private final List<HistoryPanel> historyPanels = new ArrayList<>();
+	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
 
 	public MainGui(Path dir) {
@@ -62,9 +61,13 @@ public final class MainGui {
 				.map(YearHistory::read)
 				.flatMap(Optional::stream)
 				.forEach(yearHistory -> {
-					HistoryPanel historyPanel = new HistoryPanel(yearHistory);
-					historyPanels.add(historyPanel);
-					tabs.addTab(yearHistory.getName(), historyPanel);
+					if (yearHistory.getVisibility() == YearHistory.Visibility.VISIBLE) {
+						HistoryPanel historyPanel = new HistoryPanel(yearHistory);
+						histories.add(yearHistory, historyPanel);
+						tabs.addTab(yearHistory.getName(), historyPanel);
+					} else {
+						histories.add(yearHistory, null);
+					}
 				});
 		} catch (IOException e) {
 			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "': " + e);
@@ -82,9 +85,14 @@ public final class MainGui {
 		);
 
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
-		autoSaveTimer.addActionListener(ignored -> historyPanels.forEach(HistoryPanel::updateDecorations));
+		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
 		setUpMenuBar(dir, tabs);
+	}
+
+	private static Image getResodayImage() {
+		URL resodayIconUrl = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_FILENAME));
+		return Toolkit.getDefaultToolkit().getImage(resodayIconUrl);
 	}
 
 	private void markTodayInCurrentTab(JTabbedPane tabs) {
@@ -101,6 +109,9 @@ public final class MainGui {
 		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
 		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
 		mainMenu.add(hideHabitMenuItem);
+		JMenuItem editHabitsMenuItem = new JMenuItem("Edit habits");
+		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(tabs));
+		mainMenu.add(editHabitsMenuItem);
 		menuBar.add(mainMenu);
 
 		JMenu helpMenu = new JMenu("Help");
@@ -121,15 +132,16 @@ public final class MainGui {
 	}
 
 	private void openAddHabitDialog(Path dir, JTabbedPane tabs) {
-		Set<String> names = historyPanels.stream()
-			.map(HistoryPanel::getHistoryName)
+		Set<String> names = histories.histories()
+			.map(YearHistory::getName)
 			.collect(toSet());
 		AddHabitDialog.show(window, names::contains, habitName -> {
-			String filename = HabitFiles.createNewFilename(habitName);
+			String newId = HabitFiles.createNewId();
+			String filename = HabitFiles.createNewFilename(newId, habitName);
 			Path newHabitPath = dir.resolve(filename);
-			YearHistory newHistory = new YearHistory(newHabitPath, habitName);
+			YearHistory newHistory = new YearHistory(newHabitPath, habitName, newId);
 			HistoryPanel newPanel = new HistoryPanel(newHistory);
-			historyPanels.add(newPanel);
+			histories.add(newHistory, newPanel);
 			tabs.addTab(habitName, newPanel);
 			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
 		});
@@ -152,11 +164,38 @@ public final class MainGui {
 	}
 
 	private void hideHabit(JTabbedPane tabs, HistoryPanel historyPanel) {
-		historyPanel.hideFile();
-		int i = historyPanels.indexOf(historyPanel);
+		historyPanel.hideHistory();
+		int i = tabs.indexOfComponent(historyPanel);
 		assert i >= 0;
-		historyPanels.remove(i);
+		histories.hide(historyPanel.getHistoryId());
 		tabs.removeTabAt(i);
+	}
+
+	private void openEditHabitsDialog(JTabbedPane tabs) {
+		String oldSelectedId = getCurrentHistoryPanel(tabs)
+			.map(HistoryPanel::getHistoryId)
+			.orElse(null);
+		boolean edited = histories.edit(this.window);
+		if (!edited) {
+			return;
+		}
+		for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
+			tabs.removeTabAt(0); // removing all tabs
+		}
+		List<HistoryPanel> orderedPanels = histories.getOrderedPanels();
+		for (HistoryPanel hp : orderedPanels) {
+			tabs.addTab(hp.getHistoryName(), hp);
+		}
+		if (oldSelectedId != null) {
+			Optional<HistoryPanel> maybeNewSelected = orderedPanels.stream()
+				.filter(hp -> hp.getHistoryId().equals(oldSelectedId))
+				.findFirst();
+			if (maybeNewSelected.isPresent()) {
+				tabs.setSelectedComponent(maybeNewSelected.get());
+			} else {
+				tabs.setSelectedIndex(0);
+			}
+		}
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {
@@ -174,7 +213,7 @@ public final class MainGui {
 	private Optional<HistoryPanel> getCurrentHistoryPanel(JTabbedPane tabs) {
 		final int currentTabIndex = tabs.getSelectedIndex();
 		if (currentTabIndex >= 0) {
-			return Optional.of(historyPanels.get(currentTabIndex));
+			return Optional.of((HistoryPanel)tabs.getSelectedComponent());
 		} else {
 			return Optional.empty();
 		}
@@ -210,11 +249,6 @@ public final class MainGui {
 		autoSaveTimer.start();
 	}
 
-	private static Image getResodayImage() {
-		URL resodayIconUrl = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_FILENAME));
-		return Toolkit.getDefaultToolkit().getImage(resodayIconUrl);
-	}
-
 	private void autoSave() {
 		System.out.println("Auto-saving...");
 		save();
@@ -222,6 +256,6 @@ public final class MainGui {
 	}
 
 	private void save() {
-		historyPanels.forEach(HistoryPanel::save);
+		histories.forEachHistory(YearHistory::save);
 	}
 }

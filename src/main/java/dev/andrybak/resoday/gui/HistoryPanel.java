@@ -75,12 +75,8 @@ final class HistoryPanel extends JPanel {
 		this.repaint();
 	}
 
-	void save() {
-		history.save();
-	}
-
-	void hideFile() {
-		history.hideFile();
+	void hideHistory() {
+		history.setVisibility(YearHistory.Visibility.HIDDEN);
 	}
 
 	void markToday() {
@@ -101,6 +97,10 @@ final class HistoryPanel extends JPanel {
 
 	String getHistoryName() {
 		return history.getName();
+	}
+
+	String getHistoryId() {
+		return history.getId();
 	}
 
 	private class ButtonStateUpkeep implements YearHistoryListener {
