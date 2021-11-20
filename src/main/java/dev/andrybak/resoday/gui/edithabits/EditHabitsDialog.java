@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -106,24 +107,62 @@ class EditHabitsDialog extends JDialog {
 	private void createRowsPanel(Owner owner) {
 		JPanel rowsPanel = new JPanel(new HabitListLayout());
 		rowsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		for (Row row : rows.values()) {
-			JLabel habitNameLabel = new JLabel(row.getName());
-			rowsPanel.add(habitNameLabel, HabitListLayout.Column.NAME);
-			JButton visibilityButton = new JButton(switch (row.getStatus()) {
-				case VISIBLE -> "Hide";
-				case HIDDEN -> "Show";
-			});
-			visibilityButton.addActionListener(ignored -> {
-				switch (row.getStatus()) {
-				case VISIBLE -> row.hide();
-				case HIDDEN -> row.show();
+		List<Row> sortedCurrent = getResultRows();
+		for (Row row : sortedCurrent) {
+			{
+				JLabel habitNameLabel = new JLabel(row.getName());
+				rowsPanel.add(habitNameLabel, HabitListLayout.Column.NAME);
+			}
+			{
+				JButton visibilityButton = new JButton(switch (row.getStatus()) {
+					case VISIBLE -> "Hide";
+					case HIDDEN -> "Show";
+				});
+				visibilityButton.addActionListener(ignored -> {
+					switch (row.getStatus()) {
+					case VISIBLE -> row.hide();
+					case HIDDEN -> row.show();
+					}
+					recreateRowsPanel(owner);
+				});
+				rowsPanel.add(visibilityButton, HabitListLayout.Column.HIDE_SHOW_BUTTON);
+			}
+			{
+				BasicArrowButton upButton = new BasicArrowButton(BasicArrowButton.NORTH);
+				upButton.addActionListener(ignored -> {
+					swap(rows, row.getIndex(), row.getIndex() - 1);
+					recreateRowsPanel(owner);
+				});
+				rowsPanel.add(upButton, HabitListLayout.Column.MOVE_UP);
+				if (row.getIndex() == 0) {
+					upButton.setEnabled(false);
 				}
-				recreateRowsPanel(owner);
-			});
-			rowsPanel.add(visibilityButton, HabitListLayout.Column.HIDE_SHOW_BUTTON);
+			}
+			{
+				BasicArrowButton downButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+				downButton.addActionListener(ignored -> {
+					swap(rows, row.getIndex(), row.getIndex() + 1);
+					recreateRowsPanel(owner);
+				});
+				rowsPanel.add(downButton, HabitListLayout.Column.MOVE_DOWN);
+				if (row.getIndex() == rows.size() - 1) {
+					downButton.setEnabled(false);
+				}
+			}
 		}
 		this.rowsPanel = rowsPanel;
 		getContentPane().add(rowsPanel, BorderLayout.CENTER);
+	}
+
+	private void swap(Map<String, Row> rows, int aIndex, int bIndex) {
+		Row a = rows.values().stream()
+			.filter(r -> r.getIndex() == aIndex)
+			.findFirst().orElseThrow();
+		Row b = rows.values().stream()
+			.filter(r -> r.getIndex() == bIndex)
+			.findFirst().orElseThrow();
+		a.moveToIndex(bIndex);
+		b.moveToIndex(aIndex);
 	}
 
 	private void recreateRowsPanel(Owner owner) {
@@ -227,8 +266,7 @@ class EditHabitsDialog extends JDialog {
 	}
 
 	private static class HabitListLayout implements LayoutManager2 {
-		private final List<Component> nameColumn = new ArrayList<>();
-		private final List<Component> hideShowColumn = new ArrayList<>();
+		private final Map<Column, List<Component>> columns = new HashMap<>();
 
 		@Override
 		public void addLayoutComponent(Component comp, Object constraints) {
@@ -237,25 +275,23 @@ class EditHabitsDialog extends JDialog {
 			}
 			Column column = ((Column)constraints);
 
-			switch (column) {
-			case NAME -> nameColumn.add(comp);
-			case HIDE_SHOW_BUTTON -> hideShowColumn.add(comp);
-			}
+			columns.computeIfAbsent(column, ignored -> new ArrayList<>()).add(comp);
 		}
 
 		@Override
 		public void removeLayoutComponent(Component comp) {
-			nameColumn.remove(comp);
-			hideShowColumn.remove(comp);
+			columns.values().forEach(list -> list.remove(comp));
 		}
 
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
+			System.out.println("preferred:");
 			return getSizeByGetter(Component::getPreferredSize, parent);
 		}
 
 		@Override
 		public Dimension minimumLayoutSize(Container parent) {
+			System.out.println("minimum:");
 			return getSizeByGetter(Component::getMinimumSize, parent);
 		}
 
@@ -269,48 +305,74 @@ class EditHabitsDialog extends JDialog {
 			if (target.getComponentCount() == 0) {
 				return;
 			}
-			if (nameColumn.isEmpty()) {
-				throw new IllegalStateException("nameColumn must not be empty");
+			if (columns.values().stream().anyMatch(List::isEmpty)) {
+				throw new IllegalStateException("Column(s) " +
+					columns.entrySet().stream()
+						.filter(e -> e.getValue().isEmpty())
+						.collect(toList())
+					+ " must not be empty");
 			}
-			if (hideShowColumn.isEmpty()) {
-				throw new IllegalStateException("hideShowColumn must not be empty");
-			}
-			if (nameColumn.size() != hideShowColumn.size()) {
+			if (columns.values().stream().map(List::size).distinct().count() != 1) {
 				throw new IllegalStateException("Different sized columns");
 			}
 			synchronized (target.getTreeLock()) {
 				Insets insets = target.getInsets();
+				List<Component> hideShowColumn = getHideShowColumn();
+				List<Component> nameColumn = getNameColumn();
+				List<Component> moveUpColumn = columns.get(Column.MOVE_UP);
+				List<Component> moveDownColumn = columns.get(Column.MOVE_DOWN);
 				int hideShowWidth = getHideShowWidth(Component::getPreferredSize);
 				int rowHeight = hideShowColumn.get(0).getPreferredSize().height;
+				@SuppressWarnings("SuspiciousNameCombination") // forcing movement buttons into squares
+				final int moveWidth = rowHeight;
+				int buttonsWidth = hideShowWidth + moveWidth * 2;
 
 				final int labelLeftX = insets.left;
-				final int buttonLeftX = target.getWidth() - insets.right - hideShowWidth;
+				final int buttonLeftX = target.getWidth() - insets.right - buttonsWidth;
 				int y = insets.top;
 				for (int i = 0, n = hideShowColumn.size(); i < n; i++) {
 					Component lbl = nameColumn.get(i);
 					lbl.setBounds(labelLeftX, y, buttonLeftX - labelLeftX, rowHeight);
-					Component btn = hideShowColumn.get(i);
-					btn.setBounds(buttonLeftX, y, hideShowWidth, rowHeight);
+					Component hideShowBtn = hideShowColumn.get(i);
+					hideShowBtn.setBounds(buttonLeftX, y, hideShowWidth, rowHeight);
+					moveUpColumn.get(i).setBounds(buttonLeftX + hideShowWidth, y, moveWidth, rowHeight);
+					moveDownColumn.get(i).setBounds(buttonLeftX + hideShowWidth + moveWidth, y, moveWidth, rowHeight);
 					y += rowHeight;
 				}
 			}
 		}
 
+		private List<Component> getNameColumn() {
+			return columns.get(Column.NAME);
+		}
+
+		private List<Component> getHideShowColumn() {
+			return columns.get(Column.HIDE_SHOW_BUTTON);
+		}
+
 		private Dimension getSizeByGetter(Function<Component, Dimension> dimGetter, Container target) {
 			Insets insets = target.getInsets();
-			int nameWidth = getColumnWidth(dimGetter, nameColumn);
-			int hideShowWidth = getHideShowWidth(dimGetter);
-			int height = hideShowColumn.stream()
+			int nameWidth = getColumnWidth(dimGetter, getNameColumn());
+			int height = getHideShowColumn().stream()
 				.mapToInt(c -> dimGetter.apply(c).height)
 				.sum();
+			int restWidth = columns.entrySet().stream()
+				.filter(e -> e.getKey() != Column.NAME)
+				.peek(e -> System.out.println(e.getKey() + " " + getColumnWidth(dimGetter, e.getValue())))
+				.mapToInt(e -> switch (e.getKey()) {
+					case MOVE_UP, MOVE_DOWN -> height;
+					default -> getColumnWidth(dimGetter, e.getValue());
+				})
+				.sum();
+			int width = nameWidth + restWidth;
 			return new Dimension(
-				(insets.left + insets.right) + (nameWidth + hideShowWidth),
+				(insets.left + insets.right) + width,
 				(insets.top + insets.bottom) + height
 			);
 		}
 
 		private int getHideShowWidth(Function<Component, Dimension> dimGetter) {
-			return getColumnWidth(dimGetter, this.hideShowColumn);
+			return getColumnWidth(dimGetter, getHideShowColumn());
 		}
 
 		private int getColumnWidth(Function<Component, Dimension> dimGetter, List<Component> column) {
@@ -341,7 +403,8 @@ class EditHabitsDialog extends JDialog {
 		enum Column {
 			NAME,
 			HIDE_SHOW_BUTTON,
-			// TODO movement buttons
+			MOVE_UP,
+			MOVE_DOWN,
 		}
 	}
 }
