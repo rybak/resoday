@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.awt.Toolkit;
@@ -112,6 +113,13 @@ class EditHabitsDialog extends JDialog {
 			{
 				JLabel habitNameLabel = new JLabel(row.getName());
 				rowsPanel.add(habitNameLabel, HabitListLayout.Column.NAME);
+				if (row.getStatus() == Row.Status.VISIBLE) {
+					habitNameLabel.setFont(habitNameLabel.getFont().deriveFont(Font.BOLD));
+				} else {
+					Font currentFont = habitNameLabel.getFont();
+					int newStyle = currentFont.getStyle() & (~Font.BOLD);
+					habitNameLabel.setFont(currentFont.deriveFont(newStyle));
+				}
 			}
 			{
 				JButton visibilityButton = new JButton(switch (row.getStatus()) {
