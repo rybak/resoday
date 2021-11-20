@@ -66,9 +66,12 @@
 - UI to hide/show habit files
     > Introduce a new field in the file. UI is a list of all files which are either shown or hidden, with "show/hide" button alongside.
     * [x] depends on the JSON rewrite
-    * [ ] Think how HabitHolder class is going to work
-    * [ ] "hidden" should be a property saved in the files
-    * [ ] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
+    * [x] Think how HabitHolder class is going to work
+    * [x] "hidden" should be a property saved in the files
+    * [x] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
+    * [x] implement class Histories
+    * [ ] add `.local/share/resoday/habit-order.res` to preserve order between restarts
+    * [ ] maybe add test for non-empty v1 file
 
 ## Done
 
