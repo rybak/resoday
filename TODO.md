@@ -2,6 +2,7 @@
 
 - Fix icon in the dialogs
 - UI to rename habits
+- UI to delete habits
 - Simplify build instructions
     > Since there are no dependencies, distZip is not needed---just a jar file is OK.
     * [ ] check if any libraries are used already
@@ -72,8 +73,9 @@
     * [x] "hidden" should be a property saved in the files
     * [x] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
     * [x] implement class Histories
-    * [ ] add `.local/share/resoday/habit-order.res` to preserve order between restarts
-    * [ ] maybe add test for non-empty v1 file
+    * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
+    * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
+    * [ ] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply]
 
 ## Done
 
