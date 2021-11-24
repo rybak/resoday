@@ -1,5 +1,6 @@
 package dev.andrybak.resoday.gui;
 
+import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.StringConstants;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
@@ -33,9 +34,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,14 +58,21 @@ public final class MainGui {
 
 		JTabbedPane tabs = new JTabbedPane();
 		try (Stream<Path> paths = Files.walk(dir)) {
-			List<YearHistory> yearHistories = paths
+			Map<String/* id */, YearHistory> yearHistories = paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
 				.filter(HabitFiles.IS_HABIT_FILE)
 				.map(YearHistory::read)
 				.flatMap(Optional::stream)
-				.collect(Collectors.toList());
-			yearHistories
+				.collect(Collectors.toMap(YearHistory::getId, Function.identity()));
+			Optional<SortOrder> maybeOrder = SortOrder.read(dir);
+			final Stream<YearHistory> sortedYearHistories;
+			if (maybeOrder.isPresent()) {
+				sortedYearHistories = maybeOrder.get().order(yearHistories);
+			} else {
+				sortedYearHistories = yearHistories.values().stream();
+			}
+			sortedYearHistories
 				.forEach(yearHistory -> {
 					if (yearHistory.getVisibility() == YearHistory.Visibility.VISIBLE) {
 						HistoryPanel historyPanel = new HistoryPanel(yearHistory);
@@ -113,7 +123,7 @@ public final class MainGui {
 		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
 		mainMenu.add(hideHabitMenuItem);
 		JMenuItem editHabitsMenuItem = new JMenuItem("Edit habits");
-		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(tabs));
+		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(dir, tabs));
 		mainMenu.add(editHabitsMenuItem);
 		menuBar.add(mainMenu);
 
@@ -174,11 +184,11 @@ public final class MainGui {
 		tabs.removeTabAt(i);
 	}
 
-	private void openEditHabitsDialog(JTabbedPane tabs) {
+	private void openEditHabitsDialog(Path dir, JTabbedPane tabs) {
 		String oldSelectedId = getCurrentHistoryPanel(tabs)
 			.map(HistoryPanel::getHistoryId)
 			.orElse(null);
-		boolean edited = histories.edit(this.window);
+		boolean edited = histories.edit(this.window, dir);
 		if (!edited) {
 			return;
 		}

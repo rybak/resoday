@@ -1,9 +1,11 @@
 package dev.andrybak.resoday.gui;
 
+import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.EditHabitsDialog;
 
 import java.awt.Window;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,7 @@ public class Histories {
 	/**
 	 * @return {@code true}, if something was edited, {@code false} otherwise
 	 */
-	public boolean edit(Window parent) {
+	public boolean edit(Window parent, Path dir) {
 		List<EditHabitsDialog.Row> inputRows = new ArrayList<>();
 		for (int i = 0; i < histories.size(); i++) {
 			YearHistory history = histories.get(i);
@@ -84,6 +86,11 @@ public class Histories {
 		if (histories.size() != origSize) {
 			throw new UnsupportedOperationException("Deleting habits via " + EditHabitsDialog.class +
 				" is not supported yet");
+		}
+		List<String> inputOrder = inputRows.stream().map(EditHabitsDialog.Row::getId).collect(Collectors.toList());
+		List<String> outputOrder = outputRows.stream().map(EditHabitsDialog.Row::getId).collect(Collectors.toList());
+		if (!inputOrder.equals(outputOrder)) {
+			SortOrder.save(dir, outputOrder);
 		}
 		return true;
 	}
