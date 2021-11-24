@@ -1,0 +1,4 @@
+Windows instructions:
+1. It needs Java installed. (version 14 or later)
+2. Unzip wherever you want.
+3. Run by double clicking `bin/resoday.bat`
