@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
@@ -54,12 +55,14 @@ public final class MainGui {
 
 		JTabbedPane tabs = new JTabbedPane();
 		try (Stream<Path> paths = Files.walk(dir)) {
-			paths
+			List<YearHistory> yearHistories = paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
 				.filter(HabitFiles.IS_HABIT_FILE)
 				.map(YearHistory::read)
 				.flatMap(Optional::stream)
+				.collect(Collectors.toList());
+			yearHistories
 				.forEach(yearHistory -> {
 					if (yearHistory.getVisibility() == YearHistory.Visibility.VISIBLE) {
 						HistoryPanel historyPanel = new HistoryPanel(yearHistory);
