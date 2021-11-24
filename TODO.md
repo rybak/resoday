@@ -1,5 +1,7 @@
 ## TODO
 
+- Fix icon in the dialogs
+- UI to rename habits
 - Simplify build instructions
     > Since there are no dependencies, distZip is not needed---just a jar file is OK.
     * [ ] check if any libraries are used already
