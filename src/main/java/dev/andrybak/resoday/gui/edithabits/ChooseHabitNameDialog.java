@@ -31,17 +31,17 @@ public final class ChooseHabitNameDialog {
 	private ChooseHabitNameDialog() {
 	}
 
-	public static void show(Component parentComponent, Predicate<String> usedChecker,
+	public static void show(Component parentComponent, String dialogTitle, Predicate<String> usedChecker,
 		Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = create(parentComponent, usedChecker, newHabitNameConsumer);
+		JDialog d = create(parentComponent, dialogTitle, usedChecker, newHabitNameConsumer);
 		d.setVisible(true);
 	}
 
-	private static JDialog create(Component parentComponent, Predicate<String> usedChecker,
+	private static JDialog create(Component parentComponent, String dialogTitle, Predicate<String> usedChecker,
 		Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), "Add habit",
+		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), dialogTitle,
 			Dialog.ModalityType.APPLICATION_MODAL);
 
 		JPanel content = new JPanel();
@@ -154,7 +154,7 @@ public final class ChooseHabitNameDialog {
 		frame.setVisible(true);
 
 		Set<String> names = Set.of("My habit", "New habit");
-		JDialog addHabitDialog = create(content, names::contains, name -> {
+		JDialog addHabitDialog = create(content, "Testing choosing the name", names::contains, name -> {
 			System.out.println("Got " + name);
 			System.exit(0);
 		});
