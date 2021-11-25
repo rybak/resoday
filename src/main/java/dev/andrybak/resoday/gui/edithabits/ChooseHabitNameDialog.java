@@ -25,10 +25,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public final class AddHabitDialog {
+public final class ChooseHabitNameDialog {
 	private static final String NEW_HABIT_NAME_BASE = "New habit";
 
-	private AddHabitDialog() {
+	private ChooseHabitNameDialog() {
 	}
 
 	public static void show(Component parentComponent, Predicate<String> usedChecker,
@@ -143,7 +143,7 @@ public final class AddHabitDialog {
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("Add habit dialog demo");
+		JFrame frame = new JFrame("Choose habit name dialog demo");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		JPanel content = new JPanel();

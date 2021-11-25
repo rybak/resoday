@@ -3,7 +3,7 @@ package dev.andrybak.resoday.gui;
 import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.StringConstants;
 import dev.andrybak.resoday.YearHistory;
-import dev.andrybak.resoday.gui.edithabits.AddHabitDialog;
+import dev.andrybak.resoday.gui.edithabits.ChooseHabitNameDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.storage.HabitFiles;
 
@@ -149,7 +149,7 @@ public final class MainGui {
 		Set<String> names = histories.histories()
 			.map(YearHistory::getName)
 			.collect(toSet());
-		AddHabitDialog.show(window, names::contains, habitName -> {
+		ChooseHabitNameDialog.show(window, names::contains, habitName -> {
 			String newId = HabitFiles.createNewId();
 			String filename = HabitFiles.createNewFilename(newId, habitName);
 			Path newHabitPath = dir.resolve(filename);
