@@ -31,15 +31,15 @@ public final class ChooseHabitNameDialog {
 	private ChooseHabitNameDialog() {
 	}
 
-	public static void show(Component parentComponent, String dialogTitle, Predicate<String> usedChecker,
-		Consumer<String> newHabitNameConsumer)
+	public static void show(Component parentComponent, String dialogTitle, String buttonText,
+		Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = create(parentComponent, dialogTitle, usedChecker, newHabitNameConsumer);
+		JDialog d = create(parentComponent, dialogTitle, buttonText, usedChecker, newHabitNameConsumer);
 		d.setVisible(true);
 	}
 
-	private static JDialog create(Component parentComponent, String dialogTitle, Predicate<String> usedChecker,
-		Consumer<String> newHabitNameConsumer)
+	private static JDialog create(Component parentComponent, String dialogTitle, String buttonText,
+		Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
 		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), dialogTitle,
 			Dialog.ModalityType.APPLICATION_MODAL);
@@ -51,7 +51,7 @@ public final class ChooseHabitNameDialog {
 		nameInput.setToolTipText("Enter the name of the habit");
 		content.add(nameInput);
 
-		JButton addButton = new JButton("+");
+		JButton addButton = new JButton(buttonText);
 		ActionListener returnName = ignored -> {
 			String newName = nameInput.getText().trim();
 			if (!isGoodName(usedChecker, newName)) {
@@ -154,7 +154,7 @@ public final class ChooseHabitNameDialog {
 		frame.setVisible(true);
 
 		Set<String> names = Set.of("My habit", "New habit");
-		JDialog addHabitDialog = create(content, "Testing choosing the name", names::contains, name -> {
+		JDialog addHabitDialog = create(content, "Testing choosing the name", "+", names::contains, name -> {
 			System.out.println("Got " + name);
 			System.exit(0);
 		});

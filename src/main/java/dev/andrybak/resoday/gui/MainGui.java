@@ -149,7 +149,7 @@ public final class MainGui {
 		Set<String> names = histories.histories()
 			.map(YearHistory::getName)
 			.collect(toSet());
-		ChooseHabitNameDialog.show(window, "Add habit", names::contains, habitName -> {
+		ChooseHabitNameDialog.show(window, "Add habit", "+", names::contains, habitName -> {
 			String newId = HabitFiles.createNewId();
 			String filename = HabitFiles.createNewFilename(newId, habitName);
 			Path newHabitPath = dir.resolve(filename);
