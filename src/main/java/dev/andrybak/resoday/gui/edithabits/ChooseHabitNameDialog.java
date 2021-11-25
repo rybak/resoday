@@ -99,7 +99,7 @@ public final class ChooseHabitNameDialog {
 		d.setContentPane(content);
 		d.pack();
 		d.setLocationRelativeTo(parentComponent);
-
+		SwingUtilities.invokeLater(nameInput::requestFocus);
 		return d;
 	}
 
