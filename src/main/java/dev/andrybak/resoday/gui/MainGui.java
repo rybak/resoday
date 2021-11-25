@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -120,12 +121,13 @@ public final class MainGui {
 		JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
 		addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
 		mainMenu.add(addHabitMenuItem);
-		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
-		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
-		mainMenu.add(hideHabitMenuItem);
 		JMenuItem editHabitsMenuItem = new JMenuItem("Edit habits");
 		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(dir, tabs));
 		mainMenu.add(editHabitsMenuItem);
+		mainMenu.add(new JSeparator());
+		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
+		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
+		mainMenu.add(hideHabitMenuItem);
 		menuBar.add(mainMenu);
 
 		JMenu helpMenu = new JMenu("Help");
