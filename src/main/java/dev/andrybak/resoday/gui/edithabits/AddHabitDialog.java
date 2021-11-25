@@ -1,4 +1,6 @@
-package dev.andrybak.resoday.gui;
+package dev.andrybak.resoday.gui.edithabits;
+
+import dev.andrybak.resoday.gui.Dialogs;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,13 +25,15 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-final class AddHabitDialog {
+public final class AddHabitDialog {
 	private static final String NEW_HABIT_NAME_BASE = "New habit";
 
 	private AddHabitDialog() {
 	}
 
-	static void show(Component parentComponent, Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer) {
+	public static void show(Component parentComponent, Predicate<String> usedChecker,
+		Consumer<String> newHabitNameConsumer)
+	{
 		JDialog d = create(parentComponent, usedChecker, newHabitNameConsumer);
 		d.setVisible(true);
 	}
