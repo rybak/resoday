@@ -361,14 +361,17 @@ public class EditHabitsDialog extends JDialog {
 		private Dimension getSizeByGetter(Function<Component, Dimension> dimGetter, Container target) {
 			Insets insets = target.getInsets();
 			int nameWidth = getColumnWidth(dimGetter, getNameColumn());
-			int height = getHideShowColumn().stream()
-				.mapToInt(c -> dimGetter.apply(c).height)
-				.sum();
+			int rowHeight = getHideShowColumn().stream()
+				.findFirst()
+				.map(dimGetter)
+				.map(d -> d.height)
+				.orElse(10);
+			int height = getHideShowColumn().size() * rowHeight;
 			int restWidth = columns.entrySet().stream()
 				.filter(e -> e.getKey() != Column.NAME)
 				.peek(e -> System.out.println(e.getKey() + " " + getColumnWidth(dimGetter, e.getValue())))
 				.mapToInt(e -> switch (e.getKey()) {
-					case MOVE_UP, MOVE_DOWN -> height;
+					case MOVE_UP, MOVE_DOWN -> rowHeight; // use _height_ as width, because buttons are squares
 					default -> getColumnWidth(dimGetter, e.getValue());
 				})
 				.sum();
