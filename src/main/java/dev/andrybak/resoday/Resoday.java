@@ -9,10 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public final class Resoday {
+
 	public static void main(String... args) {
 		Path dataDir;
 		if (args.length < 1) {
-			ProjectDirectories projectDirs = ProjectDirectories.from("dev", "andrybak", StringConstants.APP_NAME);
+			ProjectDirectories projectDirs = ProjectDirectories.from(StringConstants.TOP_LEVEL, StringConstants.ORGANIZATION,
+				StringConstants.APP_NAME);
 			dataDir = Paths.get(projectDirs.dataDir).toAbsolutePath();
 		} else {
 			dataDir = Paths.get(args[0]).toAbsolutePath();
