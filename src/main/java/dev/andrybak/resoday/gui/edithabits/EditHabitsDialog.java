@@ -360,7 +360,7 @@ public class EditHabitsDialog extends JDialog {
 
 		private Dimension getSizeByGetter(Function<Component, Dimension> dimGetter, Container target) {
 			Insets insets = target.getInsets();
-			int nameWidth = getColumnWidth(dimGetter, getNameColumn());
+			int nameWidth = (int)(getColumnWidth(dimGetter, getNameColumn()) * 1.2);
 			int rowHeight = getHideShowColumn().stream()
 				.findFirst()
 				.map(dimGetter)
