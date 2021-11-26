@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
@@ -52,11 +53,11 @@ public class EditHabitsDialog extends JDialog {
 		Dialogs.setUpEscapeKeyClosing(this, content);
 	}
 
-	public static List<Row> show(Owner owner, List<Row> originalRows) {
+	public static void show(Owner owner, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
 		EditHabitsDialog d = create(owner, originalRows);
 		d.setVisible(true);
 		d.dispose();
-		return d.getResultRows();
+		resultConsumer.accept(d.getResultRows());
 	}
 
 	private static EditHabitsDialog create(Owner owner, List<Row> originalRows) {
@@ -91,12 +92,13 @@ public class EditHabitsDialog extends JDialog {
 		rows.add(new Row("001", "World", Row.Status.HIDDEN));
 		rows.add(new Row("002", "Foo", Row.Status.VISIBLE));
 		System.out.println("Showing dialog with " + rows.size() + " rows");
-		List<Row> resultRows = show(() -> frame, rows);
-		System.out.println("Result rows: ");
-		for (Row r : resultRows) {
-			System.out.println("\t" + r);
-		}
-		frame.dispose();
+		show(() -> frame, rows, resultRows -> {
+			System.out.println("Result rows: ");
+			for (Row r : resultRows) {
+				System.out.println("\t" + r);
+			}
+			frame.dispose();
+		});
 	}
 
 	private List<Row> getResultRows() {

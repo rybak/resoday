@@ -48,9 +48,9 @@ public class Histories {
 	}
 
 	/**
-	 * @return {@code true}, if something was edited, {@code false} otherwise
+	 * @param editCallback called, if something was edited
 	 */
-	public boolean edit(Window parent, Path dir) {
+	public void edit(Window parent, Path dir, Runnable editCallback) {
 		List<EditHabitsDialog.Row> inputRows = new ArrayList<>();
 		for (int i = 0; i < histories.size(); i++) {
 			YearHistory history = histories.get(i);
@@ -62,38 +62,43 @@ public class Histories {
 			}, i);
 			inputRows.add(row);
 		}
-		List<EditHabitsDialog.Row> outputRows = EditHabitsDialog.show(() -> parent, inputRows);
-		if (inputRows.equals(outputRows)) {
-			return false;
-		}
-
-		Map<String, YearHistory> map = histories.stream().collect(Collectors.toMap(
-			YearHistory::getId,
-			Function.identity()
-		));
-		int origSize = histories.size();
-		histories.clear();
-		for (EditHabitsDialog.Row outputRow : outputRows) {
-			YearHistory history = map.get(outputRow.getId());
-			history.setVisibility(switch (outputRow.getStatus()) {
-				case VISIBLE -> YearHistory.Visibility.VISIBLE;
-				case HIDDEN -> YearHistory.Visibility.HIDDEN;
-			});
-			if (history.getVisibility() == YearHistory.Visibility.VISIBLE) {
-				panels.put(history.getId(), new HistoryPanel(history));
+		EditHabitsDialog.show(() -> parent, inputRows, outputRows -> {
+			if (inputRows.equals(outputRows)) {
+				return;
 			}
-			histories.add(history);
-		}
-		if (histories.size() != origSize) {
-			throw new UnsupportedOperationException("Deleting habits via " + EditHabitsDialog.class +
-				" is not supported yet");
-		}
-		List<String> inputOrder = inputRows.stream().map(EditHabitsDialog.Row::getId).collect(Collectors.toList());
-		List<String> outputOrder = outputRows.stream().map(EditHabitsDialog.Row::getId).collect(Collectors.toList());
-		if (!inputOrder.equals(outputOrder)) {
-			SortOrder.save(dir, outputOrder);
-		}
-		return true;
+
+			Map<String, YearHistory> map = histories.stream().collect(Collectors.toMap(
+				YearHistory::getId,
+				Function.identity()
+			));
+			int origSize = histories.size();
+			histories.clear();
+			for (EditHabitsDialog.Row outputRow : outputRows) {
+				YearHistory history = map.get(outputRow.getId());
+				history.setVisibility(switch (outputRow.getStatus()) {
+					case VISIBLE -> YearHistory.Visibility.VISIBLE;
+					case HIDDEN -> YearHistory.Visibility.HIDDEN;
+				});
+				if (history.getVisibility() == YearHistory.Visibility.VISIBLE) {
+					panels.put(history.getId(), new HistoryPanel(history));
+				}
+				histories.add(history);
+			}
+			if (histories.size() != origSize) {
+				throw new UnsupportedOperationException("Deleting habits via " + EditHabitsDialog.class +
+					" is not supported yet");
+			}
+			List<String> inputOrder = inputRows.stream()
+				.map(EditHabitsDialog.Row::getId)
+				.collect(Collectors.toList());
+			List<String> outputOrder = outputRows.stream()
+				.map(EditHabitsDialog.Row::getId)
+				.collect(Collectors.toList());
+			if (!inputOrder.equals(outputOrder)) {
+				SortOrder.save(dir, outputOrder);
+			}
+			editCallback.run();
+		});
 	}
 
 	public void forEachHistory(Consumer<YearHistory> action) {

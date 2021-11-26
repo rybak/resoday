@@ -221,27 +221,25 @@ public final class MainGui {
 		String oldSelectedId = getCurrentHistoryPanel(tabs)
 			.map(HistoryPanel::getHistoryId)
 			.orElse(null);
-		boolean edited = histories.edit(this.window, dir);
-		if (!edited) {
-			return;
-		}
-		for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
-			tabs.removeTabAt(0); // removing all tabs
-		}
-		List<HistoryPanel> orderedPanels = histories.getOrderedPanels();
-		for (HistoryPanel hp : orderedPanels) {
-			tabs.addTab(hp.getHistoryName(), hp);
-		}
-		if (oldSelectedId != null) {
-			Optional<HistoryPanel> maybeNewSelected = orderedPanels.stream()
-				.filter(hp -> hp.getHistoryId().equals(oldSelectedId))
-				.findFirst();
-			if (maybeNewSelected.isPresent()) {
-				tabs.setSelectedComponent(maybeNewSelected.get());
-			} else {
-				tabs.setSelectedIndex(0);
+		histories.edit(this.window, dir, () -> {
+			for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
+				tabs.removeTabAt(0); // removing all tabs
 			}
-		}
+			List<HistoryPanel> orderedPanels = histories.getOrderedPanels();
+			for (HistoryPanel hp : orderedPanels) {
+				tabs.addTab(hp.getHistoryName(), hp);
+			}
+			if (oldSelectedId != null) {
+				Optional<HistoryPanel> maybeNewSelected = orderedPanels.stream()
+					.filter(hp -> hp.getHistoryId().equals(oldSelectedId))
+					.findFirst();
+				if (maybeNewSelected.isPresent()) {
+					tabs.setSelectedComponent(maybeNewSelected.get());
+				} else {
+					tabs.setSelectedIndex(0);
+				}
+			}
+		});
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {
