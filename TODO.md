@@ -38,7 +38,6 @@
     * [ ] add field for habit description
 - Improve .habit format
     * [ ] Compress size somehow
-- Do we need reordering of tabs/files?
 - different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
@@ -129,3 +128,4 @@
 - Should we sort the tabs by filename? Allows for simple 01 02 03 filename prefix ordering
     * [x] better to allow reordering
 - UI to rename habits
+- Do we need reordering of tabs/files?
