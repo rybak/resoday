@@ -31,22 +31,26 @@ public final class ChooseHabitNameDialog {
 	private ChooseHabitNameDialog() {
 	}
 
-	public static void show(Component parentComponent, String dialogTitle, String buttonText,
+	/**
+	 * @param startName when {@code startName} is {@code null}, a new name will be chosen automatically based on
+	 *                  {@link #NEW_HABIT_NAME_BASE} using given {@code usedChecker}
+	 */
+	public static void show(Component parentComponent, String dialogTitle, String buttonText, String startName,
 		Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = create(parentComponent, dialogTitle, buttonText, usedChecker, newHabitNameConsumer);
+		JDialog d = create(parentComponent, dialogTitle, buttonText, startName, usedChecker, newHabitNameConsumer);
 		d.setVisible(true);
 	}
 
 	private static JDialog create(Component parentComponent, String dialogTitle, String buttonText,
-		Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
+		String startName, Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
 		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), dialogTitle,
 			Dialog.ModalityType.APPLICATION_MODAL);
 
 		JPanel content = new JPanel();
 
-		String newNamePlaceholder = chooseNewHabitName(usedChecker);
+		String newNamePlaceholder = startName != null ? startName : chooseNewHabitName(usedChecker);
 		JTextField nameInput = new JTextField(newNamePlaceholder, 15);
 		nameInput.setToolTipText("Enter the name of the habit");
 		content.add(nameInput);
@@ -154,10 +158,12 @@ public final class ChooseHabitNameDialog {
 		frame.setVisible(true);
 
 		Set<String> names = Set.of("My habit", "New habit");
-		JDialog addHabitDialog = create(content, "Testing choosing the name", "+", names::contains, name -> {
-			System.out.println("Got " + name);
-			System.exit(0);
-		});
+		JDialog addHabitDialog = create(content, "Testing choosing the name", "+", "Test name", names::contains,
+			name -> {
+				System.out.println("Got " + name);
+				System.exit(0);
+			}
+		);
 		addHabitDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {

@@ -35,8 +35,8 @@ public final class YearHistory {
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private final Set<LocalDate> dates;
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
-	private final String name;
 	private final String id;
+	private String name;
 	private Path statePath;
 	private Visibility visibility;
 	/**
@@ -210,6 +210,14 @@ public final class YearHistory {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String newHabitName) {
+		if (name.equals(newHabitName)) {
+			return;
+		}
+		name = Objects.requireNonNull(newHabitName);
+		hasChanges = true;
 	}
 
 	public String getId() {

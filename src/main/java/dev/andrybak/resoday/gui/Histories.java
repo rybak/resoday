@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -105,5 +106,16 @@ public class Histories {
 
 	public void hide(String historyId) {
 		panels.remove(historyId);
+	}
+
+	public void rename(String id, String newHabitName) {
+		Optional<YearHistory> maybeHistory = histories.stream()
+			.filter(h -> h.getId().equals(id))
+			.findAny();
+		if (maybeHistory.isEmpty()) {
+			System.err.println("Warning: could not rename history ID='" + id + "'");
+			return;
+		}
+		maybeHistory.get().setName(newHabitName);
 	}
 }

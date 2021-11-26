@@ -35,6 +35,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,6 +45,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toSet;
 
 public final class MainGui {
@@ -125,6 +127,9 @@ public final class MainGui {
 		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(dir, tabs));
 		mainMenu.add(editHabitsMenuItem);
 		mainMenu.add(new JSeparator());
+		JMenuItem renameHabitMenuItem = new JMenuItem("Rename habit");
+		renameHabitMenuItem.addActionListener(ignored -> openRenameHabitDialog(tabs));
+		mainMenu.add(renameHabitMenuItem);
 		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
 		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
 		mainMenu.add(hideHabitMenuItem);
@@ -151,7 +156,7 @@ public final class MainGui {
 		Set<String> names = histories.histories()
 			.map(YearHistory::getName)
 			.collect(toSet());
-		ChooseHabitNameDialog.show(window, "Add habit", "+", names::contains, habitName -> {
+		ChooseHabitNameDialog.show(window, "Add habit", "+", null, names::contains, habitName -> {
 			String newId = HabitFiles.createNewId();
 			String filename = HabitFiles.createNewFilename(newId, habitName);
 			Path newHabitPath = dir.resolve(filename);
@@ -161,6 +166,31 @@ public final class MainGui {
 			tabs.addTab(habitName, newPanel);
 			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
 		});
+	}
+
+	private void openRenameHabitDialog(JTabbedPane tabs) {
+		Optional<HistoryPanel> maybeHistoryPanel = getCurrentHistoryPanel(tabs);
+		if (maybeHistoryPanel.isEmpty()) {
+			return;
+		}
+
+		String id = maybeHistoryPanel.get().getHistoryId();
+		String oldName = maybeHistoryPanel.get().getHistoryName();
+		// collect names which we won't allow to be used
+		Set<String> names = histories.histories()
+			.map(YearHistory::getName)
+			.collect(toCollection(HashSet::new));
+		names.remove(oldName); // existing name is OK
+		ChooseHabitNameDialog.show(window, "Rename habit '" + oldName + "'", "Rename", oldName,
+			names::contains,
+			newHabitName -> {
+				histories.rename(id, newHabitName);
+				int selectedIndex = tabs.getSelectedIndex();
+				tabs.setTitleAt(selectedIndex, newHabitName);
+				updateWindowTitle(tabs); // title depends on current tab's name
+				System.out.println("Renamed habit '" + oldName + "' to '" + newHabitName + "'.");
+			}
+		);
 	}
 
 	private void openHideHabitDialog(JTabbedPane tabs) {
