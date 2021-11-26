@@ -21,11 +21,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 class AboutDialog {
+	private static final String XDG_OPEN_EXECUTABLE = "xdg-open";
 
 	private static JDialog create(Component parentComponent) {
 		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), "About " + StringConstants.APP_NAME_GUI,
@@ -107,7 +113,29 @@ class AboutDialog {
 				fallback.run();
 			}
 		} else {
-			fallback.run();
+			String pathEnvVar;
+			try {
+				pathEnvVar = System.getenv("PATH");
+			} catch (SecurityException ignored) {
+				fallback.run();
+				return;
+			}
+			if (pathEnvVar == null) {
+				pathEnvVar = "";
+			}
+			// https://stackoverflow.com/a/23539220/1083697
+			boolean existsInPath = Stream.of(pathEnvVar.split(Pattern.quote(File.pathSeparator)))
+				.map(Paths::get)
+				.anyMatch(path -> Files.isExecutable(path.resolve(XDG_OPEN_EXECUTABLE)));
+			if (existsInPath) {
+				try {
+					Runtime.getRuntime().exec(XDG_OPEN_EXECUTABLE + " " + url);
+				} catch (IOException ignored) {
+					fallback.run();
+				}
+			} else {
+				fallback.run();
+			}
 		}
 	}
 
