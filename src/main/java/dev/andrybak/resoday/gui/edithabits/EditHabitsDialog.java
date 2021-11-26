@@ -293,13 +293,11 @@ public class EditHabitsDialog extends JDialog {
 
 		@Override
 		public Dimension preferredLayoutSize(Container parent) {
-			System.out.println("preferred:");
 			return getSizeByGetter(Component::getPreferredSize, parent);
 		}
 
 		@Override
 		public Dimension minimumLayoutSize(Container parent) {
-			System.out.println("minimum:");
 			return getSizeByGetter(Component::getMinimumSize, parent);
 		}
 
@@ -369,7 +367,6 @@ public class EditHabitsDialog extends JDialog {
 			int height = getHideShowColumn().size() * rowHeight;
 			int restWidth = columns.entrySet().stream()
 				.filter(e -> e.getKey() != Column.NAME)
-				.peek(e -> System.out.println(e.getKey() + " " + getColumnWidth(dimGetter, e.getValue())))
 				.mapToInt(e -> switch (e.getKey()) {
 					case MOVE_UP, MOVE_DOWN -> rowHeight; // use _height_ as width, because buttons are squares
 					default -> getColumnWidth(dimGetter, e.getValue());
