@@ -62,17 +62,8 @@
 
 ## In dev
 
-- UI to hide/show habit files
-    > Introduce a new field in the file. UI is a list of all files which are either shown or hidden, with "show/hide" button alongside.
-    * [x] depends on the JSON rewrite
-    * [x] Think how HabitHolder class is going to work
-    * [x] "hidden" should be a property saved in the files
-    * [x] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
-    * [x] implement class Histories
-    * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
-    * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
-    * [ ] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply]
 - Remember last opened tab
+    * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
     * [ ] Save last opened tab in cache
 
 ## Done
@@ -137,3 +128,13 @@
     * [x] used for window position
 - Use xdg-open for URLs
 - 2021-11 Clean up TODO
+- UI to hide/show habit files
+    > Introduce a new field in the file. UI is a list of all files which are either shown or hidden, with "show/hide" button alongside.
+    * [x] depends on the JSON rewrite
+    * [x] Think how HabitHolder class is going to work
+    * [x] "hidden" should be a property saved in the files
+    * [x] if "hide" behavior is kept, then "Add habit" dialog would need to keep track of names of hidden habits as well to avoid collisions --- this would require something like class HabitsStorage
+    * [x] implement class Histories
+    * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
+    * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
+    * [x] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply] --- implemented without the "Apply" button for now.
