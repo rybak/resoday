@@ -1,7 +1,6 @@
 ## TODO
 
 - Fix icon in the dialogs
-- UI to rename habits
 - UI to delete habits
 - Simplify build instructions
     > Since there are no dependencies, distZip is not needed---just a jar file is OK.
@@ -31,9 +30,6 @@
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
     * [ ] Find more about resource loading
-- Remember window size and location
-    > Like Bash saves history in .bash_history, Resoday should save UI state (window size/position, selected tab, etc) in XDG_CACHE_HOME/resoday/ui_state.   See https://unix.stackexchange.com/a/631147/53143 for details
-    * [ ] Treat window size as an implicitly set setting---user controls it, just not through a dialog with comboboxes and checkboxes.
 - Java modules
     * [ ] https://stackoverflow.com/a/62959016/1083697
     * [ ] Is GSON library modularized?
@@ -76,6 +72,10 @@
     * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
     * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
     * [ ] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply]
+- Remember window size and location
+    > Like Bash saves history in .bash_history, Resoday should save UI state (window size/position, selected tab, etc) in XDG_CACHE_HOME/resoday/ui_state.   See https://unix.stackexchange.com/a/631147/53143 for details
+    * [x] Treat window size as an implicitly set setting---user controls it, just not through a dialog with comboboxes and checkboxes.
+    * [ ] Save last opened tab in cache
 
 ## Done
 
@@ -128,3 +128,4 @@
     > see Chatty's UI
 - Should we sort the tabs by filename? Allows for simple 01 02 03 filename prefix ordering
     * [x] better to allow reordering
+- UI to rename habits
