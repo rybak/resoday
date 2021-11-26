@@ -12,12 +12,16 @@ public final class Resoday {
 
 	public static void main(String... args) {
 		Path dataDir;
+		Path configDir;
 		if (args.length < 1) {
 			ProjectDirectories projectDirs = ProjectDirectories.from(StringConstants.TOP_LEVEL, StringConstants.ORGANIZATION,
 				StringConstants.APP_NAME);
 			dataDir = Paths.get(projectDirs.dataDir).toAbsolutePath();
+			configDir = Paths.get(projectDirs.configDir).toAbsolutePath();
 		} else {
-			dataDir = Paths.get(args[0]).toAbsolutePath();
+			Path p = Paths.get(args[0]).toAbsolutePath();
+			dataDir = p;
+			configDir = p;
 		}
 		try {
 			Files.createDirectories(dataDir);
@@ -25,11 +29,19 @@ public final class Resoday {
 			System.err.printf("Could not create directory '%s'%n", dataDir.toAbsolutePath());
 			dataDir = Paths.get(".").toAbsolutePath();
 		}
+		try {
+			Files.createDirectories(configDir);
+		} catch (IOException e) {
+			System.err.printf("Could not create directory '%s'%n", configDir.toAbsolutePath());
+			configDir = Paths.get(".").toAbsolutePath();
+		}
 		System.out.printf("Using '%s'%n", dataDir.toAbsolutePath());
-		if (!Files.isDirectory(dataDir)) {
-			System.err.println("'" + dataDir.toAbsolutePath() + "' is not a directory. Aborting.");
+		System.out.printf("Config from '%s'%n", configDir.toAbsolutePath());
+		if (!Files.isDirectory(dataDir) || !Files.isDirectory(configDir)) {
+			System.err.println("'" + dataDir.toAbsolutePath() + "' must be a directory. Aborting.");
+			System.err.println("'" + configDir.toAbsolutePath() + "' must be a directory. Aborting.");
 			System.exit(1);
 		}
-		new MainGui(dataDir).go();
+		new MainGui(dataDir).go(configDir);
 	}
 }

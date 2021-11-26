@@ -278,7 +278,7 @@ public final class MainGui {
 		});
 	}
 
-	public void go() {
+	public void go(Path configDir) {
 		window.setMinimumSize(new Dimension(640, 480));
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -290,8 +290,11 @@ public final class MainGui {
 			public void windowClosing(WindowEvent e) {
 				autoSaveTimer.stop();
 				save();
+				WindowPosition.from(window).save(configDir);
 			}
 		});
+		Optional<WindowPosition> maybePos = WindowPosition.read(configDir);
+		maybePos.ifPresent(pos -> pos.applyTo(window));
 		autoSaveTimer.start();
 	}
 
