@@ -1,11 +1,13 @@
 ## TODO
 
 - Fix icon in the dialogs
+    > all modal dialogs have the default Duke icon, which is unfortunate
 - UI to delete habits
+    > An irreversible deletion of habits should be possible
 - Simplify build instructions
-    > Since there are no dependencies, distZip is not needed---just a jar file is OK.
-    * [ ] check if any libraries are used already
-    * [ ] if habit file structure is overhauled (e.g. JSON all the things) then a fat jar will be needed to include the JSON library at least.
+    > Or better yet -- create a release on GitHub and GitLab with fat jar attached.
+    * [x] check if any libraries are used already
+    * [x] if habit file structure is overhauled (e.g. JSON all the things) then a fat jar will be needed to include the JSON library at least.
     * [ ] Gradle task to generate fat jar from(configurations.implementation)
 - Commit README, LICENSE, etc
     * [ ] depends on Gradle rewrite for jar file building
@@ -13,19 +15,19 @@
     * [x] Choose license (probably GPL3)
     * [x] Commit files
     * [x] Code style
+- README: add screenshot
 - Checkout Chatty's source code
     > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
     * [ ] browser opening
     * [x] directory for saving (~/.chatty)
     * [ ] something else?
-    * [ ] icon for JAR file
+    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
 - Improve Help > About
     > Right now Help>About is only about the YouTube video.    It should contain more useful information.
     * [ ] Add link to GitLab/GitHub/etc
     * [ ] Add licensing information -- this is probably even required for GPL "compliancy"
     * [ ] Add version info from baked jar MANIFEST
     * [ ] Add attribution for used libraries
-- Introduce Help > Help
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -33,29 +35,28 @@
 - Java modules
     * [ ] https://stackoverflow.com/a/62959016/1083697
     * [ ] Is GSON library modularized?
+- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
 - Habit description
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
+- Introduce Help > Help
 - Improve .habit format
     * [ ] Compress size somehow
-- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
 - Streak animation 
 - Starter interface (suggest three habits)
     * [ ] or just show contents of "Add habit" dialog in the main window instead of tabs
 - When adding more than (some small number) of habits, warn the user
-- Config in $XDG_CONFIG_HOME
-    > Still not clear what exactly should be saved in the config.  There are no changeable settings at the moment
 - Save button
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
     * [ ] Add save button
-    * [ ] Disable after autosave/Enable after edit
+    * [x] Disable after autosave/Enable after edit --- automatic via YearHistory#hasChanges
 - Add shortcut for opening the habit directory via Desktop.open
+    * [ ] Or some kind of "Help > Debug > Open data dir" menu
 - Add intro panel when zero habit files exist
     > Intro panel may use the same UI as the "Add habit" dialog.
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
-- README: add screenshot
 - gitignore
 - https://openjdk.java.net/jeps/392 ?
 
@@ -71,9 +72,7 @@
     * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
     * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
     * [ ] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply]
-- Remember window size and location
-    > Like Bash saves history in .bash_history, Resoday should save UI state (window size/position, selected tab, etc) in XDG_CACHE_HOME/resoday/ui_state.   See https://unix.stackexchange.com/a/631147/53143 for details
-    * [x] Treat window size as an implicitly set setting---user controls it, just not through a dialog with comboboxes and checkboxes.
+- Remember last opened tab
     * [ ] Save last opened tab in cache
 
 ## Done
@@ -128,4 +127,13 @@
 - Should we sort the tabs by filename? Allows for simple 01 02 03 filename prefix ordering
     * [x] better to allow reordering
 - UI to rename habits
+- Remember window size and location
+    > Like Bash saves history in .bash_history, Resoday should save UI state (window size/position, selected tab, etc) in XDG_CACHE_HOME/resoday/ui_state.   See https://unix.stackexchange.com/a/631147/53143 for details
+    * [x] Treat window size as an implicitly set setting---user controls it, just not through a dialog with comboboxes and checkboxes.
 - Do we need reordering of tabs/files?
+- Config in $XDG_CONFIG_HOME
+    > Still not clear what exactly should be saved in the config.  There are no changeable settings at the moment
+    * [x] trivial via `directories.jar`
+    * [x] used for window position
+- Use xdg-open for URLs
+- 2021-11 Clean up TODO
