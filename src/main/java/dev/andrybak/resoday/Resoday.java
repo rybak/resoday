@@ -10,24 +10,24 @@ import java.nio.file.Paths;
 
 public final class Resoday {
 	public static void main(String... args) {
-		Path dir;
+		Path dataDir;
 		if (args.length < 1) {
 			ProjectDirectories projectDirs = ProjectDirectories.from("dev", "andrybak", StringConstants.APP_NAME);
-			dir = Paths.get(projectDirs.dataDir).toAbsolutePath();
+			dataDir = Paths.get(projectDirs.dataDir).toAbsolutePath();
 		} else {
-			dir = Paths.get(args[0]).toAbsolutePath();
+			dataDir = Paths.get(args[0]).toAbsolutePath();
 		}
 		try {
-			Files.createDirectories(dir);
+			Files.createDirectories(dataDir);
 		} catch (IOException e) {
-			System.err.printf("Could not create directory '%s'%n", dir.toAbsolutePath());
-			dir = Paths.get(".").toAbsolutePath();
+			System.err.printf("Could not create directory '%s'%n", dataDir.toAbsolutePath());
+			dataDir = Paths.get(".").toAbsolutePath();
 		}
-		System.out.printf("Using '%s'%n", dir.toAbsolutePath());
-		if (!Files.isDirectory(dir)) {
-			System.err.println("'" + dir.toAbsolutePath() + "' is not a directory. Aborting.");
+		System.out.printf("Using '%s'%n", dataDir.toAbsolutePath());
+		if (!Files.isDirectory(dataDir)) {
+			System.err.println("'" + dataDir.toAbsolutePath() + "' is not a directory. Aborting.");
 			System.exit(1);
 		}
-		new MainGui(dir).go();
+		new MainGui(dataDir).go();
 	}
 }

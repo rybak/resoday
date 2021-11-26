@@ -57,11 +57,11 @@ public final class MainGui {
 	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
 
-	public MainGui(Path dir) {
+	public MainGui(Path dataDir) {
 		content = new JPanel(new BorderLayout());
 
 		JTabbedPane tabs = new JTabbedPane();
-		try (Stream<Path> paths = Files.walk(dir)) {
+		try (Stream<Path> paths = Files.walk(dataDir)) {
 			Map<String/* id */, YearHistory> yearHistories = paths
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
@@ -69,7 +69,7 @@ public final class MainGui {
 				.map(YearHistory::read)
 				.flatMap(Optional::stream)
 				.collect(Collectors.toMap(YearHistory::getId, Function.identity()));
-			Optional<SortOrder> maybeOrder = SortOrder.read(dir);
+			Optional<SortOrder> maybeOrder = SortOrder.read(dataDir);
 			final Stream<YearHistory> sortedYearHistories;
 			if (maybeOrder.isPresent()) {
 				sortedYearHistories = maybeOrder.get().order(yearHistories);
@@ -87,7 +87,7 @@ public final class MainGui {
 					}
 				});
 		} catch (IOException e) {
-			System.err.println("Could not find files in '" + dir.toAbsolutePath() + "': " + e);
+			System.err.println("Could not find files in '" + dataDir.toAbsolutePath() + "': " + e);
 			System.err.println("Aborting.");
 			System.exit(1);
 		}
@@ -104,7 +104,7 @@ public final class MainGui {
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
-		setUpMenuBar(dir, tabs);
+		setUpMenuBar(dataDir, tabs);
 	}
 
 	private static Image getResodayImage() {
