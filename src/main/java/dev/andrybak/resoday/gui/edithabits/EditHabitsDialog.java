@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
@@ -38,7 +39,7 @@ public class EditHabitsDialog extends JDialog {
 	private final Map<String, Row> rows;
 	private JPanel rowsPanel;
 
-	private EditHabitsDialog(Owner owner, Map<String, Row> rows) {
+	private EditHabitsDialog(Owner owner, Map<String, Row> rows, Consumer<List<Row>> resultConsumer) {
 		super(owner.getParent(), "Edit habits", ModalityType.APPLICATION_MODAL);
 		this.rows = rows;
 
@@ -48,19 +49,35 @@ public class EditHabitsDialog extends JDialog {
 		createRowsPanel(owner);
 
 		content.add(rowsPanel, BorderLayout.NORTH);
+		{
+			JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+			{
+				JButton okButton = new JButton("OK");
+				okButton.addActionListener(ignored -> {
+					resultConsumer.accept(getResultRows());
+					dispose();
+				});
+				bottomPanel.add(okButton);
+			}
+			{
+				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(ignored -> dispose());
+				bottomPanel.add(cancelButton);
+			}
+			content.add(bottomPanel, BorderLayout.SOUTH);
+		}
+
 		setContentPane(content);
 
 		Dialogs.setUpEscapeKeyClosing(this, content);
 	}
 
 	public static void show(Owner owner, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
-		EditHabitsDialog d = create(owner, originalRows);
+		EditHabitsDialog d = create(owner, originalRows, resultConsumer);
 		d.setVisible(true);
-		d.dispose();
-		resultConsumer.accept(d.getResultRows());
 	}
 
-	private static EditHabitsDialog create(Owner owner, List<Row> originalRows) {
+	private static EditHabitsDialog create(Owner owner, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
 		Map<String, Row> rows = new HashMap<>();
 		for (int i = 0, n = originalRows.size(); i < n; i++) {
 			Row originalRow = originalRows.get(i);
@@ -69,7 +86,7 @@ public class EditHabitsDialog extends JDialog {
 			}
 		}
 
-		EditHabitsDialog d = new EditHabitsDialog(owner, rows);
+		EditHabitsDialog d = new EditHabitsDialog(owner, rows, resultConsumer);
 		d.pack();
 		d.setLocationRelativeTo(owner.getParent());
 
