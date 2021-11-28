@@ -204,6 +204,15 @@ public final class YearHistory {
 		}
 	}
 
+	public void delete() {
+		try {
+			Files.delete(this.statePath);
+		} catch (IOException e) {
+			System.err.println("Could not delete '" + this.statePath.toAbsolutePath() + "': " + e);
+			e.printStackTrace();
+		}
+	}
+
 	public void addListener(YearHistoryListener listener) {
 		listeners.add(listener);
 	}

@@ -123,4 +123,18 @@ public class Histories {
 		}
 		maybeHistory.get().setName(newHabitName);
 	}
+
+	public void delete(String historyId) {
+		panels.remove(historyId);
+		Optional<YearHistory> maybeHistory = histories.stream()
+			.filter(h -> h.getId().equals(historyId))
+			.findAny();
+		if (maybeHistory.isEmpty()) {
+			System.err.println("Warning: could not delete history ID='" + historyId + "'");
+			return;
+		}
+		YearHistory yearHistory = maybeHistory.get();
+		histories.remove(yearHistory);
+		yearHistory.delete();
+	}
 }

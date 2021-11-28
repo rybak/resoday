@@ -4,6 +4,7 @@ import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.StringConstants;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.ChooseHabitNameDialog;
+import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.storage.HabitFiles;
 
@@ -133,6 +134,9 @@ public final class MainGui {
 		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
 		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
 		mainMenu.add(hideHabitMenuItem);
+		JMenuItem deleteHabitMenuItem = new JMenuItem("Delete habit");
+		deleteHabitMenuItem.addActionListener(ignored -> openDeleteHabitDialog(tabs));
+		mainMenu.add(deleteHabitMenuItem);
 		menuBar.add(mainMenu);
 
 		JMenu helpMenu = new JMenu("Help");
@@ -214,6 +218,29 @@ public final class MainGui {
 		int i = tabs.indexOfComponent(historyPanel);
 		assert i >= 0;
 		histories.hide(historyPanel.getHistoryId());
+		tabs.removeTabAt(i);
+	}
+
+	private void openDeleteHabitDialog(JTabbedPane tabs) {
+		Optional<HistoryPanel> maybeHistoryPanel = getCurrentHistoryPanel(tabs);
+		if (maybeHistoryPanel.isEmpty()) {
+			return;
+		}
+
+		HistoryPanel historyPanel = maybeHistoryPanel.get();
+		switch (DeleteHabitDialog.show(window, historyPanel.getHistoryName())) {
+		case YES:
+			deleteHabit(tabs, historyPanel);
+			break;
+		case NO:
+			break;
+		}
+	}
+
+	private void deleteHabit(JTabbedPane tabs, HistoryPanel historyPanel) {
+		int i = tabs.indexOfComponent(historyPanel);
+		assert i >= 0;
+		histories.delete(historyPanel.getHistoryId());
 		tabs.removeTabAt(i);
 	}
 
