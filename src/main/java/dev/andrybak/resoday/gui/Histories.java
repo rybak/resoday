@@ -62,7 +62,7 @@ public class Histories {
 			}, i);
 			inputRows.add(row);
 		}
-		EditHabitsDialog.show(() -> parent, inputRows, outputRows -> {
+		EditHabitsDialog.show(parent, inputRows, outputRows -> {
 			if (inputRows.equals(outputRows)) {
 				return;
 			}

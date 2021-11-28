@@ -39,14 +39,14 @@ public class EditHabitsDialog extends JDialog {
 	private final Map<String, Row> rows;
 	private JPanel rowsPanel;
 
-	private EditHabitsDialog(Owner owner, Map<String, Row> rows, Consumer<List<Row>> resultConsumer) {
-		super(owner.getParent(), "Edit habits", ModalityType.APPLICATION_MODAL);
+	private EditHabitsDialog(Window parent, Map<String, Row> rows, Consumer<List<Row>> resultConsumer) {
+		super(parent, "Edit habits", ModalityType.APPLICATION_MODAL);
 		this.rows = rows;
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		JPanel content = new JPanel(new BorderLayout());
-		createRowsPanel(owner);
+		createRowsPanel(parent);
 
 		content.add(rowsPanel, BorderLayout.NORTH);
 		{
@@ -72,12 +72,12 @@ public class EditHabitsDialog extends JDialog {
 		Dialogs.setUpEscapeKeyClosing(this, content);
 	}
 
-	public static void show(Owner owner, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
-		EditHabitsDialog d = create(owner, originalRows, resultConsumer);
+	public static void show(Window parent, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
+		EditHabitsDialog d = create(parent, originalRows, resultConsumer);
 		d.setVisible(true);
 	}
 
-	private static EditHabitsDialog create(Owner owner, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
+	private static EditHabitsDialog create(Window parent, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
 		Map<String, Row> rows = new HashMap<>();
 		for (int i = 0, n = originalRows.size(); i < n; i++) {
 			Row originalRow = originalRows.get(i);
@@ -86,9 +86,9 @@ public class EditHabitsDialog extends JDialog {
 			}
 		}
 
-		EditHabitsDialog d = new EditHabitsDialog(owner, rows, resultConsumer);
+		EditHabitsDialog d = new EditHabitsDialog(parent, rows, resultConsumer);
 		d.pack();
-		d.setLocationRelativeTo(owner.getParent());
+		d.setLocationRelativeTo(parent.getParent());
 
 		return d;
 	}
@@ -109,7 +109,7 @@ public class EditHabitsDialog extends JDialog {
 		rows.add(new Row("001", "World", Row.Status.HIDDEN));
 		rows.add(new Row("002", "Foo", Row.Status.VISIBLE));
 		System.out.println("Showing dialog with " + rows.size() + " rows");
-		show(() -> frame, rows, resultRows -> {
+		show(frame, rows, resultRows -> {
 			System.out.println("Result rows: ");
 			for (Row r : resultRows) {
 				System.out.println("\t" + r);
@@ -124,7 +124,7 @@ public class EditHabitsDialog extends JDialog {
 			.collect(toList());
 	}
 
-	private void createRowsPanel(Owner owner) {
+	private void createRowsPanel(Window parent) {
 		JPanel rowsPanel = new JPanel(new HabitListLayout());
 		rowsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		List<Row> sortedCurrent = getResultRows();
@@ -150,7 +150,7 @@ public class EditHabitsDialog extends JDialog {
 					case VISIBLE -> row.hide();
 					case HIDDEN -> row.show();
 					}
-					recreateRowsPanel(owner);
+					recreateRowsPanel(parent);
 				});
 				rowsPanel.add(visibilityButton, HabitListLayout.Column.HIDE_SHOW_BUTTON);
 			}
@@ -158,7 +158,7 @@ public class EditHabitsDialog extends JDialog {
 				BasicArrowButton upButton = new BasicArrowButton(BasicArrowButton.NORTH);
 				upButton.addActionListener(ignored -> {
 					swap(rows, row.getIndex(), row.getIndex() - 1);
-					recreateRowsPanel(owner);
+					recreateRowsPanel(parent);
 				});
 				rowsPanel.add(upButton, HabitListLayout.Column.MOVE_UP);
 				if (row.getIndex() == 0) {
@@ -169,7 +169,7 @@ public class EditHabitsDialog extends JDialog {
 				BasicArrowButton downButton = new BasicArrowButton(BasicArrowButton.SOUTH);
 				downButton.addActionListener(ignored -> {
 					swap(rows, row.getIndex(), row.getIndex() + 1);
-					recreateRowsPanel(owner);
+					recreateRowsPanel(parent);
 				});
 				rowsPanel.add(downButton, HabitListLayout.Column.MOVE_DOWN);
 				if (row.getIndex() == rows.size() - 1) {
@@ -192,15 +192,11 @@ public class EditHabitsDialog extends JDialog {
 		b.moveToIndex(aIndex);
 	}
 
-	private void recreateRowsPanel(Owner owner) {
+	private void recreateRowsPanel(Window parent) {
 		getContentPane().remove(rowsPanel);
-		createRowsPanel(owner);
+		createRowsPanel(parent);
 		revalidate();
 		repaint();
-	}
-
-	public interface Owner {
-		Window getParent();
 	}
 
 	public static final class Row {
