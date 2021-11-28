@@ -1,29 +1,7 @@
 ## TODO
 
-- Simplify build instructions
-    > Or better yet -- create a release on GitHub and GitLab with fat jar attached.
-    * [x] check if any libraries are used already
-    * [x] if habit file structure is overhauled (e.g. JSON all the things) then a fat jar will be needed to include the JSON library at least.
-    * [ ] Gradle task to generate fat jar from(configurations.implementation)
-- Commit README, LICENSE, etc
-    * [ ] depends on Gradle rewrite for jar file building
-    * [ ] Write README
-    * [x] Choose license (probably GPL3)
-    * [x] Commit files
-    * [x] Code style
+- Show version in AboutDialog
 - README: add screenshot
-- Checkout Chatty's source code
-    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
-    * [ ] browser opening
-    * [x] directory for saving (~/.chatty)
-    * [ ] something else?
-    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
-- Improve Help > About
-    > Right now Help>About is only about the YouTube video.    It should contain more useful information.
-    * [ ] Add link to GitLab/GitHub/etc
-    * [ ] Add licensing information -- this is probably even required for GPL "compliancy"
-    * [ ] Add version info from baked jar MANIFEST
-    * [ ] Add attribution for used libraries
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -39,6 +17,12 @@
 - Remember last opened tab
     * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
     * [ ] Save last opened tab in cache
+- Checkout Chatty's source code
+    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
+    * [ ] browser opening
+    * [x] directory for saving (~/.chatty)
+    * [ ] something else?
+    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
 - Improve .habit format
     * [ ] Compress size somehow
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
@@ -61,8 +45,9 @@
 
 ## In dev
 
-- UI to delete habits
-    > An irreversible deletion of habits should be possible
+- Introduce Help > License
+    * [ ] Add licensing information -- this is probably even required for GPL "compliancy"
+    * [ ] Add attribution for used libraries
 
 ## Done
 
@@ -138,3 +123,19 @@
     * [x] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply] --- implemented without the "Apply" button for now.
 - Fix icon in the dialogs
     > all modal dialogs have the default Duke icon, which is unfortunate
+- UI to delete habits
+    > An irreversible deletion of habits should be possible
+- Simplify build instructions
+    > Or better yet -- create a release on GitHub and GitLab with fat jar attached.
+    * [x] check if any libraries are used already
+    * [x] if habit file structure is overhauled (e.g. JSON all the things) then a fat jar will be needed to include the JSON library at least.
+    * [x] Gradle task to generate fat jar from(configurations.implementation)
+- Commit README, LICENSE, etc
+    * [x] depends on Gradle rewrite for jar file building
+    * [x] Write README
+    * [x] Choose license (probably GPL3)
+    * [x] Commit files
+    * [x] Code style
+- Add Git* links to AboutDialog
+    > Right now Help>About is only about the YouTube video.    It should contain more useful information. See also other tasks in "TODO".
+    * [x] Add link to GitLab/GitHub/etc
