@@ -16,6 +16,7 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
@@ -39,6 +40,10 @@ class AboutDialog {
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
 		JLabel label = new JLabel(StringConstants.APP_NAME_GUI + " by Andrei Rybak © 2020–2021");
+		{
+			Font labelFont = label.getFont();
+			label.setFont(labelFont.deriveFont(labelFont.getSize2D() * 1.3f));
+		}
 		content.add(Box.createVerticalStrut(10));
 		content.add(label);
 		content.add(Box.createVerticalStrut(20));
