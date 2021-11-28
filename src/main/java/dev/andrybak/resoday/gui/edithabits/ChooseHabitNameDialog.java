@@ -13,11 +13,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -35,18 +35,17 @@ public final class ChooseHabitNameDialog {
 	 * @param startName when {@code startName} is {@code null}, a new name will be chosen automatically based on
 	 *                  {@link #NEW_HABIT_NAME_BASE} using given {@code usedChecker}
 	 */
-	public static void show(Component parentComponent, String dialogTitle, String buttonText, String startName,
+	public static void show(Window parent, String dialogTitle, String buttonText, String startName,
 		Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = create(parentComponent, dialogTitle, buttonText, startName, usedChecker, newHabitNameConsumer);
+		JDialog d = create(parent, dialogTitle, buttonText, startName, usedChecker, newHabitNameConsumer);
 		d.setVisible(true);
 	}
 
-	private static JDialog create(Component parentComponent, String dialogTitle, String buttonText,
+	private static JDialog create(Window parent, String dialogTitle, String buttonText,
 		String startName, Predicate<String> usedChecker, Consumer<String> newHabitNameConsumer)
 	{
-		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), dialogTitle,
-			Dialog.ModalityType.APPLICATION_MODAL);
+		JDialog d = new JDialog(parent, dialogTitle, Dialog.ModalityType.APPLICATION_MODAL);
 
 		JPanel content = new JPanel();
 
@@ -102,7 +101,7 @@ public final class ChooseHabitNameDialog {
 		});
 		d.setContentPane(content);
 		d.pack();
-		d.setLocationRelativeTo(parentComponent);
+		d.setLocationRelativeTo(parent);
 		SwingUtilities.invokeLater(nameInput::requestFocus);
 		return d;
 	}
@@ -158,7 +157,7 @@ public final class ChooseHabitNameDialog {
 		frame.setVisible(true);
 
 		Set<String> names = Set.of("My habit", "New habit");
-		JDialog addHabitDialog = create(content, "Testing choosing the name", "+", "Test name", names::contains,
+		JDialog addHabitDialog = create(frame, "Testing choosing the name", "+", "Test name", names::contains,
 			name -> {
 				System.out.println("Got " + name);
 				System.exit(0);
