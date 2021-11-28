@@ -1,25 +1,10 @@
 plugins {
 	id 'java'
 	id 'idea'
-	id 'application'
-}
-
-final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
-application {
-	mainClass.set(resodayMainClassName)
-	applicationName = 'resoday'
 }
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
-}
-
-jar {
-	manifest {
-		attributes(
-			'Main-Class': resodayMainClassName
-		)
-	}
 }
 
 repositories {
@@ -59,4 +44,39 @@ test {
 		junitXml.enabled = true
 		html.enabled = true // see ./build/reports/tests/test/index.html
 	}
+}
+
+final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
+
+jar {
+	manifest {
+		attributes(
+			'Main-Class': resodayMainClassName
+		)
+	}
+}
+
+tasks.register('releaseJar', Jar) {
+	archiveBaseName = 'resoday'
+	archiveAppendix = 'release'
+
+	destinationDirectory.set(file('build/distributions/'))
+
+	manifest {
+		attributes(
+			'Main-Class': resodayMainClassName
+		)
+	}
+
+	dependsOn(jar)
+	from(zipTree(jar.getArchiveFile()))
+	from {
+		configurations.runtimeClasspath.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
+tasks.register('release') {
+	dependsOn('build', 'releaseJar')
 }

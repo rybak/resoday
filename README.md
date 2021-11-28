@@ -14,17 +14,20 @@ Building
 
 Run in a terminal:
 
-    ./gradlew distZip
+    $ ./gradlew clean release
 
-Artifact will be located in `build/distributions`.  Unpack the zip to any place
-you want.  The script to start the app will be unpacked into `bin` subfolder.
+After that, you can launch from file `build/distributions/resoday-release.jar`.
 
 Requires Java 14 or newer.
 
-Running
--------
+Usage
+-----
 
-    ./bin/resoday
+Build `resoday-release.jar` and launch it.  If your Java installation is not
+integrated into operating system and/or desktop environment to automatically
+launch `*.jar` files, use:
+
+    $ java -jar resoday-release.jar
 
 License
 -------
