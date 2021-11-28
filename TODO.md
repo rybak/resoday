@@ -1,9 +1,5 @@
 ## TODO
 
-- Fix icon in the dialogs
-    > all modal dialogs have the default Duke icon, which is unfortunate
-- UI to delete habits
-    > An irreversible deletion of habits should be possible
 - Simplify build instructions
     > Or better yet -- create a release on GitHub and GitLab with fat jar attached.
     * [x] check if any libraries are used already
@@ -40,6 +36,9 @@
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
 - Introduce Help > Help
+- Remember last opened tab
+    * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
+    * [ ] Save last opened tab in cache
 - Improve .habit format
     * [ ] Compress size somehow
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
@@ -62,9 +61,8 @@
 
 ## In dev
 
-- Remember last opened tab
-    * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
-    * [ ] Save last opened tab in cache
+- UI to delete habits
+    > An irreversible deletion of habits should be possible
 
 ## Done
 
@@ -138,3 +136,5 @@
     * [x] add `.local/share/resoday/habit-order.res` to preserve order between restarts
     * [x] not implemented -- maybe add test for non-empty v0 file -- not implemented
     * [x] make Edit dialog more user-friendly: needs buttons: [Ok] [Cancel] [Apply] --- implemented without the "Apply" button for now.
+- Fix icon in the dialogs
+    > all modal dialogs have the default Duke icon, which is unfortunate
