@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 
 public final class AboutDialog {
 	private static final String XDG_OPEN_EXECUTABLE = "xdg-open";
+	private static final String ABOUT_HTML_RESOURCE_FILENAME = "about.html";
 
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI, Dialog.ModalityType.MODELESS);
@@ -51,11 +52,13 @@ public final class AboutDialog {
 
 		JTextPane textPane = new JTextPane();
 		textPane.setContentType("text/html");
-		textPane.setText("This application emulates the " +
-			"<a href=\"http://www.simonegiertz.com/every-day-calendar\">Every Day Calendar</a> by Simone Giertz " +
-			"shown in " +
-			"<a href=\"https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s\">Veritasium video titled " +
-			"<i>Why Most Resolutions Fail &amp; How To Succeed</i></a>.");
+		try {
+			textPane.setPage(AboutDialog.class.getResource(ABOUT_HTML_RESOURCE_FILENAME));
+		} catch (IOException e) {
+			textPane.setText(e.getMessage());
+			System.err.println("Could not open '" + ABOUT_HTML_RESOURCE_FILENAME + "': " + e);
+			e.printStackTrace();
+		}
 		textPane.setEditable(false);
 		JTextField urlFallbackDisplay = new JTextField("");
 		setUpHyperlinkListener(textPane, urlFallbackDisplay);
