@@ -1,6 +1,7 @@
-package dev.andrybak.resoday.gui;
+package dev.andrybak.resoday.gui.help;
 
 import dev.andrybak.resoday.StringConstants;
+import dev.andrybak.resoday.gui.Dialogs;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -30,7 +31,7 @@ import java.nio.file.Paths;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-class AboutDialog {
+public final class AboutDialog {
 	private static final String XDG_OPEN_EXECUTABLE = "xdg-open";
 
 	private static JDialog create(Window parent) {

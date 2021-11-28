@@ -6,6 +6,7 @@ import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.ChooseHabitNameDialog;
 import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
+import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.storage.HabitFiles;
 
 import javax.swing.AbstractAction;
