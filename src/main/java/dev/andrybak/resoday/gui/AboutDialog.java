@@ -10,15 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -33,9 +32,8 @@ import java.util.stream.Stream;
 class AboutDialog {
 	private static final String XDG_OPEN_EXECUTABLE = "xdg-open";
 
-	private static JDialog create(Component parentComponent) {
-		JDialog d = new JDialog(SwingUtilities.getWindowAncestor(parentComponent), "About " + StringConstants.APP_NAME_GUI,
-			Dialog.ModalityType.MODELESS);
+	private static JDialog create(Window parent) {
+		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI, Dialog.ModalityType.MODELESS);
 
 		JPanel content = new JPanel(null);
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
@@ -74,13 +72,13 @@ class AboutDialog {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		d.setSize(((int)(screenSize.getWidth() / 4.5)), ((int)(screenSize.getHeight() / 5)));
 		d.setResizable(false);
-		d.setLocationRelativeTo(parentComponent);
+		d.setLocationRelativeTo(parent);
 
 		return d;
 	}
 
-	public static void show(Component parentComponent) {
-		JDialog d = create(parentComponent);
+	public static void show(Window parent) {
+		JDialog d = create(parent);
 		d.setVisible(true);
 	}
 
@@ -157,7 +155,7 @@ class AboutDialog {
 		frame.setVisible(true);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation((int)(screenSize.getWidth() / 2), (int)(screenSize.getHeight() / 2));
-		JDialog aboutDialog = create(content);
+		JDialog aboutDialog = create(frame);
 		aboutDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
