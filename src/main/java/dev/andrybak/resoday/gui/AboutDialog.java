@@ -38,7 +38,7 @@ class AboutDialog {
 		JPanel content = new JPanel(null);
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
-		JLabel label = new JLabel(StringConstants.APP_NAME_GUI + " by Andrei Rybak © 2020");
+		JLabel label = new JLabel(StringConstants.APP_NAME_GUI + " by Andrei Rybak © 2020–2021");
 		content.add(Box.createVerticalStrut(10));
 		content.add(label);
 		content.add(Box.createVerticalStrut(20));
