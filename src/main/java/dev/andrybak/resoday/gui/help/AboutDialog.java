@@ -36,7 +36,8 @@ public final class AboutDialog {
 	private static final String ABOUT_HTML_RESOURCE_FILENAME = "about.html";
 
 	private static JDialog create(Window parent) {
-		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI, Dialog.ModalityType.MODELESS);
+		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI,
+			Dialog.ModalityType.APPLICATION_MODAL);
 
 		JPanel content = new JPanel(null);
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
@@ -69,13 +70,6 @@ public final class AboutDialog {
 
 		d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dialogs.setUpEscapeKeyClosing(d, content);
-		d.addWindowFocusListener(new WindowAdapter() {
-			@Override
-			public void windowLostFocus(WindowEvent e) {
-				d.dispose();
-			}
-		});
-		d.setUndecorated(true);
 		d.setContentPane(content);
 		d.pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
