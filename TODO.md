@@ -1,5 +1,6 @@
 ## TODO
 
+- Fix bug: size of AboutDialog is broken on vertical monitors
 - Show version in AboutDialog
 - README: add screenshot
 - Maybe cache resource files
@@ -46,7 +47,8 @@
 ## In dev
 
 - Introduce Help > License
-    * [ ] Add licensing information -- this is probably even required for GPL "compliancy"
+    * [x] Extract Url utils from AboutDialog
+    * [x] Add licensing information -- this is probably even required for GPL "compliancy"
     * [ ] Add attribution for used libraries
 
 ## Done
