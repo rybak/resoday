@@ -14,6 +14,7 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
@@ -22,6 +23,8 @@ import java.io.IOException;
 
 public final class AboutDialog {
 	private static final String ABOUT_HTML_RESOURCE_FILENAME = "about.html";
+	private static final String LICENSE_TXT_RESOURCE_FILENAME = "LICENSE.txt";
+	private static final String LICENSE_HTML_RESOURCE_FILENAME = "license.html";
 
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI,
@@ -32,6 +35,7 @@ public final class AboutDialog {
 
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.addTab(StringConstants.APP_NAME_GUI, createResodayTab(d));
+		tabs.addTab("License", createLicenseTab(d));
 		content.add(tabs, BorderLayout.CENTER);
 
 		d.setContentPane(content);
@@ -68,6 +72,39 @@ public final class AboutDialog {
 		resodayTab.add(ScrollPanes.vertical(textPane), BorderLayout.CENTER);
 
 		return resodayTab;
+	}
+
+	private static JPanel createLicenseTab(JDialog d) {
+		JPanel licenseTab = new JPanel(new BorderLayout());
+		{
+			JTextPane header = new JTextPane();
+			header.setEditable(false);
+			Dialogs.setUpEscapeKeyClosing(d, header);
+			try {
+				header.setPage(AboutDialog.class.getResource(LICENSE_HTML_RESOURCE_FILENAME));
+			} catch (IOException e) {
+				header.setText(e.getMessage());
+				System.err.println("Could not open '" + LICENSE_HTML_RESOURCE_FILENAME + "': " + e);
+				e.printStackTrace();
+			}
+			licenseTab.add(header, BorderLayout.NORTH);
+		}
+		{
+			JTextPane licenseTextPane = new JTextPane();
+			licenseTextPane.setEditable(false);
+			licenseTextPane.setContentType("text/plain");
+			licenseTextPane.setFont(Font.getFont("monospace"));
+			Dialogs.setUpEscapeKeyClosing(d, licenseTextPane);
+			try {
+				licenseTextPane.setPage(AboutDialog.class.getResource(LICENSE_TXT_RESOURCE_FILENAME));
+			} catch (IOException e) {
+				licenseTextPane.setText(e.getMessage());
+				System.err.println("Could not open '" + LICENSE_TXT_RESOURCE_FILENAME + "': " + e);
+				e.printStackTrace();
+			}
+			licenseTab.add(ScrollPanes.regular(licenseTextPane), BorderLayout.CENTER);
+		}
+		return licenseTab;
 	}
 
 	public static void show(Window parent) {
