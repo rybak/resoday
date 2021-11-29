@@ -5,14 +5,17 @@ import dev.andrybak.resoday.gui.Dialogs;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dialog;
@@ -61,11 +64,9 @@ public final class AboutDialog {
 			e.printStackTrace();
 		}
 		textPane.setEditable(false);
-		JTextField urlFallbackDisplay = new JTextField("");
-		setUpHyperlinkListener(textPane, urlFallbackDisplay);
+		setUpHyperlinkListener(textPane);
 		textPane.setBackground(label.getBackground());
 		content.add(textPane);
-		content.add(urlFallbackDisplay);
 		content.add(Box.createVerticalStrut(10));
 
 		d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -85,9 +86,7 @@ public final class AboutDialog {
 		d.setVisible(true);
 	}
 
-	private static void setUpHyperlinkListener(JTextPane textPane, JTextField urlFallbackDisplay) {
-		urlFallbackDisplay.setVisible(false);
-		urlFallbackDisplay.setEditable(false);
+	private static void setUpHyperlinkListener(JTextPane textPane) {
 		textPane.addHyperlinkListener(hyperlinkEvent -> {
 			HyperlinkEvent.EventType eventType = hyperlinkEvent.getEventType();
 			if (HyperlinkEvent.EventType.ENTERED.equals(eventType)) {
@@ -96,7 +95,7 @@ public final class AboutDialog {
 				textPane.setCursor(Cursor.getDefaultCursor());
 			} else if (HyperlinkEvent.EventType.ACTIVATED.equals(eventType)) {
 				URL url = hyperlinkEvent.getURL();
-				showUrl(url, () -> showUrlFallback(urlFallbackDisplay, url));
+				showUrl(url, () -> showUrlFallback(textPane, url));
 			}
 		});
 	}
@@ -140,12 +139,18 @@ public final class AboutDialog {
 		}
 	}
 
-	private static void showUrlFallback(JTextField urlField, URL url) {
+	private static void showUrlFallback(JComponent parent, URL url) {
 		System.out.println("Fallback for " + url);
-		urlField.setText(url.toString());
-		urlField.setVisible(true);
-		urlField.getParent().revalidate();
-		urlField.getParent().repaint();
+		JPanel content = new JPanel(new BorderLayout());
+		{
+			content.add(new JLabel("Could not open URL:"), BorderLayout.NORTH);
+		}
+		{
+			JTextField urlField = new JTextField(url.toString());
+			urlField.setText(url.toString());
+			content.add(urlField, BorderLayout.CENTER);
+		}
+		JOptionPane.showMessageDialog(parent, content);
 	}
 
 	/**
