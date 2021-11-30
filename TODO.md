@@ -1,5 +1,9 @@
 ## TODO
 
+- gitignore
+- Add IntelliJ run configs to Git
+- Rename "Edit habits" to "Reorder habits"
+    > At  some point in the future, "Rename habit" will become "Edit habit" (with description, settings, etc). "Edit habits" already is a bit weird. "Reorder" would be better.
 - Fix bug: size of AboutDialog is broken on vertical monitors
 - Show version in AboutDialog
 - README: add screenshot
@@ -15,6 +19,12 @@
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
 - Introduce Help > Help
+    > Describe what Resoday is used for
+- Add intro panel when zero habit files exist
+    > Intro panel may use the same UI as the "Add habit" dialog.
+    * [ ] use CardLayout to swap between JTabbedPane and intro panel
+- Starter interface (suggest three habits)
+    * [ ] or just show contents of "Add habit" dialog in the main window instead of tabs
 - Remember last opened tab
     * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
     * [ ] Save last opened tab in cache
@@ -29,27 +39,19 @@
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
 - Streak animation 
-- Starter interface (suggest three habits)
-    * [ ] or just show contents of "Add habit" dialog in the main window instead of tabs
 - When adding more than (some small number) of habits, warn the user
+- Add shortcut for opening the habit directory via Desktop.open
+    * [ ] Or some kind of "Help > Debug > Open data dir" menu
+    * [ ] JTable with data about habits (Name | Path | number of dates, for example)
+- Make "Today" more noticeable
 - Save button
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
     * [ ] Add save button
     * [x] Disable after autosave/Enable after edit --- automatic via YearHistory#hasChanges
-- Add shortcut for opening the habit directory via Desktop.open
-    * [ ] Or some kind of "Help > Debug > Open data dir" menu
-- Add intro panel when zero habit files exist
-    > Intro panel may use the same UI as the "Add habit" dialog.
-    * [ ] use CardLayout to swap between JTabbedPane and intro panel
-- gitignore
 - https://openjdk.java.net/jeps/392 ?
 
 ## In dev
 
-- Introduce Help > License
-    * [x] Extract Url utils from AboutDialog
-    * [x] Add licensing information -- this is probably even required for GPL "compliancy"
-    * [ ] Add attribution for used libraries
 
 ## Done
 
@@ -141,3 +143,7 @@
 - Add Git* links to AboutDialog
     > Right now Help>About is only about the YouTube video.    It should contain more useful information. See also other tasks in "TODO".
     * [x] Add link to GitLab/GitHub/etc
+- Introduce Help > License
+    * [x] Extract Url utils from AboutDialog
+    * [x] Add licensing information -- this is probably even required for GPL "compliancy"
+    * [x] Add attribution for used libraries
