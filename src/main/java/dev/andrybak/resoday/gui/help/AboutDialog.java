@@ -25,6 +25,7 @@ public final class AboutDialog {
 	private static final String ABOUT_HTML_RESOURCE_FILENAME = "about.html";
 	private static final String LICENSE_TXT_RESOURCE_FILENAME = "LICENSE.txt";
 	private static final String LICENSE_HTML_RESOURCE_FILENAME = "license.html";
+	private static final String THIRD_PARTY_HTML_RESOURCE_FILENAME = "third-party-software.html";
 
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI,
@@ -36,6 +37,7 @@ public final class AboutDialog {
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.addTab(StringConstants.APP_NAME_GUI, createResodayTab(d));
 		tabs.addTab("License", createLicenseTab(d));
+		tabs.addTab("Third-party software", createThirdPartyTab(d));
 		content.add(tabs, BorderLayout.CENTER);
 
 		d.setContentPane(content);
@@ -105,6 +107,26 @@ public final class AboutDialog {
 			licenseTab.add(ScrollPanes.regular(licenseTextPane), BorderLayout.CENTER);
 		}
 		return licenseTab;
+	}
+
+	private static JPanel createThirdPartyTab(JDialog d) {
+		JPanel thirdPartyTab = new JPanel(new BorderLayout());
+		{
+			JTextPane thirdPartyTextPane = new JTextPane();
+			thirdPartyTextPane.setEditable(false);
+			thirdPartyTextPane.setContentType("text/html");
+			Hyperlinks.setUpHyperlinkListener(thirdPartyTextPane);
+			Dialogs.setUpEscapeKeyClosing(d, thirdPartyTextPane);
+			try {
+				thirdPartyTextPane.setPage(AboutDialog.class.getResource(THIRD_PARTY_HTML_RESOURCE_FILENAME));
+			} catch (IOException e) {
+				thirdPartyTextPane.setText(e.getMessage());
+				System.err.println("Could not open '" + THIRD_PARTY_HTML_RESOURCE_FILENAME + "': " + e);
+				e.printStackTrace();
+			}
+			thirdPartyTab.add(ScrollPanes.regular(thirdPartyTextPane), BorderLayout.CENTER);
+		}
+		return thirdPartyTab;
 	}
 
 	public static void show(Window parent) {
