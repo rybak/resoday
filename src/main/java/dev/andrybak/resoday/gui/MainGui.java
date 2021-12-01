@@ -122,36 +122,54 @@ public final class MainGui {
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu mainMenu = new JMenu("Main");
-		JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
-		addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
-		mainMenu.add(addHabitMenuItem);
-		JMenuItem reorderHabitsMenuItem = new JMenuItem("Reorder habits");
-		reorderHabitsMenuItem.addActionListener(ignored -> openReorderHabitsDialog(dir, tabs));
-		mainMenu.add(reorderHabitsMenuItem);
+		mainMenu.setMnemonic('M');
+		{
+			JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
+			addHabitMenuItem.setMnemonic('A');
+			addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
+			mainMenu.add(addHabitMenuItem);
+		}
+		{
+			JMenuItem reorderHabitsMenuItem = new JMenuItem("Reorder habits");
+			reorderHabitsMenuItem.setMnemonic('O');
+			reorderHabitsMenuItem.addActionListener(ignored -> openReorderHabitsDialog(dir, tabs));
+			mainMenu.add(reorderHabitsMenuItem);
+		}
 		mainMenu.add(new JSeparator());
-		JMenuItem renameHabitMenuItem = new JMenuItem("Rename habit");
-		renameHabitMenuItem.addActionListener(ignored -> openRenameHabitDialog(tabs));
-		mainMenu.add(renameHabitMenuItem);
-		JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
-		hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
-		mainMenu.add(hideHabitMenuItem);
-		JMenuItem deleteHabitMenuItem = new JMenuItem("Delete habit");
-		deleteHabitMenuItem.addActionListener(ignored -> openDeleteHabitDialog(tabs));
-		mainMenu.add(deleteHabitMenuItem);
+		{
+			JMenuItem renameHabitMenuItem = new JMenuItem("Rename habit");
+			renameHabitMenuItem.setMnemonic('R');
+			renameHabitMenuItem.addActionListener(ignored -> openRenameHabitDialog(tabs));
+			mainMenu.add(renameHabitMenuItem);
+		}
+		{
+			JMenuItem hideHabitMenuItem = new JMenuItem("Hide habit");
+			hideHabitMenuItem.setMnemonic('H');
+			hideHabitMenuItem.addActionListener(ignored -> openHideHabitDialog(tabs));
+			mainMenu.add(hideHabitMenuItem);
+		}
+		{
+			JMenuItem deleteHabitMenuItem = new JMenuItem("Delete habit");
+			deleteHabitMenuItem.setMnemonic('D');
+			deleteHabitMenuItem.addActionListener(ignored -> openDeleteHabitDialog(tabs));
+			mainMenu.add(deleteHabitMenuItem);
+		}
 		menuBar.add(mainMenu);
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
-		JMenuItem aboutMenuItem = new JMenuItem("About");
-		aboutMenuItem.setMnemonic('A');
-		aboutMenuItem.addActionListener(ignored -> AboutDialog.show(window));
-		if (Desktop.isDesktopSupported()) {
-			Desktop desktop = Desktop.getDesktop();
-			if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
-				desktop.setAboutHandler(ignored -> AboutDialog.show(window));
+		{
+			JMenuItem aboutMenuItem = new JMenuItem("About");
+			aboutMenuItem.setMnemonic('A');
+			aboutMenuItem.addActionListener(ignored -> AboutDialog.show(window));
+			if (Desktop.isDesktopSupported()) {
+				Desktop desktop = Desktop.getDesktop();
+				if (desktop.isSupported(Desktop.Action.APP_ABOUT)) {
+					desktop.setAboutHandler(ignored -> AboutDialog.show(window));
+				}
 			}
+			helpMenu.add(aboutMenuItem);
 		}
-		helpMenu.add(aboutMenuItem);
 		menuBar.add(helpMenu);
 
 		window.setJMenuBar(menuBar);
