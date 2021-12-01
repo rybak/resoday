@@ -1,10 +1,5 @@
 ## TODO
 
-- gitignore
-- Add IntelliJ run configs to Git
-- Rename "Edit habits" to "Reorder habits"
-    > At  some point in the future, "Rename habit" will become "Edit habit" (with description, settings, etc). "Edit habits" already is a bit weird. "Reorder" would be better.
-- Fix bug: size of AboutDialog is broken on vertical monitors
 - Show version in AboutDialog
 - README: add screenshot
 - Maybe cache resource files
@@ -25,6 +20,8 @@
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
 - Starter interface (suggest three habits)
     * [ ] or just show contents of "Add habit" dialog in the main window instead of tabs
+- Reorder Habits: magic focus
+    > It would be neat if buttons in ReorderHabitsDialog "kept" the focus on the "selected" habit. I.e. tab-tab-tab to get to a direction button you need, then press space    N times => the selected habit has moved N times.
 - Remember last opened tab
     * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
     * [ ] Save last opened tab in cache
@@ -40,7 +37,7 @@
 - Streak sound
 - Streak animation 
 - When adding more than (some small number) of habits, warn the user
-- Add shortcut for opening the habit directory via Desktop.open
+- Add debug ui for opening the habit directory via Desktop.open
     * [ ] Or some kind of "Help > Debug > Open data dir" menu
     * [ ] JTable with data about habits (Name | Path | number of dates, for example)
 - Make "Today" more noticeable
@@ -49,9 +46,11 @@
     * [ ] Add save button
     * [x] Disable after autosave/Enable after edit --- automatic via YearHistory#hasChanges
 - https://openjdk.java.net/jeps/392 ?
+- shortcuts for tabs Ctrl+1 Ctrl+2 ...
 
 ## In dev
 
+- Fix bug: size of AboutDialog is broken on vertical monitors
 
 ## Done
 
@@ -147,3 +146,9 @@
     * [x] Extract Url utils from AboutDialog
     * [x] Add licensing information -- this is probably even required for GPL "compliancy"
     * [x] Add attribution for used libraries
+- Add IntelliJ run configs to Git
+- gitignore
+- Rename "Edit habits" to "Reorder habits"
+    > At  some point in the future, "Rename habit" will become "Edit habit" (with description, settings, etc). "Edit habits" already is a bit weird. "Reorder" would be better.
+- JMenuBar: add mnemonics
+    > some JMenuItems are missing a mnemonic
