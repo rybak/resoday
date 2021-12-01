@@ -26,6 +26,7 @@ public final class AboutDialog {
 	private static final String LICENSE_TXT_RESOURCE_FILENAME = "LICENSE.txt";
 	private static final String LICENSE_HTML_RESOURCE_FILENAME = "license.html";
 	private static final String THIRD_PARTY_HTML_RESOURCE_FILENAME = "third-party-software.html";
+	private static final String HTML_UTF_8_CONTENT_TYPE = "text/html;charset=UTF-8";
 
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI,
@@ -61,7 +62,7 @@ public final class AboutDialog {
 		 * mean for the JDialog.  So we have to set up a "separate" hotkey.
 		 */
 		Dialogs.setUpEscapeKeyClosing(d, textPane); // JTextPane takes away focus,
-		textPane.setContentType("text/html");
+		textPane.setContentType(HTML_UTF_8_CONTENT_TYPE);
 		try {
 			textPane.setPage(AboutDialog.class.getResource(ABOUT_HTML_RESOURCE_FILENAME));
 		} catch (IOException e) {
@@ -114,7 +115,7 @@ public final class AboutDialog {
 		{
 			JTextPane thirdPartyTextPane = new JTextPane();
 			thirdPartyTextPane.setEditable(false);
-			thirdPartyTextPane.setContentType("text/html");
+			thirdPartyTextPane.setContentType(HTML_UTF_8_CONTENT_TYPE);
 			Hyperlinks.setUpHyperlinkListener(thirdPartyTextPane);
 			Dialogs.setUpEscapeKeyClosing(d, thirdPartyTextPane);
 			try {
