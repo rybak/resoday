@@ -145,7 +145,7 @@ public final class ChooseHabitNameDialog {
 		return nameUsedPopup;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		JFrame frame = new JFrame("Choose habit name dialog demo");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,7 +159,7 @@ public final class ChooseHabitNameDialog {
 		Set<String> names = Set.of("My habit", "New habit");
 		JDialog addHabitDialog = create(frame, "Testing choosing the name", "+", "Test name", names::contains,
 			name -> {
-				System.out.println("Got " + name);
+				System.out.println("Got '" + name + "'");
 				System.exit(0);
 			}
 		);

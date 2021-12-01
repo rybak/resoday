@@ -24,7 +24,7 @@ public class HideHabitDialog {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		SwingUtilities.invokeLater(() -> {
 			JFrame frame = new JFrame("Hide habit dialog demo");
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -93,7 +93,7 @@ public class EditHabitsDialog extends JDialog {
 		return d;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		JFrame frame = new JFrame("Edit habits dialog demo");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

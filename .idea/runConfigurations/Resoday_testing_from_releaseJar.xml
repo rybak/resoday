@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Resoday testing from releaseJar" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="14" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="dev.andrybak.resoday.Resoday" />
+    <option name="PROGRAM_PARAMETERS" value="testFiles" />
+    <option name="VM_PARAMETERS" value="-ea -cp build/distributions/resoday-release.jar" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="dev.andrybak.resoday.files.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="release" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
