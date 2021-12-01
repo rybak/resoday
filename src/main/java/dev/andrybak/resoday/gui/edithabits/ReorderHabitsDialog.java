@@ -32,15 +32,16 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Allows editing names and visibility status of habits.
+ * Allows reordering and changing visibility status of habits.
  */
-public class EditHabitsDialog extends JDialog {
+public class ReorderHabitsDialog extends JDialog {
+	private static final String DIALOG_TITLE = "Reorder habits";
 
 	private final Map<String, Row> rows;
 	private JPanel rowsPanel;
 
-	private EditHabitsDialog(Window parent, Map<String, Row> rows, Consumer<List<Row>> resultConsumer) {
-		super(parent, "Edit habits", ModalityType.APPLICATION_MODAL);
+	private ReorderHabitsDialog(Window parent, Map<String, Row> rows, Consumer<List<Row>> resultConsumer) {
+		super(parent, DIALOG_TITLE, ModalityType.APPLICATION_MODAL);
 		this.rows = rows;
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -73,11 +74,12 @@ public class EditHabitsDialog extends JDialog {
 	}
 
 	public static void show(Window parent, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
-		EditHabitsDialog d = create(parent, originalRows, resultConsumer);
+		ReorderHabitsDialog d = create(parent, originalRows, resultConsumer);
 		d.setVisible(true);
 	}
 
-	private static EditHabitsDialog create(Window parent, List<Row> originalRows, Consumer<List<Row>> resultConsumer) {
+	private static ReorderHabitsDialog create(Window parent, List<Row> originalRows, Consumer<List<Row>> resultConsumer)
+	{
 		Map<String, Row> rows = new HashMap<>();
 		for (int i = 0, n = originalRows.size(); i < n; i++) {
 			Row originalRow = originalRows.get(i);
@@ -86,7 +88,7 @@ public class EditHabitsDialog extends JDialog {
 			}
 		}
 
-		EditHabitsDialog d = new EditHabitsDialog(parent, rows, resultConsumer);
+		ReorderHabitsDialog d = new ReorderHabitsDialog(parent, rows, resultConsumer);
 		d.pack();
 		d.setLocationRelativeTo(parent.getParent());
 
@@ -94,7 +96,7 @@ public class EditHabitsDialog extends JDialog {
 	}
 
 	public static void main(String... args) {
-		JFrame frame = new JFrame("Edit habits dialog demo");
+		JFrame frame = new JFrame("ReorderHabitsDialog demo");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		JPanel content = new JPanel();
@@ -206,7 +208,7 @@ public class EditHabitsDialog extends JDialog {
 		private int index;
 
 		/**
-		 * Row in the edit dialog represents a single habit being edited.
+		 * Row in the dialog represents a single habit being edited.
 		 *
 		 * @param id     must be unique for every {@link Row} created
 		 * @param name   name of the edited item

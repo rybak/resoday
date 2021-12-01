@@ -125,9 +125,9 @@ public final class MainGui {
 		JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
 		addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
 		mainMenu.add(addHabitMenuItem);
-		JMenuItem editHabitsMenuItem = new JMenuItem("Edit habits");
-		editHabitsMenuItem.addActionListener(ignored -> openEditHabitsDialog(dir, tabs));
-		mainMenu.add(editHabitsMenuItem);
+		JMenuItem reorderHabitsMenuItem = new JMenuItem("Reorder habits");
+		reorderHabitsMenuItem.addActionListener(ignored -> openReorderHabitsDialog(dir, tabs));
+		mainMenu.add(reorderHabitsMenuItem);
 		mainMenu.add(new JSeparator());
 		JMenuItem renameHabitMenuItem = new JMenuItem("Rename habit");
 		renameHabitMenuItem.addActionListener(ignored -> openRenameHabitDialog(tabs));
@@ -245,11 +245,11 @@ public final class MainGui {
 		tabs.removeTabAt(i);
 	}
 
-	private void openEditHabitsDialog(Path dir, JTabbedPane tabs) {
+	private void openReorderHabitsDialog(Path dir, JTabbedPane tabs) {
 		String oldSelectedId = getCurrentHistoryPanel(tabs)
 			.map(HistoryPanel::getHistoryId)
 			.orElse(null);
-		histories.edit(this.window, dir, () -> {
+		histories.reorder(this.window, dir, () -> {
 			for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
 				tabs.removeTabAt(0); // removing all tabs
 			}

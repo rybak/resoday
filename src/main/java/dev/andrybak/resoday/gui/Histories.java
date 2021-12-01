@@ -2,7 +2,7 @@ package dev.andrybak.resoday.gui;
 
 import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.YearHistory;
-import dev.andrybak.resoday.gui.edithabits.EditHabitsDialog;
+import dev.andrybak.resoday.gui.edithabits.ReorderHabitsDialog;
 
 import java.awt.Window;
 import java.nio.file.Path;
@@ -50,19 +50,19 @@ public class Histories {
 	/**
 	 * @param editCallback called, if something was edited
 	 */
-	public void edit(Window parent, Path dir, Runnable editCallback) {
-		List<EditHabitsDialog.Row> inputRows = new ArrayList<>();
+	public void reorder(Window parent, Path dir, Runnable editCallback) {
+		List<ReorderHabitsDialog.Row> inputRows = new ArrayList<>();
 		for (int i = 0; i < histories.size(); i++) {
 			YearHistory history = histories.get(i);
 			String id = history.getId();
 			String name = history.getName();
-			EditHabitsDialog.Row row = new EditHabitsDialog.Row(id, name, switch (history.getVisibility()) {
-				case VISIBLE -> EditHabitsDialog.Row.Status.VISIBLE;
-				case HIDDEN -> EditHabitsDialog.Row.Status.HIDDEN;
+			ReorderHabitsDialog.Row row = new ReorderHabitsDialog.Row(id, name, switch (history.getVisibility()) {
+				case VISIBLE -> ReorderHabitsDialog.Row.Status.VISIBLE;
+				case HIDDEN -> ReorderHabitsDialog.Row.Status.HIDDEN;
 			}, i);
 			inputRows.add(row);
 		}
-		EditHabitsDialog.show(parent, inputRows, outputRows -> {
+		ReorderHabitsDialog.show(parent, inputRows, outputRows -> {
 			if (inputRows.equals(outputRows)) {
 				return;
 			}
@@ -73,7 +73,7 @@ public class Histories {
 			));
 			int origSize = histories.size();
 			histories.clear();
-			for (EditHabitsDialog.Row outputRow : outputRows) {
+			for (ReorderHabitsDialog.Row outputRow : outputRows) {
 				YearHistory history = map.get(outputRow.getId());
 				history.setVisibility(switch (outputRow.getStatus()) {
 					case VISIBLE -> YearHistory.Visibility.VISIBLE;
@@ -85,14 +85,14 @@ public class Histories {
 				histories.add(history);
 			}
 			if (histories.size() != origSize) {
-				throw new UnsupportedOperationException("Deleting habits via " + EditHabitsDialog.class +
+				throw new UnsupportedOperationException("Deleting habits via " + ReorderHabitsDialog.class +
 					" is not supported yet");
 			}
 			List<String> inputOrder = inputRows.stream()
-				.map(EditHabitsDialog.Row::getId)
+				.map(ReorderHabitsDialog.Row::getId)
 				.collect(Collectors.toList());
 			List<String> outputOrder = outputRows.stream()
-				.map(EditHabitsDialog.Row::getId)
+				.map(ReorderHabitsDialog.Row::getId)
 				.collect(Collectors.toList());
 			if (!inputOrder.equals(outputOrder)) {
 				SortOrder.save(dir, outputOrder);
