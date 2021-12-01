@@ -1,5 +1,6 @@
 package dev.andrybak.resoday.gui.edithabits;
 
+import dev.andrybak.resoday.gui.util.ArrowButton;
 import dev.andrybak.resoday.gui.util.Dialogs;
 
 import javax.swing.BorderFactory;
@@ -9,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -20,6 +20,8 @@ import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -111,13 +113,20 @@ public class ReorderHabitsDialog extends JDialog {
 		rows.add(new Row("001", "World", Row.Status.HIDDEN));
 		rows.add(new Row("002", "Foo", Row.Status.VISIBLE));
 		System.out.println("Showing dialog with " + rows.size() + " rows");
-		show(frame, rows, resultRows -> {
+		ReorderHabitsDialog d = create(frame, rows, resultRows -> {
 			System.out.println("Result rows: ");
 			for (Row r : resultRows) {
 				System.out.println("\t" + r);
 			}
 			frame.dispose();
 		});
+		d.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				frame.dispose();
+			}
+		});
+		d.setVisible(true);
 	}
 
 	private List<Row> getResultRows() {
@@ -157,7 +166,7 @@ public class ReorderHabitsDialog extends JDialog {
 				rowsPanel.add(visibilityButton, HabitListLayout.Column.HIDE_SHOW_BUTTON);
 			}
 			{
-				BasicArrowButton upButton = new BasicArrowButton(BasicArrowButton.NORTH);
+				JButton upButton = new ArrowButton(ArrowButton.Direction.UP);
 				upButton.addActionListener(ignored -> {
 					swap(rows, row.getIndex(), row.getIndex() - 1);
 					recreateRowsPanel(parent);
@@ -168,7 +177,7 @@ public class ReorderHabitsDialog extends JDialog {
 				}
 			}
 			{
-				BasicArrowButton downButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+				JButton downButton = new ArrowButton(ArrowButton.Direction.DOWN);
 				downButton.addActionListener(ignored -> {
 					swap(rows, row.getIndex(), row.getIndex() + 1);
 					recreateRowsPanel(parent);
