@@ -1,4 +1,4 @@
-package dev.andrybak.resoday.gui;
+package dev.andrybak.resoday.gui.util;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;

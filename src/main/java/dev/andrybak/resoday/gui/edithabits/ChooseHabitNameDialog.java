@@ -1,6 +1,6 @@
 package dev.andrybak.resoday.gui.edithabits;
 
-import dev.andrybak.resoday.gui.Dialogs;
+import dev.andrybak.resoday.gui.util.Dialogs;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;

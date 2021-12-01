@@ -1,9 +1,9 @@
 package dev.andrybak.resoday.gui.help;
 
 import dev.andrybak.resoday.StringConstants;
-import dev.andrybak.resoday.gui.Dialogs;
-import dev.andrybak.resoday.gui.Hyperlinks;
-import dev.andrybak.resoday.gui.ScrollPanes;
+import dev.andrybak.resoday.gui.util.Dialogs;
+import dev.andrybak.resoday.gui.util.Hyperlinks;
+import dev.andrybak.resoday.gui.util.ScrollPanes;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
