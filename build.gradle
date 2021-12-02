@@ -4,7 +4,10 @@ plugins {
 }
 
 tasks.withType(JavaCompile) {
-	options.encoding = 'UTF-8'
+	options.with {
+		encoding = 'UTF-8'
+		release.set(14) // don't forget to update README.md
+	}
 }
 
 repositories {
