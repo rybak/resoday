@@ -41,8 +41,8 @@ test {
 	}
 
 	reports {
-		junitXml.enabled = true
-		html.enabled = true // see ./build/reports/tests/test/index.html
+		junitXml.required = true
+		html.required = true // see ./build/reports/tests/test/index.html
 	}
 }
 
