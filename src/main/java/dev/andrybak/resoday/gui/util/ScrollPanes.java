@@ -1,7 +1,7 @@
 package dev.andrybak.resoday.gui.util;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import java.awt.Component;
 
 public class ScrollPanes {
@@ -29,8 +29,8 @@ public class ScrollPanes {
 	/**
 	 * Uses default constructor: {@link JScrollPane#JScrollPane()}.
 	 */
-	public static JScrollPane regular(JTextPane licenseTextPane) {
-		JScrollPane scrollPane = new JScrollPane(licenseTextPane);
+	public static JScrollPane regular(JComponent view) {
+		JScrollPane scrollPane = new JScrollPane(view);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(UNIT_INCREMENT);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(UNIT_INCREMENT);
 		return scrollPane;

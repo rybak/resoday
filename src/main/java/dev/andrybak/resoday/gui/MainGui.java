@@ -7,6 +7,7 @@ import dev.andrybak.resoday.gui.edithabits.ChooseHabitNameDialog;
 import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.gui.help.AboutDialog;
+import dev.andrybak.resoday.gui.help.DebugDialog;
 import dev.andrybak.resoday.storage.HabitFiles;
 
 import javax.swing.AbstractAction;
@@ -169,6 +170,12 @@ public final class MainGui {
 				}
 			}
 			helpMenu.add(aboutMenuItem);
+		}
+		{
+			JMenuItem debugMenuItem = new JMenuItem("Debug");
+			debugMenuItem.setMnemonic('D');
+			debugMenuItem.addActionListener(ignored -> DebugDialog.show(window));
+			helpMenu.add(debugMenuItem);
 		}
 		menuBar.add(helpMenu);
 
