@@ -2,6 +2,8 @@
 
 - Show version in AboutDialog
 - README: add screenshot
+- Release v1.0
+- Fix bug: size of AboutDialog is broken on vertical monitors
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -50,7 +52,6 @@
 
 ## In dev
 
-- Fix bug: size of AboutDialog is broken on vertical monitors
 
 ## Done
 
@@ -152,3 +153,9 @@
     > At  some point in the future, "Rename habit" will become "Edit habit" (with description, settings, etc). "Edit habits" already is a bit weird. "Reorder" would be better.
 - JMenuBar: add mnemonics
     > some JMenuItems are missing a mnemonic
+- Gradle: upgrade to 7
+- Gradle: specify Java version as strictly as possible
+- Test running in JRE 17
+- DebugDialog
+    > Show some system properties in a dialog
+    * [x] add "Copy" button
