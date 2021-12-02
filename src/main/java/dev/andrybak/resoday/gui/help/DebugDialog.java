@@ -3,6 +3,7 @@ package dev.andrybak.resoday.gui.help;
 import dev.andrybak.resoday.gui.util.Dialogs;
 import dev.andrybak.resoday.gui.util.ScrollPanes;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +15,8 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.ZoneId;
@@ -43,11 +46,33 @@ public final class DebugDialog {
 
 		JTable table = createTable();
 		content.add(ScrollPanes.regular(table), BorderLayout.CENTER);
+		{
+			JButton copyButton = new JButton("Copy");
+			copyButton.addActionListener(ignored -> copyToClipboard(table));
+			content.add(copyButton, BorderLayout.SOUTH);
+		}
 
 		d.setContentPane(content);
 		d.pack();
 		d.setLocationRelativeTo(parent);
 		return d;
+	}
+
+	private static void copyToClipboard(JTable table) {
+		int n = table.getModel().getRowCount();
+		int m = table.getModel().getColumnCount();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				sb.append(table.getModel().getValueAt(i, j).toString());
+				if (j < m - 1) {
+					sb.append('\t');
+				}
+			}
+			sb.append('\n');
+		}
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(new StringSelection(sb.toString()), null);
 	}
 
 	private static JTable createTable() {
