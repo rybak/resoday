@@ -4,7 +4,7 @@
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="dev.andrybak.resoday.Resoday" />
     <option name="PROGRAM_PARAMETERS" value="testFiles" />
-    <option name="VM_PARAMETERS" value="-ea -cp build/distributions/resoday-release.jar" />
+    <option name="VM_PARAMETERS" value="-ea -cp build/distributions/*" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="dev.andrybak.resoday.files.*" />
@@ -12,7 +12,7 @@
       </pattern>
     </extension>
     <method v="2">
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="release" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="clean releaseJar" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>
