@@ -81,6 +81,14 @@ String calculateVersion() {
 
 project.version = calculateVersion()
 
+processResources {
+	filesMatching('**/about.html') {
+		filter {
+			it.replace('@VERSION@', project.version)
+		}
+	}
+}
+
 final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
 
 jar {
