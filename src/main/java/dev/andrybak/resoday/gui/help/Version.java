@@ -10,6 +10,10 @@ public class Version {
 		return versionFromPackage;
 	}
 
+	public static String extractTitle() {
+		return Version.class.getPackage().getImplementationTitle();
+	}
+
 	private static String versionFromPackage() {
 		return Version.class.getPackage().getImplementationVersion();
 	}

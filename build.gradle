@@ -89,15 +89,15 @@ processResources {
 	}
 }
 
-final String resodayMainClassName = 'dev.andrybak.resoday.Resoday'
+def resodayJarAttributes = [
+	'Implementation-Title'  : 'Resoday',
+	'Implementation-Version': project.version,
+	'Main-Class'            : 'dev.andrybak.resoday.Resoday'
+]
 
 jar {
 	manifest {
-		attributes([
-			'Implementation-Title'  : project.name,
-			'Implementation-Version': project.version,
-			'Main-Class'            : resodayMainClassName
-		])
+		attributes(resodayJarAttributes)
 	}
 }
 
@@ -111,11 +111,7 @@ tasks.register('releaseJar', Jar) {
 	destinationDirectory.set(file('build/distributions/'))
 
 	manifest {
-		attributes([
-			'Implementation-Title'  : "Resoday",
-			'Implementation-Version': project.version,
-			'Main-Class'            : resodayMainClassName
-		])
+		attributes(resodayJarAttributes)
 	}
 
 	dependsOn(jar)
