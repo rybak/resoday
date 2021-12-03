@@ -102,6 +102,9 @@ jar {
 }
 
 tasks.register('releaseJar', Jar) {
+	group = 'release'
+	description = 'Create a release jar of Resoday'
+
 	archiveBaseName = 'resoday'
 	archiveAppendix = 'release'
 
@@ -125,5 +128,7 @@ tasks.register('releaseJar', Jar) {
 }
 
 tasks.register('release') {
+	group = 'release'
+	description = 'Run all tests and create a release jar'
 	dependsOn('build', 'releaseJar')
 }
