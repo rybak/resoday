@@ -79,6 +79,18 @@ String calculateVersion() {
 	return defaultVersion
 }
 
+/**
+ * Calculate who has built the artifacts.
+ */
+static String calculateResodayBuilderName() {
+	try {
+		final Process gitUserName = 'git config user.name'.execute()
+		return gitUserName.text.trim() // git config outputs a newline, which must be trimmed
+	} catch (ignored) {
+		return System.getProperty("user.name")
+	}
+}
+
 project.version = calculateVersion()
 
 processResources {
@@ -90,7 +102,7 @@ processResources {
 }
 
 def resodayJarAttributes = [
-	'Implementation-Title'  : 'Resoday',
+	'Implementation-Title'  : 'Resoday built by ' + calculateResodayBuilderName(),
 	'Implementation-Version': project.version,
 	'Main-Class'            : 'dev.andrybak.resoday.Resoday'
 ]

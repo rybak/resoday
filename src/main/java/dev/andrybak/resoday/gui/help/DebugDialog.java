@@ -94,6 +94,7 @@ public final class DebugDialog {
 		tableModel.addRow(new Object[]{"Runtime.maxMemory", runtime.maxMemory()});
 		tableModel.addRow(new Object[]{"Runtime.totalMemory", runtime.totalMemory()});
 		tableModel.addRow(new Object[]{"Runtime.version", Runtime.version()});
+		tableModel.addRow(new Object[]{"Resoday.title", Version.extractTitle()});
 		tableModel.addRow(new Object[]{"Resoday.version", Version.extractVersion()});
 		return new JTable(tableModel);
 	}
