@@ -2,6 +2,7 @@ package dev.andrybak.resoday.gui.help;
 
 import dev.andrybak.resoday.gui.util.Dialogs;
 import dev.andrybak.resoday.gui.util.ScrollPanes;
+import dev.andrybak.resoday.storage.SerializableYearHistory;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -96,6 +97,7 @@ public final class DebugDialog {
 		tableModel.addRow(new Object[]{"Runtime.version", Runtime.version()});
 		tableModel.addRow(new Object[]{"Resoday.title", Version.extractTitle()});
 		tableModel.addRow(new Object[]{"Resoday.version", Version.extractVersion()});
+		tableModel.addRow(new Object[]{"Resoday.formatVersion", SerializableYearHistory.CURRENT_FORMAT_VERSION});
 		return new JTable(tableModel);
 	}
 

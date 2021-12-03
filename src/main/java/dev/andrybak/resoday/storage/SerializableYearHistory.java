@@ -32,7 +32,7 @@ public final class SerializableYearHistory implements Serializable {
 		.registerTypeAdapter(LocalDate.class, LocalDateJsonAdapter.INSTANCE)
 		.create();
 
-	private static final int CURRENT_FORMAT_VERSION = 2;
+	public static final int CURRENT_FORMAT_VERSION = 2;
 	private static final DateTimeFormatter CALENDAR_DAY_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	private final List<LocalDate> dates;
