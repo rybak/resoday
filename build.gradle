@@ -16,6 +16,7 @@ repositories {
 }
 
 dependencies {
+	// don't forget to update "third-party-software.html"
 	implementation 'dev.dirs:directories:26' // https://github.com/dirs-dev/directories-jvm
 	implementation 'com.google.code.gson:gson:2.8.9'
 
