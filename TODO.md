@@ -1,6 +1,5 @@
 ## TODO
 
-- Show version in AboutDialog
 - README: add screenshot
 - Release v1.0
 - Fix bug: size of AboutDialog is broken on vertical monitors
@@ -49,6 +48,9 @@
     * [x] Disable after autosave/Enable after edit --- automatic via YearHistory#hasChanges
 - https://openjdk.java.net/jeps/392 ?
 - shortcuts for tabs Ctrl+1 Ctrl+2 ...
+- Gradle: migrate to Kotlin build scripts?
+- Use Gradle properties for versions of dependencies
+    * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 
 ## In dev
 
@@ -159,3 +161,13 @@
 - DebugDialog
     > Show some system properties in a dialog
     * [x] add "Copy" button
+- Show version in AboutDialog
+- Add gradle user name to DebugDialog
+    * [x] from git config
+    * [x] from OS user name
+- Third-party software for build
+    > Update the "Third-party" tab in AboutDialog:
+    * [x] mention Gradle and plugins
+    * [x] mention JUnit
+- Gradle: use lazy configuration
+    > For example, instead if `jar {...}` use `tasks.named<Jar>("jar")`
