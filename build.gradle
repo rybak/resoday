@@ -24,7 +24,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-test {
+tasks.named('test', Test) {
 	useJUnitPlatform()
 
 	testLogging { // add stdout logging for running `./gradlew test`
@@ -93,7 +93,7 @@ static String calculateResodayBuilderName() {
 
 project.version = calculateVersion()
 
-processResources {
+tasks.named('processResources', Copy) {
 	filesMatching('**/about.html') {
 		filter {
 			it.replace('@VERSION@', project.version)
@@ -107,7 +107,7 @@ def resodayJarAttributes = [
 	'Main-Class'            : 'dev.andrybak.resoday.Resoday'
 ]
 
-jar {
+tasks.named('jar', Jar) {
 	manifest {
 		attributes(resodayJarAttributes)
 	}
