@@ -10,7 +10,16 @@ Succeed_][Veritasium] by Veritasium.
 
 ![Resoday screenshot](screenshot.png)
 
-The app is in usable state, but effort is required to make a build for yourself.
+Usage
+-----
+
+Download `resoday-release.jar` from [releases tab on GitHub][GitHubReleases] and
+launch it. If your Java installation is not integrated into operating system
+and/or desktop environment to automatically launch `*.jar` files, use:
+
+    $ java -jar resoday-release.jar
+
+Requires Java 14 or newer.
 
 Building
 --------
@@ -19,18 +28,7 @@ Run in a terminal:
 
     $ ./gradlew clean release
 
-After that, you can launch from file `build/distributions/resoday-release.jar`.
-
-Requires Java 14 or newer.
-
-Usage
------
-
-Build `resoday-release.jar` and launch it.  If your Java installation is not
-integrated into operating system and/or desktop environment to automatically
-launch `*.jar` files, use:
-
-    $ java -jar resoday-release.jar
+After that, you can launch Resoday from file `build/distributions/resoday-release.jar`.
 
 License
 -------
@@ -45,3 +43,4 @@ TODO
 [Simone]: http://www.simonegiertz.com/every-day-calendar
 [Veritasium]: https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s
 [TODO]: https://github.com/rybak/resoday/blob/todo/TODO.md
+[GitHubReleases]: https://github.com/rybak/resoday/releases
