@@ -65,7 +65,7 @@ public final class DebugDialog {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
-				sb.append(table.getModel().getValueAt(i, j).toString());
+				sb.append(table.getModel().getValueAt(i, j));
 				if (j < m - 1) {
 					sb.append('\t');
 				}
