@@ -3,9 +3,10 @@
 Resoday – habit tracking calendar
 =================================
 
-This application emulates the [Every Day Calendar][Simone] by Simone Giertz 
-shown in [Veritasium video _Why Most Resolutions Fail &amp; How To
-Succeed_][Veritasium].
+Resoday allows tracking habits, chores, and other activities on a daily
+calendar. This application emulates the [Every Day Calendar][Simone] by Simone
+Giertz, which is shown in [video _Why Most Resolutions Fail &amp; How To
+Succeed_][Veritasium] by Veritasium.
 
 ![Resoday screenshot](screenshot.png)
 

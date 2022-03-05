@@ -27,5 +27,8 @@
         <option name="USE_TAB_CHARACTER" value="true" />
       </indentOptions>
     </codeStyleSettings>
+    <codeStyleSettings language="Markdown">
+      <option name="RIGHT_MARGIN" value="80" />
+    </codeStyleSettings>
   </code_scheme>
 </component>
