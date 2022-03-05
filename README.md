@@ -7,6 +7,8 @@ This application emulates the [Every Day Calendar][Simone] by Simone Giertz
 shown in [Veritasium video _Why Most Resolutions Fail &amp; How To
 Succeed_][Veritasium].
 
+![Resoday screenshot](screenshot.png)
+
 The app is in usable state, but effort is required to make a build for yourself.
 
 Building
