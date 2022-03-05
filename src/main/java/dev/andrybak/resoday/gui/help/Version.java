@@ -1,5 +1,7 @@
 package dev.andrybak.resoday.gui.help;
 
+import dev.andrybak.resoday.StringConstants;
+
 public class Version {
 	private static final String DIRTY_DEVELOPMENT_BUILD = "dirty development build";
 
@@ -12,7 +14,11 @@ public class Version {
 	}
 
 	public static String extractTitle() {
-		return Version.class.getPackage().getImplementationTitle();
+		String t = Version.class.getPackage().getImplementationTitle();
+		if (t != null) {
+			return t;
+		}
+		return StringConstants.APP_NAME_GUI + " – " + DIRTY_DEVELOPMENT_BUILD;
 	}
 
 	private static String versionFromPackage() {
