@@ -13,9 +13,10 @@ Succeed_][Veritasium] by Veritasium.
 Usage
 -----
 
-Download `resoday-release.jar` from [releases tab on GitHub][GitHubReleases] and
-launch it. If your Java installation is not integrated into operating system
-and/or desktop environment to automatically launch `*.jar` files, use:
+Download `resoday-release.jar` from [releases tab on GitLab][GitLabReleases] or
+[GitHub][GitHubReleases] and launch it. If your Java installation is not
+integrated into operating system and/or desktop environment to automatically
+launch `*.jar` files, use:
 
     $ java -jar resoday-release.jar
 
@@ -43,4 +44,5 @@ TODO
 [Simone]: http://www.simonegiertz.com/every-day-calendar
 [Veritasium]: https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s
 [TODO]: https://github.com/rybak/resoday/blob/todo/TODO.md
+[GitLabReleases]: https://gitlab.com/andrybak/resoday/-/releases
 [GitHubReleases]: https://github.com/rybak/resoday/releases
