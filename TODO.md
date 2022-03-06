@@ -1,7 +1,5 @@
 ## TODO
 
-- README: add screenshot
-- Release v1.0
 - Fix bug: size of AboutDialog is broken on vertical monitors
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
@@ -51,6 +49,7 @@
 - Gradle: migrate to Kotlin build scripts?
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
+- Add audio volume setting
 
 ## In dev
 
@@ -171,3 +170,5 @@
     * [x] mention JUnit
 - Gradle: use lazy configuration
     > For example, instead if `jar {...}` use `tasks.named<Jar>("jar")`
+- README: add screenshot
+- Release v1.0
