@@ -116,16 +116,12 @@ final class HistoryPanel extends JPanel {
 	private class ButtonStateUpkeep implements YearHistoryListener {
 		@Override
 		public void onTurnOn(LocalDate d) {
-			updateButton(d);
+			shownYearPanel.turnOnButton(d);
 		}
 
 		@Override
 		public void onTurnOff(LocalDate d) {
-			updateButton(d);
-		}
-
-		private void updateButton(LocalDate d) {
-			shownYearPanel.updateButtonToggle(d);
+			shownYearPanel.turnOffButton(d);
 		}
 	}
 }
