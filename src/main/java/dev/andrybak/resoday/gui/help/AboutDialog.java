@@ -22,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public final class AboutDialog {
+	private static final int MIN_SIZE_PIXELS = 400;
 	private static final String ABOUT_HTML_RESOURCE_FILENAME = "about.html";
 	private static final String LICENSE_TXT_RESOURCE_FILENAME = "LICENSE.txt";
 	private static final String LICENSE_HTML_RESOURCE_FILENAME = "license.html";
@@ -44,7 +45,8 @@ public final class AboutDialog {
 		d.setContentPane(content);
 		d.pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		d.setSize(((int)(screenSize.getWidth() * 0.3)), ((int)(screenSize.getHeight() * 0.25)));
+		d.setSize(Math.max(MIN_SIZE_PIXELS, ((int)(screenSize.getWidth() * 0.3))),
+			Math.max(MIN_SIZE_PIXELS, ((int)(screenSize.getHeight() * 0.25))));
 		d.setLocationRelativeTo(parent);
 
 		return d;
