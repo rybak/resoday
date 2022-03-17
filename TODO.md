@@ -1,6 +1,6 @@
 ## TODO
 
-- Fix bug: size of AboutDialog is broken on vertical monitors
+- Skin support
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -8,7 +8,6 @@
 - Java modules
     * [ ] https://stackoverflow.com/a/62959016/1083697
     * [ ] Is GSON library modularized?
-- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
 - Habit description
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
@@ -50,9 +49,12 @@
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Add audio volume setting
+- Upgrade Gradle, Gradle plugins, dependencies
 
 ## In dev
 
+- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
+    * [ ] write javadocs for new classes
 
 ## Done
 
@@ -172,3 +174,4 @@
     > For example, instead if `jar {...}` use `tasks.named<Jar>("jar")`
 - README: add screenshot
 - Release v1.0
+- Fix bug: size of AboutDialog is broken on vertical monitors
