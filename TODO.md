@@ -50,11 +50,24 @@
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Add audio volume setting
 - Upgrade Gradle, Gradle plugins, dependencies
+- Consider generating a portable Resoday zip file
+    > 🤔
+    > 
+    > Maybe passing path as an argument could be used to generate a portable Resoday installation zip file:
+    > 
+    > - resoday-release.jar
+    > - an empty directory for files
+    > - a shell script to run on Unix-like systems
+    > - a batch fon Windows
+    > 
+    > And both scripts would point to the empty directory from the zip file.
 
 ## In dev
 
 - different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
     * [ ] write javadocs for new classes
+    * [ ] figure out weekday labels
+    * [ ] figure out how to organize settings
 
 ## Done
 
