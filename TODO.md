@@ -65,9 +65,10 @@
 ## In dev
 
 - different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
+    * [x] interface for different layouts
+    * [ ] figure out how to organize settings
     * [ ] write javadocs for new classes
     * [ ] figure out weekday labels
-    * [ ] figure out how to organize settings
 
 ## Done
 
