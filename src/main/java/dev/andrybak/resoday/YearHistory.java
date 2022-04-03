@@ -36,8 +36,17 @@ public final class YearHistory {
 	private final Set<LocalDate> dates;
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
 	private final String id;
+	/**
+	 * User-visible name of this habit history.
+	 */
 	private String name;
+	/**
+	 * Where this history is stored in serialized form.
+	 */
 	private Path statePath;
+	/**
+	 * Whether this history is visible in the GUI.
+	 */
 	private Visibility visibility;
 	/**
 	 * Whether this {@code YearHistory} has any changes since last {@linkplain #save saving}.
