@@ -3,6 +3,7 @@ package dev.andrybak.resoday.settings.gui;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.calendar.CalendarPanel;
 import dev.andrybak.resoday.gui.calendar.ColumnsCalendarPanel;
+import dev.andrybak.resoday.gui.calendar.VerticalCalendarPanel;
 
 import java.time.Year;
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.function.BiFunction;
 
 public enum CalendarLayoutSetting {
 	COLUMNS_SIMONE_GIERTZ("Columns", ColumnsCalendarPanel::new),
+	CLASSIC_VERTICAL("Vertical", VerticalCalendarPanel::new),
 	;
 
 	private final String guiName;
