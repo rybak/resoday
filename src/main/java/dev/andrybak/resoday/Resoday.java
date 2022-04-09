@@ -42,6 +42,6 @@ public final class Resoday {
 			System.err.println("'" + configDir.toAbsolutePath() + "' must be a directory. Aborting.");
 			System.exit(1);
 		}
-		new MainGui(dataDir).go(configDir);
+		new MainGui(dataDir, configDir).go(configDir);
 	}
 }

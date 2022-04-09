@@ -8,6 +8,8 @@ import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.gui.help.DebugDialog;
+import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
+import dev.andrybak.resoday.settings.gui.GuiSettings;
 import dev.andrybak.resoday.storage.HabitFiles;
 
 import javax.swing.AbstractAction;
@@ -59,9 +61,12 @@ public final class MainGui {
 	private final JPanel content;
 	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
+	private GuiSettings guiSettings;
+	private final GuiSettingsSaver guiSettingsSaver = new GuiSettingsSaver();
 
-	public MainGui(Path dataDir) {
+	public MainGui(Path dataDir, Path configDir) {
 		content = new JPanel(new BorderLayout());
+		guiSettings = GuiSettings.read(configDir);
 
 		JTabbedPane tabs = new JTabbedPane();
 		try (Stream<Path> paths = Files.walk(dataDir)) {
@@ -104,7 +109,7 @@ public final class MainGui {
 			markTodayInCurrentTab(tabs)
 		);
 
-		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave());
+		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave(configDir));
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
 		setUpMenuBar(dataDir, tabs);
@@ -340,7 +345,7 @@ public final class MainGui {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				autoSaveTimer.stop();
-				save();
+				save(configDir);
 				WindowPosition.from(window).save(configDir);
 			}
 		});
@@ -349,13 +354,14 @@ public final class MainGui {
 		autoSaveTimer.start();
 	}
 
-	private void autoSave() {
+	private void autoSave(Path configDir) {
 		System.out.println("Auto-saving...");
-		save();
+		save(configDir);
 		System.out.println("Auto-saving complete.");
 	}
 
-	private void save() {
+	private void save(Path configDir) {
 		histories.forEachHistory(YearHistory::save);
+		guiSettingsSaver.save(configDir, guiSettings);
 	}
 }
