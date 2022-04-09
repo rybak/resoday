@@ -32,6 +32,7 @@ abstract class AbstractToggleButtonCalendarPanel implements CalendarPanel {
 		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
 			final LocalDate d = i; // for final inside lambdas
 			JToggleButton b = new JToggleButton(DAY_BUTTON_FORMATTER.format(d));
+			makeFontNonBold(b);
 			putButton(d, b);
 			b.setSelected(history.isTurnedOn(d));
 			b.addActionListener(ignored -> {

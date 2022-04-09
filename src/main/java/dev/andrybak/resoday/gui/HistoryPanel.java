@@ -104,6 +104,10 @@ final class HistoryPanel extends JPanel {
 		return history.getId();
 	}
 
+	public void newSettings(CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
+		recreateShownYearPanel(calendarLayoutSettingProvider);
+	}
+
 	private class ButtonStateUpkeep implements YearHistoryListener {
 		@Override
 		public void onTurnOn(LocalDate d) {
