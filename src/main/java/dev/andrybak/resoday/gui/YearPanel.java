@@ -2,7 +2,7 @@ package dev.andrybak.resoday.gui;
 
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.calendar.CalendarPanel;
-import dev.andrybak.resoday.gui.calendar.ColumnsCalendarPanel;
+import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -12,9 +12,9 @@ import java.time.Year;
 final class YearPanel extends JPanel {
 	private final CalendarPanel calendarPanel;
 
-	YearPanel(YearHistory history, Year year) {
+	YearPanel(YearHistory history, Year year, CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		super(new BorderLayout());
-		calendarPanel = new ColumnsCalendarPanel(history, year);
+		calendarPanel = calendarLayoutSettingProvider.getCalendarLayoutSetting().createButtonLayout(history, year);
 		calendarPanel.addHighlight(LocalDate.now());
 		this.add(calendarPanel.getView(), BorderLayout.CENTER);
 	}

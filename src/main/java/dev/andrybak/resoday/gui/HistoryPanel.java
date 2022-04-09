@@ -2,6 +2,7 @@ package dev.andrybak.resoday.gui;
 
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.YearHistoryListener;
+import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,7 +31,7 @@ final class HistoryPanel extends JPanel {
 	private YearPanel shownYearPanel;
 	private final List<Runnable> listenerRemovals = new ArrayList<>();
 
-	HistoryPanel(YearHistory history) {
+	HistoryPanel(YearHistory history, CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		super(new BorderLayout());
 		this.history = history;
 		listenerRemovals.add(history.addListener(new AudioPlayer()));
@@ -39,13 +40,13 @@ final class HistoryPanel extends JPanel {
 		JButton pastButton = new JButton("<");
 		pastButton.addActionListener(ignored -> {
 			shownYear = shownYear.minusYears(1);
-			recreateShownYearPanel();
+			recreateShownYearPanel(calendarLayoutSettingProvider);
 		});
 
 		JButton futureButton = new JButton(">");
 		futureButton.addActionListener(ignored -> {
 			shownYear = shownYear.plusYears(1);
-			recreateShownYearPanel();
+			recreateShownYearPanel(calendarLayoutSettingProvider);
 		});
 
 		shownYearLabel = new JLabel("", SwingConstants.CENTER);
@@ -62,18 +63,18 @@ final class HistoryPanel extends JPanel {
 			.min(Comparator.comparingInt(y -> Math.abs(currentYear.getValue() - y)))
 			.map(Year::of)
 			.orElse(currentYear);
-		createShownYearPanel();
+		createShownYearPanel(calendarLayoutSettingProvider);
 	}
 
-	private void createShownYearPanel() {
+	private void createShownYearPanel(CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		shownYearLabel.setText(shownYear.toString());
-		shownYearPanel = new YearPanel(history, shownYear);
+		shownYearPanel = new YearPanel(history, shownYear, calendarLayoutSettingProvider);
 		this.add(shownYearPanel, BorderLayout.CENTER);
 	}
 
-	private void recreateShownYearPanel() {
+	private void recreateShownYearPanel(CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		this.remove(shownYearPanel);
-		createShownYearPanel();
+		createShownYearPanel(calendarLayoutSettingProvider);
 		this.revalidate();
 		this.repaint();
 	}
