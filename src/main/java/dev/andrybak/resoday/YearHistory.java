@@ -213,8 +213,9 @@ public final class YearHistory {
 		}
 	}
 
-	public void addListener(YearHistoryListener listener) {
+	public Runnable addListener(YearHistoryListener listener) {
 		listeners.add(listener);
+		return () -> listeners.remove(listener);
 	}
 
 	public String getName() {

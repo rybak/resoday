@@ -11,7 +11,9 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Shows to the user a single {@link YearHistory history}, with access to one year at a time.
@@ -26,12 +28,13 @@ final class HistoryPanel extends JPanel {
 	private final JLabel shownYearLabel;
 	private Year shownYear;
 	private YearPanel shownYearPanel;
+	private final List<Runnable> listenerRemovals = new ArrayList<>();
 
 	HistoryPanel(YearHistory history) {
 		super(new BorderLayout());
 		this.history = history;
-		history.addListener(new AudioPlayer());
-		history.addListener(new ButtonStateUpkeep());
+		listenerRemovals.add(history.addListener(new AudioPlayer()));
+		listenerRemovals.add(history.addListener(new ButtonStateUpkeep()));
 
 		JButton pastButton = new JButton("<");
 		pastButton.addActionListener(ignored -> {
@@ -101,6 +104,13 @@ final class HistoryPanel extends JPanel {
 
 	String getHistoryId() {
 		return history.getId();
+	}
+
+	/**
+	 * Must be called when this panel is no longer in use.
+	 */
+	void close() {
+		listenerRemovals.forEach(Runnable::run);
 	}
 
 	private class ButtonStateUpkeep implements YearHistoryListener {

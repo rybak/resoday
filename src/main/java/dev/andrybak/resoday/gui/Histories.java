@@ -73,6 +73,8 @@ public class Histories {
 			));
 			int origSize = histories.size();
 			histories.clear();
+			panels.values().forEach(HistoryPanel::close);
+			panels.clear();
 			for (ReorderHabitsDialog.Row outputRow : outputRows) {
 				YearHistory history = map.get(outputRow.getId());
 				history.setVisibility(switch (outputRow.getStatus()) {
@@ -84,6 +86,7 @@ public class Histories {
 				}
 				histories.add(history);
 			}
+			assert visibleHistories().count() == panels.size() : "visibleHistories should be in sync with panels";
 			if (histories.size() != origSize) {
 				throw new UnsupportedOperationException("Deleting habits via " + ReorderHabitsDialog.class +
 					" is not supported yet");
@@ -110,7 +113,8 @@ public class Histories {
 	}
 
 	public void hide(String historyId) {
-		panels.remove(historyId);
+		HistoryPanel removed = panels.remove(historyId);
+		removed.close();
 	}
 
 	public void rename(String id, String newHabitName) {
