@@ -3,6 +3,7 @@ package dev.andrybak.resoday.gui;
 import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.ReorderHabitsDialog;
+import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 
 import java.awt.Window;
 import java.nio.file.Path;
@@ -50,7 +51,9 @@ public class Histories {
 	/**
 	 * @param editCallback called, if something was edited
 	 */
-	public void reorder(Window parent, Path dir, Runnable editCallback) {
+	public void reorder(Window parent, Path dir, CalendarLayoutSettingProvider calendarLayoutSettingProvider,
+		Runnable editCallback)
+	{
 		List<ReorderHabitsDialog.Row> inputRows = new ArrayList<>();
 		for (int i = 0; i < histories.size(); i++) {
 			YearHistory history = histories.get(i);
@@ -80,7 +83,7 @@ public class Histories {
 					case HIDDEN -> YearHistory.Visibility.HIDDEN;
 				});
 				if (history.getVisibility() == YearHistory.Visibility.VISIBLE) {
-					panels.put(history.getId(), new HistoryPanel(history));
+					panels.put(history.getId(), new HistoryPanel(history, calendarLayoutSettingProvider));
 				}
 				histories.add(history);
 			}

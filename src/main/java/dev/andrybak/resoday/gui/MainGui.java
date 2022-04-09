@@ -8,7 +8,9 @@ import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.gui.help.DebugDialog;
+import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
+import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
 import dev.andrybak.resoday.storage.HabitFiles;
 
@@ -53,7 +55,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toSet;
 
-public final class MainGui {
+public final class MainGui implements CalendarLayoutSettingProvider {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
 	private static final String APP_ICON_FILENAME = "resoday-icon.png";
 
@@ -87,7 +89,7 @@ public final class MainGui {
 			sortedYearHistories
 				.forEach(yearHistory -> {
 					if (yearHistory.getVisibility() == YearHistory.Visibility.VISIBLE) {
-						HistoryPanel historyPanel = new HistoryPanel(yearHistory);
+						HistoryPanel historyPanel = new HistoryPanel(yearHistory, this);
 						histories.add(yearHistory, historyPanel);
 						tabs.addTab(yearHistory.getName(), historyPanel);
 					} else {
@@ -196,7 +198,7 @@ public final class MainGui {
 			String filename = HabitFiles.createNewFilename(newId, habitName);
 			Path newHabitPath = dir.resolve(filename);
 			YearHistory newHistory = new YearHistory(newHabitPath, habitName, newId);
-			HistoryPanel newPanel = new HistoryPanel(newHistory);
+			HistoryPanel newPanel = new HistoryPanel(newHistory, this);
 			histories.add(newHistory, newPanel);
 			tabs.addTab(habitName, newPanel);
 			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
@@ -279,7 +281,7 @@ public final class MainGui {
 		String oldSelectedId = getCurrentHistoryPanel(tabs)
 			.map(HistoryPanel::getHistoryId)
 			.orElse(null);
-		histories.reorder(this.window, dir, () -> {
+		histories.reorder(this.window, dir, this, () -> {
 			for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
 				tabs.removeTabAt(0); // removing all tabs
 			}
@@ -363,5 +365,10 @@ public final class MainGui {
 	private void save(Path configDir) {
 		histories.forEachHistory(YearHistory::save);
 		guiSettingsSaver.save(configDir, guiSettings);
+	}
+
+	@Override
+	public CalendarLayoutSetting getCalendarLayoutSetting() {
+		return Objects.requireNonNullElse(guiSettings, GuiSettings.DEFAULT).getButtonLayoutSetting();
 	}
 }
