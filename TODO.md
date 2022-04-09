@@ -1,5 +1,12 @@
 ## TODO
 
+- Bump minimum required Java version to 17
+    > Java 17 is an LTS version
+    * [ ] check if record classes are allowed
+    * [ ] check other language features
+- Upgrade junit
+- Upgrade gson
+- Address Gradle warnings
 - Skin support
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
@@ -66,9 +73,11 @@
 
 - different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
     * [x] interface for different layouts
-    * [ ] figure out how to organize settings
-    * [ ] write javadocs for new classes
-    * [ ] figure out weekday labels
+    * [x] figure out weekday labels
+    * [x] figure out how to organize settings
+    * [x] write javadocs for new classes
+    * [ ] merge to master
+    * [ ] release 1.1
 
 ## Done
 
