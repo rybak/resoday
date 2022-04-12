@@ -10,6 +10,7 @@ import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.gui.help.DebugDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
+import dev.andrybak.resoday.gui.settings.SettingsMenu;
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
 import dev.andrybak.resoday.storage.HabitFiles;
@@ -163,6 +164,12 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			mainMenu.add(deleteHabitMenuItem);
 		}
 		menuBar.add(mainMenu);
+
+		JMenu settingsMenu = SettingsMenu.create(guiSettings, newSettings -> {
+			guiSettings = newSettings;
+			histories.forEachPanel(p -> p.newSettings(this));
+		});
+		menuBar.add(settingsMenu);
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
