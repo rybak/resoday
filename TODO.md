@@ -7,6 +7,7 @@
 - Upgrade junit
 - Upgrade gson
 - Address Gradle warnings
+- write tests for GuiSettings serialization
 - Skin support
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
@@ -76,7 +77,7 @@
     * [x] figure out weekday labels
     * [x] figure out how to organize settings
     * [x] write javadocs for new classes
-    * [ ] merge to master
+    * [x] merge to master
     * [ ] release 1.1
 
 ## Done
