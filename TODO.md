@@ -1,14 +1,9 @@
 ## TODO
 
-- Bump minimum required Java version to 17
-    > Java 17 is an LTS version
-    * [ ] check if record classes are allowed
-    * [ ] check other language features
-- Upgrade junit
-- Upgrade gson
-- Address Gradle warnings
 - write tests for GuiSettings serialization
 - Skin support
+- Gradle: figure out `with jar`
+    > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -72,13 +67,6 @@
 
 ## In dev
 
-- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
-    * [x] interface for different layouts
-    * [x] figure out weekday labels
-    * [x] figure out how to organize settings
-    * [x] write javadocs for new classes
-    * [x] merge to master
-    * [ ] release 1.1
 
 ## Done
 
@@ -199,3 +187,24 @@
 - README: add screenshot
 - Release v1.0
 - Fix bug: size of AboutDialog is broken on vertical monitors
+- different button layout - user setting. ButtonLayout should be a "setting" of YearPanel.  Styles: columns, rows, calendar
+    * [x] interface for different layouts
+    * [x] figure out weekday labels
+    * [x] figure out how to organize settings
+    * [x] write javadocs for new classes
+    * [x] merge to master
+    * [x] release 1.1
+- Address Gradle warnings
+    > No Gradle warnings in build script. However, in IntelliJ's run configs Gradle complains about  main class property being deprecated: https://youtrack.jetbrains.com/issue/IDEA-279280
+- Upgrade junit
+    > 5.8.2
+- Upgrade gson
+    > 2.9.0
+- Bump minimum required Java version to 17
+    > Java 17 is an LTS version
+    * [x] check if record classes are allowed
+    * [x] check other language features
+    * [x] run inspections on the project
+- Abstract...CalendarPanel: clean up code
+    * [x] inline putButton
+- HorizontalCalendarPanel
