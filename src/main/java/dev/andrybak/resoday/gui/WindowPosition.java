@@ -16,21 +16,9 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
-public final class WindowPosition {
+public record WindowPosition(int width, int height, int x, int y) {
 	private static final Path WINDOW_POSITION_FILE = Paths.get("window-position.txt");
 	private static final Pattern PLAIN_POSITIVE_INTEGER_PATTERN = Pattern.compile("^\\d{1,10}$");
-
-	private final int width;
-	private final int height;
-	private final int x;
-	private final int y;
-
-	private WindowPosition(int width, int height, int x, int y) {
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.width = width;
-	}
 
 	public static WindowPosition from(Window w) {
 		return new WindowPosition(w.getWidth(), w.getHeight(), w.getX(), w.getY());
