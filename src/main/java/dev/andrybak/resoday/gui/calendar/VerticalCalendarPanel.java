@@ -43,10 +43,10 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 			buttonPanel.add(Box.createHorizontalStrut(GRID_GAP_PIXELS), gbc);
 		});
 		// Horizontal gaps between rows
-		Stream.of(Month.APRIL, Month.JULY, Month.OCTOBER).forEach(m -> {
+		getBelowHorizontalGapMonths().forEach(m -> {
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.gridx = getLeft(m);
-			gbc.gridy = getTop(m) - 1; // above rows of April, July, and October
+			gbc.gridy = getTop(m) - 1; // gap is to above the rows of given months
 			buttonPanel.add(Box.createVerticalStrut(GRID_GAP_PIXELS), gbc);
 		});
 		for (Month m : Month.values()) {
@@ -64,6 +64,10 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 
 	private Stream<Month> getAfterVerticalGapMonths() {
 		return Stream.of(Month.FEBRUARY, Month.MARCH);
+	}
+
+	private Stream<Month> getBelowHorizontalGapMonths() {
+		return Stream.of(Month.APRIL, Month.JULY, Month.OCTOBER);
 	}
 
 	private int getLeft(Month m) {
