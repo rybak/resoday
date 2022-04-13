@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -63,11 +64,16 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 	}
 
 	private Stream<Month> getAfterVerticalGapMonths() {
-		return Stream.of(Month.FEBRUARY, Month.MARCH);
+		return IntStream.range(2, getNumberOfColumns() + 1)
+			.mapToObj(Month::of);
 	}
 
 	private Stream<Month> getBelowHorizontalGapMonths() {
-		return Stream.of(Month.APRIL, Month.JULY, Month.OCTOBER);
+		return IntStream.iterate(
+			Month.of(getNumberOfColumns() + 1).getValue(),
+			i -> i <= 12,
+			i -> i + getNumberOfColumns()
+		).mapToObj(Month::of);
 	}
 
 	private int getLeft(Month m) {
