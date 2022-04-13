@@ -36,9 +36,9 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 	public VerticalCalendarPanel(YearHistory history, Year year) {
 		super(new JPanel(new GridBagLayout()), history, year);
 		// Vertical gaps between columns
-		Stream.of(Month.FEBRUARY, Month.MARCH).forEach(m -> {
+		getAfterVerticalGapMonths().forEach(m -> {
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.gridx = getLeft(m) - 1; // to the left of columns of February and March
+			gbc.gridx = getLeft(m) - 1; // gap is to the left of columns of the given months
 			gbc.gridy = getTop(m);
 			buttonPanel.add(Box.createHorizontalStrut(GRID_GAP_PIXELS), gbc);
 		});
@@ -60,6 +60,10 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 
 	protected int getNumberOfColumns() {
 		return NUMBER_OF_COLUMNS;
+	}
+
+	private Stream<Month> getAfterVerticalGapMonths() {
+		return Stream.of(Month.FEBRUARY, Month.MARCH);
 	}
 
 	private int getLeft(Month m) {
