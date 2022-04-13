@@ -304,10 +304,9 @@ public class ReorderHabitsDialog extends JDialog {
 
 		@Override
 		public void addLayoutComponent(Component comp, Object constraints) {
-			if (!(constraints instanceof Column)) {
+			if (!(constraints instanceof Column column)) {
 				return;
 			}
-			Column column = ((Column)constraints);
 
 			columns.computeIfAbsent(column, ignored -> new ArrayList<>()).add(comp);
 		}
@@ -341,7 +340,7 @@ public class ReorderHabitsDialog extends JDialog {
 				throw new IllegalStateException("Column(s) " +
 					columns.entrySet().stream()
 						.filter(e -> e.getValue().isEmpty())
-						.collect(toList())
+						.toList()
 					+ " must not be empty");
 			}
 			if (columns.values().stream().map(List::size).distinct().count() != 1) {
