@@ -20,7 +20,7 @@ launch `*.jar` files, use:
 
     $ java -jar resoday-release.jar
 
-Requires Java 14 or newer.
+Requires Java 17 or newer.
 
 Building
 --------
