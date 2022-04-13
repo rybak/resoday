@@ -140,3 +140,7 @@ tasks.register('release') {
 	description = 'Run all tests and create a release jar'
 	dependsOn('build', 'releaseJar')
 }
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.ALL
+}
