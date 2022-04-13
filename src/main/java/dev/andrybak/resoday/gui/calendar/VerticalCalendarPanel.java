@@ -58,12 +58,16 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 		}
 	}
 
-	private static int getLeft(Month m) {
-		return ((m.getValue() - 1) % NUMBER_OF_COLUMNS) * MONTH_GRID_WIDTH;
+	protected int getNumberOfColumns() {
+		return NUMBER_OF_COLUMNS;
 	}
 
-	private static int getTop(Month m) {
-		return ((m.getValue() - 1) / NUMBER_OF_COLUMNS) * MONTH_GRID_HEIGHT;
+	private int getLeft(Month m) {
+		return ((m.getValue() - 1) % getNumberOfColumns()) * MONTH_GRID_WIDTH;
+	}
+
+	private int getTop(Month m) {
+		return ((m.getValue() - 1) / getNumberOfColumns()) * MONTH_GRID_HEIGHT;
 	}
 
 	@Override
