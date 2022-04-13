@@ -96,7 +96,7 @@ public class Histories {
 			}
 			List<String> inputOrder = inputRows.stream()
 				.map(ReorderHabitsDialog.Row::getId)
-				.collect(Collectors.toList());
+				.toList();
 			List<String> outputOrder = outputRows.stream()
 				.map(ReorderHabitsDialog.Row::getId)
 				.collect(Collectors.toList());
