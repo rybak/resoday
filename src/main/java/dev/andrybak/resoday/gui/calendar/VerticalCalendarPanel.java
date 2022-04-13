@@ -31,6 +31,7 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 	private static final int MONTH_GRID_WIDTH = 8; // 7 for each day of a week + 1 for gaps
 	private static final int MONTH_GRID_HEIGHT = 9; // 6==max number of rows + 1 month label + 1 week label + 1 gap
 	private static final int GRID_GAP_PIXELS = 20;
+	public static final int NUMBER_OF_COLUMNS = 3;
 
 	public VerticalCalendarPanel(YearHistory history, Year year) {
 		super(new JPanel(new GridBagLayout()), history, year);
@@ -58,11 +59,11 @@ public final class VerticalCalendarPanel extends AbstractToggleButtonCalendarPan
 	}
 
 	private static int getLeft(Month m) {
-		return ((m.getValue() - 1) % 3) * MONTH_GRID_WIDTH;
+		return ((m.getValue() - 1) % NUMBER_OF_COLUMNS) * MONTH_GRID_WIDTH;
 	}
 
 	private static int getTop(Month m) {
-		return ((m.getValue() - 1) / 3) * MONTH_GRID_HEIGHT;
+		return ((m.getValue() - 1) / NUMBER_OF_COLUMNS) * MONTH_GRID_HEIGHT;
 	}
 
 	@Override
