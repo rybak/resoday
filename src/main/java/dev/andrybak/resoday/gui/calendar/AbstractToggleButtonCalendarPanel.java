@@ -32,7 +32,7 @@ abstract class AbstractToggleButtonCalendarPanel implements CalendarPanel {
 		for (LocalDate i = currentYearStart; i.isBefore(nextYearStart); i = i.plusDays(1)) {
 			final LocalDate d = i; // for final inside lambdas
 			JToggleButton b = new JToggleButton(DAY_BUTTON_FORMATTER.format(d));
-			putButton(d, b);
+			buttons.put(Objects.requireNonNull(d), Objects.requireNonNull(b));
 			b.setSelected(history.isTurnedOn(d));
 			b.addActionListener(ignored -> {
 				if (b.isSelected()) {
@@ -89,10 +89,6 @@ abstract class AbstractToggleButtonCalendarPanel implements CalendarPanel {
 
 	private void maybeButtonSetSelected(LocalDate d, boolean selected) {
 		maybeButton(d, b -> b.setSelected(selected));
-	}
-
-	private void putButton(LocalDate d, JToggleButton b) {
-		buttons.put(Objects.requireNonNull(d), Objects.requireNonNull(b));
 	}
 
 	private void maybeButton(LocalDate d, Consumer<JToggleButton> consumer) {
