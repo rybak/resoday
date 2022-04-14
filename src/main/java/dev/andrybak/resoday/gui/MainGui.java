@@ -8,6 +8,7 @@ import dev.andrybak.resoday.gui.edithabits.DeleteHabitDialog;
 import dev.andrybak.resoday.gui.edithabits.HideHabitDialog;
 import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.gui.help.DebugDialog;
+import dev.andrybak.resoday.gui.help.HelpDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
@@ -184,6 +185,13 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				}
 			}
 			helpMenu.add(aboutMenuItem);
+		}
+		{
+			JMenuItem helpMenuItem = new JMenuItem("Help");
+			helpMenuItem.setMnemonic('H');
+			helpMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+			helpMenuItem.addActionListener(ignored -> HelpDialog.show(window));
+			helpMenu.add(helpMenuItem);
 		}
 		{
 			JMenuItem debugMenuItem = new JMenuItem("Debug");
