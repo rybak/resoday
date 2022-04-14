@@ -1,7 +1,6 @@
 ## TODO
 
 - write tests for GuiSettings serialization
-- Skin support
 - Gradle: figure out `with jar`
     > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
 - Maybe cache resource files
@@ -14,8 +13,6 @@
 - Habit description
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
-- Introduce Help > Help
-    > Describe what Resoday is used for
 - Add intro panel when zero habit files exist
     > Intro panel may use the same UI as the "Add habit" dialog.
     * [ ] use CardLayout to swap between JTabbedPane and intro panel
@@ -64,6 +61,7 @@
     > - a batch fon Windows
     > 
     > And both scripts would point to the empty directory from the zip file.
+- Skin support
 
 ## In dev
 
@@ -208,3 +206,6 @@
 - Abstract...CalendarPanel: clean up code
     * [x] inline putButton
 - HorizontalCalendarPanel
+- Use Java 17 features in tests
+- Introduce Help > Help
+    > Describe what Resoday is used for
