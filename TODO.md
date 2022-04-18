@@ -1,15 +1,5 @@
-## TODO
+## Features
 
-- write tests for GuiSettings serialization
-- Gradle: figure out `with jar`
-    > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
-- Maybe cache resource files
-    > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
-    * [ ] Check how TOS play sounds
-    * [ ] Find more about resource loading
-- Java modules
-    * [ ] https://stackoverflow.com/a/62959016/1083697
-    * [ ] Is GSON library modularized?
 - Habit description
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
@@ -23,18 +13,9 @@
 - Remember last opened tab
     * [ ] Refactor passing around of `Path dataDir` -- just store `ProjectDirectories` instance in a field in `MainGui`.   This way, the list of `somethingDir` parameters won't be weirdly growing. (we need `cacheDir` next)
     * [ ] Save last opened tab in cache
-- Checkout Chatty's source code
-    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
-    * [ ] browser opening
-    * [x] directory for saving (~/.chatty)
-    * [ ] something else?
-    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
-- Improve .habit format
-    * [ ] Compress size somehow
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
 - Streak animation 
-- When adding more than (some small number) of habits, warn the user
 - Add debug ui for opening the habit directory via Desktop.open
     * [ ] Or some kind of "Help > Debug > Open data dir" menu
     * [ ] JTable with data about habits (Name | Path | number of dates, for example)
@@ -43,13 +24,8 @@
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
     * [ ] Add save button
     * [x] Disable after autosave/Enable after edit --- automatic via YearHistory#hasChanges
-- https://openjdk.java.net/jeps/392 ?
 - shortcuts for tabs Ctrl+1 Ctrl+2 ...
-- Gradle: migrate to Kotlin build scripts?
-- Use Gradle properties for versions of dependencies
-    * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Add audio volume setting
-- Upgrade Gradle, Gradle plugins, dependencies
 - Consider generating a portable Resoday zip file
     > 🤔
     > 
@@ -62,6 +38,33 @@
     > 
     > And both scripts would point to the empty directory from the zip file.
 - Skin support
+- When adding more than (some small number) of habits, warn the user
+
+## Refactoring
+
+- write tests for GuiSettings serialization
+- Gradle: figure out `with jar`
+    > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
+- Maybe cache resource files
+    > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
+    * [ ] Check how TOS play sounds
+    * [ ] Find more about resource loading
+- Java modules
+    * [ ] https://stackoverflow.com/a/62959016/1083697
+    * [ ] Is GSON library modularized?
+- Improve .habit format
+    * [ ] Compress size somehow
+- https://openjdk.java.net/jeps/392 ?
+- Gradle: migrate to Kotlin build scripts?
+- Use Gradle properties for versions of dependencies
+    * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
+- Upgrade Gradle, Gradle plugins, dependencies
+- Checkout Chatty's source code
+    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
+    * [ ] browser opening
+    * [x] directory for saving (~/.chatty)
+    * [ ] something else?
+    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
 
 ## In dev
 
