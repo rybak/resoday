@@ -30,26 +30,30 @@ abstract class AbstractClassicCalendarPanel extends AbstractToggleButtonCalendar
 
 	public AbstractClassicCalendarPanel(YearHistory history, Year year) {
 		super(new JPanel(new GridBagLayout()), history, year);
-		if (getNumberOfColumns() < 2 || getNumberOfColumns() > 6) {
+		if (getNumberOfColumns() < 1 || getNumberOfColumns() > 12) {
 			/* The way methods `getLeft` and `getTop` are used for gaps calculation, this class cannot be used for
 			 * 1×12 and 12×1 layouts. */
-			throw new IllegalArgumentException("numberOfColumns should be in [2-6] range. Got: " +
+			throw new IllegalArgumentException("numberOfColumns should be in [1-12] range. Got: " +
 				getNumberOfColumns());
 		}
-		// Vertical gaps between columns
-		getAfterVerticalGapMonths().forEach(m -> {
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.gridx = getLeft(m) - 1; // gap is to the left of columns of the given months
-			gbc.gridy = getTop(m);
-			buttonPanel.add(Box.createHorizontalStrut(GRID_GAP_PIXELS), gbc);
-		});
-		// Horizontal gaps between rows
-		getBelowHorizontalGapMonths().forEach(m -> {
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.gridx = getLeft(m);
-			gbc.gridy = getTop(m) - 1; // gap is to above the rows of given months
-			buttonPanel.add(Box.createVerticalStrut(GRID_GAP_PIXELS), gbc);
-		});
+		if (getNumberOfColumns() > 1) {
+			// Vertical gaps between columns
+			getAfterVerticalGapMonths().forEach(m -> {
+				GridBagConstraints gbc = new GridBagConstraints();
+				gbc.gridx = getLeft(m) - 1; // gap is to the left of columns of the given months
+				gbc.gridy = getTop(m);
+				buttonPanel.add(Box.createHorizontalStrut(GRID_GAP_PIXELS), gbc);
+			});
+		}
+		if (getNumberOfColumns() != 12) {
+			// Horizontal gaps between rows
+			getBelowHorizontalGapMonths().forEach(m -> {
+				GridBagConstraints gbc = new GridBagConstraints();
+				gbc.gridx = getLeft(m);
+				gbc.gridy = getTop(m) - 1; // gap is to above the rows of given months
+				buttonPanel.add(Box.createVerticalStrut(GRID_GAP_PIXELS), gbc);
+			});
+		}
 		for (Month m : Month.values()) {
 			for (DayOfWeek dow : DayOfWeek.values()) {
 				GridBagConstraints gbc = createDayOfWeekLabelConstraints(m, dow);
