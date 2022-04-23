@@ -1,0 +1,14 @@
+v1.2
+- Java 17 is now required to run Resoday
+- Menu "Help > Help" has been introduced
+- Horizontal layout has been introduced
+
+v1.1
+Bugfixes
+- "About" dialog now has a better default size on vertical monitors.
+- Sounds of button toggles used to multiply after using the "Reorder habits"
+  dialog, which has been corrected.
+
+Features
+- Layout of buttons can now be changed from the new "Settings > Calendar layout"
+  menu.
