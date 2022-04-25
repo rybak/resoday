@@ -19,7 +19,7 @@ public class SortOrder {
 
 	private final List<String> order;
 
-	public SortOrder(List<String> order) {
+	SortOrder(List<String> order) {
 		this.order = new ArrayList<>(order);
 	}
 
