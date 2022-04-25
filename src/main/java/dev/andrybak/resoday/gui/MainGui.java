@@ -236,6 +236,10 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		ChooseHabitNameDialog.show(window, "Rename habit '" + oldName + "'", "Rename", oldName,
 			names::contains,
 			newHabitName -> {
+				if (oldName.equals(newHabitName)) {
+					System.out.println("Habit '" + oldName + "' wasn't renamed.");
+					return;
+				}
 				histories.rename(id, newHabitName);
 				int selectedIndex = tabs.getSelectedIndex();
 				tabs.setTitleAt(selectedIndex, newHabitName);
