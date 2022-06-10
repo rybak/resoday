@@ -1,4 +1,4 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.storage;
 
 import java.io.IOException;
 import java.nio.file.Files;

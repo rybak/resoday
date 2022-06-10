@@ -1,9 +1,9 @@
 package dev.andrybak.resoday.gui;
 
-import dev.andrybak.resoday.SortOrder;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.ReorderHabitsDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
+import dev.andrybak.resoday.storage.SortOrder;
 
 import java.awt.Window;
 import java.nio.file.Path;
