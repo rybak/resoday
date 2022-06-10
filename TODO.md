@@ -68,6 +68,12 @@
 
 ## In dev
 
+- Custom data directory
+    > https://github.com/rybak/resoday/issues/2
+    * [x] Loading custom dir
+    * [ ] Saving custom dir
+    * [ ] DataDirProvider refactoring? -- separate commit to update all places which use the dir
+    * [ ] Moving when getting new setting
 
 ## Done
 
