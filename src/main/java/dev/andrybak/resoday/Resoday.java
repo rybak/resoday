@@ -1,12 +1,14 @@
 package dev.andrybak.resoday;
 
 import dev.andrybak.resoday.gui.MainGui;
+import dev.andrybak.resoday.settings.storage.CustomDataDirectory;
 import dev.dirs.ProjectDirectories;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 public final class Resoday {
 
@@ -16,12 +18,12 @@ public final class Resoday {
 		if (args.length < 1) {
 			ProjectDirectories projectDirs = ProjectDirectories.from(StringConstants.TOP_LEVEL, StringConstants.ORGANIZATION,
 				StringConstants.APP_NAME);
-			dataDir = Paths.get(projectDirs.dataDir).toAbsolutePath();
 			configDir = Paths.get(projectDirs.configDir).toAbsolutePath();
+			dataDir = getDataDir(configDir, Paths.get(projectDirs.dataDir).toAbsolutePath());
 		} else {
 			Path p = Paths.get(args[0]).toAbsolutePath();
-			dataDir = p;
 			configDir = p;
+			dataDir = getDataDir(configDir, p);
 		}
 		try {
 			Files.createDirectories(dataDir);
@@ -43,5 +45,17 @@ public final class Resoday {
 			System.exit(1);
 		}
 		new MainGui(dataDir, configDir).go(configDir);
+	}
+
+	private static Path getDataDir(Path configDir, Path defaultDataDir) {
+		final Path dataDir;
+		final Optional<Path> maybeCustomDataDir = CustomDataDirectory.from(configDir);
+		if (maybeCustomDataDir.isPresent()) {
+			dataDir = maybeCustomDataDir.get();
+			System.out.println("Using custom data directory: " + dataDir);
+		} else {
+			dataDir = defaultDataDir;
+		}
+		return dataDir;
 	}
 }

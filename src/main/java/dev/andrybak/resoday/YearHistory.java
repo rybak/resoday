@@ -191,6 +191,11 @@ public final class YearHistory {
 			.distinct();
 	}
 
+	public void forceSave() {
+		hasChanges = true;
+		save();
+	}
+
 	public void save() {
 		if (!hasChanges) {
 			return;

@@ -26,13 +26,7 @@ public class SortOrder {
 	}
 
 	public static void save(DataDirSupplier dataDirSupplier, List<String> ids) {
-		Path p = dataDirSupplier.getDataDir().resolve(ORDER_FILE);
-		try {
-			Files.write(p, ids);
-		} catch (IOException e) {
-			System.err.println("Could not write '" + p + "'. Got error: " + e);
-			e.printStackTrace();
-		}
+		new SortOrder(ids).save(dataDirSupplier);
 	}
 
 	public static Optional<SortOrder> read(Path rootDir) {
@@ -49,6 +43,16 @@ public class SortOrder {
 			System.err.println("Could not read '" + p + "'. Got error: " + e);
 			e.printStackTrace();
 			return Optional.empty();
+		}
+	}
+
+	public void save(DataDirSupplier dataDirSupplier) {
+		Path p = dataDirSupplier.getDataDir().resolve(ORDER_FILE);
+		try {
+			Files.write(p, order);
+		} catch (IOException e) {
+			System.err.println("Could not write '" + p + "'. Got error: " + e);
+			e.printStackTrace();
 		}
 	}
 

@@ -1,3 +1,5 @@
+- Custom data directory setting has been introduced
+
 v1.2
 - Java 17 is now required to run Resoday
 - Menu "Help > Help" has been introduced

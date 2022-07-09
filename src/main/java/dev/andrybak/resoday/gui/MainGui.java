@@ -14,6 +14,7 @@ import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
+import dev.andrybak.resoday.settings.storage.CustomDataDirectory;
 import dev.andrybak.resoday.storage.HabitFiles;
 import dev.andrybak.resoday.storage.SortOrder;
 
@@ -67,7 +68,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
 	private GuiSettings guiSettings;
-	private final Path dataDir;
+	private Path dataDir;
 	private final GuiSettingsSaver guiSettingsSaver = new GuiSettingsSaver();
 
 	public MainGui(Path dataDir, Path configDir) {
@@ -119,7 +120,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave(configDir));
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
-		setUpMenuBar(tabs);
+		setUpMenuBar(tabs, configDir);
 	}
 
 	private static Image getResodayImage() {
@@ -135,7 +136,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markToday);
 	}
 
-	private void setUpMenuBar(JTabbedPane tabs) {
+	private void setUpMenuBar(JTabbedPane tabs, Path configDir) {
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu mainMenu = new JMenu("Main");
@@ -173,10 +174,22 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		}
 		menuBar.add(mainMenu);
 
-		JMenu settingsMenu = SettingsMenu.create(guiSettings, newSettings -> {
-			guiSettings = newSettings;
-			histories.forEachPanel(p -> p.newSettings(this));
-		});
+		JMenu settingsMenu = SettingsMenu.create(
+			guiSettings, newSettings -> {
+				guiSettings = newSettings;
+				histories.forEachPanel(p -> p.newSettings(this));
+			},
+			getDataDirSupplier(), newDataDir -> {
+				System.out.println("Trying to move data to directory '" + newDataDir + "'");
+				Path oldDataDir = dataDir;
+				dataDir = newDataDir;
+				// Re-save everything in package `dev.andrybak.resoday.storage` into new data dir.
+				// Hopefully in the future no new kinds of files will be saved in the data dir :-)
+				SortOrder.read(oldDataDir).ifPresent(order -> order.save(getDataDirSupplier()));
+				histories.forEachHistory(YearHistory::forceSave);
+				CustomDataDirectory.save(configDir, dataDir);
+			}
+		);
 		menuBar.add(settingsMenu);
 
 		JMenu helpMenu = new JMenu("Help");
