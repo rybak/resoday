@@ -67,9 +67,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 	private final JPanel content;
 	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
+	private final GuiSettingsSaver guiSettingsSaver = new GuiSettingsSaver();
 	private GuiSettings guiSettings;
 	private Path dataDir;
-	private final GuiSettingsSaver guiSettingsSaver = new GuiSettingsSaver();
 
 	public MainGui(Path dataDir, Path configDir) {
 		this.dataDir = dataDir;
