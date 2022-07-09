@@ -1,4 +1,5 @@
 - Custom data directory setting has been introduced
+- Simple crash handler has been introduced
 
 v1.2
 - Java 17 is now required to run Resoday
