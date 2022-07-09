@@ -1,6 +1,7 @@
 package dev.andrybak.resoday;
 
 import com.google.gson.JsonParseException;
+import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 import dev.andrybak.resoday.storage.HabitFiles;
 import dev.andrybak.resoday.storage.SerializableYearHistory;
 import dev.andrybak.resoday.storage.SerializableYearHistoryV1;
@@ -37,13 +38,17 @@ public final class YearHistory {
 	private final List<YearHistoryListener> listeners = new ArrayList<>();
 	private final String id;
 	/**
+	 * Gives the parent directory for where to store the habit file.
+	 */
+	private final DataDirSupplier dataDirSupplier;
+	/**
 	 * User-visible name of this habit history.
 	 */
 	private String name;
 	/**
 	 * Where this history is stored in serialized form.
 	 */
-	private Path statePath;
+	private Path relativeStatePath;
 	/**
 	 * Whether this history is visible in the GUI.
 	 */
@@ -55,35 +60,42 @@ public final class YearHistory {
 	 */
 	private boolean hasChanges = true;
 
-	public YearHistory(Path statePath, String name, String id) {
-		this(statePath, emptySet(), name, id, Visibility.VISIBLE);
+	public YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath, String name, String id) {
+		this(dataDirSupplier, relativeStatePath, emptySet(), name, id, Visibility.VISIBLE);
 	}
 
-	private YearHistory(Path statePath, Collection<LocalDate> dates, String name, String id, Visibility visibility) {
-		this.statePath = statePath;
+	private YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath, Collection<LocalDate> dates,
+		String name, String id, Visibility visibility)
+	{
+		this.dataDirSupplier = dataDirSupplier;
+		this.relativeStatePath = relativeStatePath;
 		this.dates = new HashSet<>(dates);
 		this.name = name;
 		this.id = id;
 		this.visibility = visibility;
 	}
 
-	private YearHistory(Path statePath, SerializableYearHistory serializableYearHistory) {
-		this(statePath, serializableYearHistory.getDates(), serializableYearHistory.getName(),
-			serializableYearHistory.getId(), serializableYearHistory.getVisibility());
+	private YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath,
+		SerializableYearHistory serializableYearHistory)
+	{
+		this(dataDirSupplier, relativeStatePath, serializableYearHistory.getDates(),
+			serializableYearHistory.getName(), serializableYearHistory.getId(),
+			serializableYearHistory.getVisibility());
 	}
 
 	/**
 	 * Read a habit file of any text-based version. Currently:
 	 * <ul>
-	 *     <li>version 0: plain text {@link #readV0(Path)}</li>
+	 *     <li>version 0: plain text {@link #readV0(DataDirSupplier, Path)}</li>
 	 *     <li>version 1: JSON see {@link SerializableYearHistoryV1}</li>
 	 *     <li>version 2: JSON see {@link SerializableYearHistory}</li>
 	 * </ul>
 	 */
-	public static Optional<YearHistory> read(Path statePath) {
+	public static Optional<YearHistory> read(DataDirSupplier dataDirSupplier, Path statePath) {
+		Path relativeStatePath = dataDirSupplier.getDataDir().relativize(statePath);
 		if (!Files.exists(statePath)) {
 			System.out.println("No saved state.");
-			return Optional.of(new YearHistory(statePath, HabitFiles.pathToName(statePath),
+			return Optional.of(new YearHistory(dataDirSupplier, relativeStatePath, HabitFiles.pathToName(statePath),
 				HabitFiles.v0v1PathToId(statePath)));
 		}
 		if (!Files.isRegularFile(statePath) || !Files.isReadable(statePath)) {
@@ -95,13 +107,13 @@ public final class YearHistory {
 		try (BufferedReader r = Files.newBufferedReader(statePath)) {
 			String name = HabitFiles.pathToName(statePath);
 			SerializableYearHistory serializableYearHistory = SerializableYearHistory.fromJson(r, name, statePath);
-			tmp = new YearHistory(statePath, serializableYearHistory);
+			tmp = new YearHistory(dataDirSupplier, relativeStatePath, serializableYearHistory);
 		} catch (IOException e) {
 			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
 			return Optional.empty();
 		} catch (JsonParseException e) {
 			// fallback to version 0 of storage
-			return readV0(statePath);
+			return readV0(dataDirSupplier, statePath);
 		}
 		if (isV0V1HiddenFile) {
 			tmp.reHideV0V1File();
@@ -112,7 +124,7 @@ public final class YearHistory {
 	/**
 	 * For backward compatibility
 	 */
-	private static Optional<YearHistory> readV0(Path statePath) {
+	private static Optional<YearHistory> readV0(DataDirSupplier dataDirSupplier, Path statePath) {
 		YearHistory tmp;
 		final boolean isV0V1HiddenFile = HabitFiles.isV0V1HiddenFile(statePath);
 		try (Stream<String> lines = Files.lines(statePath)) {
@@ -127,7 +139,9 @@ public final class YearHistory {
 				})
 				.filter(Objects::nonNull)
 				.collect(toList());
-			tmp = new YearHistory(statePath, dates,
+			tmp = new YearHistory(dataDirSupplier,
+				dataDirSupplier.getDataDir().relativize(statePath),
+				dates,
 				HabitFiles.pathToName(statePath),
 				HabitFiles.v0v1PathToId(statePath),
 				isV0V1HiddenFile ? Visibility.HIDDEN : Visibility.VISIBLE
@@ -147,6 +161,10 @@ public final class YearHistory {
 			return s;
 		}
 		return s.substring(0, 20);
+	}
+
+	private Path getStatePath() {
+		return dataDirSupplier.getDataDir().resolve(relativeStatePath);
 	}
 
 	public void turnOn(LocalDate d) {
@@ -177,6 +195,7 @@ public final class YearHistory {
 		if (!hasChanges) {
 			return;
 		}
+		Path statePath = getStatePath();
 		try {
 			System.out.println("\tSaving to '" + statePath.toAbsolutePath() + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
@@ -194,7 +213,7 @@ public final class YearHistory {
 	}
 
 	public void reHideV0V1File() {
-		Path originalHiddenPath = this.statePath;
+		final Path originalHiddenPath = getStatePath();
 		System.out.println("Re-hiding '" + originalHiddenPath.toAbsolutePath() + "'...");
 		Path newPath = HabitFiles.fromV0Hidden(originalHiddenPath);
 		if (newPath.equals(originalHiddenPath)) {
@@ -202,8 +221,8 @@ public final class YearHistory {
 			return;
 		}
 		try {
-			Files.move(this.statePath, newPath);
-			this.statePath = newPath;
+			Files.move(originalHiddenPath, newPath);
+			relativeStatePath = dataDirSupplier.getDataDir().relativize(newPath);
 			setVisibility(Visibility.HIDDEN); // it was .hidden before, so override whatever was deserialized
 			System.out.println("Moved '" + originalHiddenPath.toAbsolutePath() +
 				"' to '" + newPath.toAbsolutePath() + "'");
@@ -215,9 +234,9 @@ public final class YearHistory {
 
 	public void delete() {
 		try {
-			Files.delete(this.statePath);
+			Files.delete(getStatePath());
 		} catch (IOException e) {
-			System.err.println("Could not delete '" + this.statePath.toAbsolutePath() + "': " + e);
+			System.err.println("Could not delete '" + getStatePath().toAbsolutePath() + "': " + e);
 			e.printStackTrace();
 		}
 	}

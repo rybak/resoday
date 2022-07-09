@@ -9,6 +9,7 @@ import dev.andrybak.resoday.gui.help.AboutDialog;
 import dev.andrybak.resoday.gui.help.DebugDialog;
 import dev.andrybak.resoday.gui.help.HelpDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
+import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
@@ -66,9 +67,11 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 	private final Histories histories = new Histories();
 	private final Timer autoSaveTimer;
 	private GuiSettings guiSettings;
+	private final Path dataDir;
 	private final GuiSettingsSaver guiSettingsSaver = new GuiSettingsSaver();
 
 	public MainGui(Path dataDir, Path configDir) {
+		this.dataDir = dataDir;
 		content = new JPanel(new BorderLayout());
 		guiSettings = GuiSettings.read(configDir);
 
@@ -78,7 +81,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				.filter(Files::isRegularFile)
 				.filter(Files::isReadable)
 				.filter(HabitFiles.IS_HABIT_FILE)
-				.map(YearHistory::read)
+				.map(statePath -> YearHistory.read(getDataDirSupplier(), statePath))
 				.flatMap(Optional::stream)
 				.collect(Collectors.toMap(YearHistory::getId, Function.identity()));
 			Optional<SortOrder> maybeOrder = SortOrder.read(dataDir);
@@ -116,7 +119,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave(configDir));
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
-		setUpMenuBar(dataDir, tabs);
+		setUpMenuBar(tabs);
 	}
 
 	private static Image getResodayImage() {
@@ -124,11 +127,15 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		return Toolkit.getDefaultToolkit().getImage(resodayIconUrl);
 	}
 
+	private DataDirSupplier getDataDirSupplier() {
+		return () -> dataDir;
+	}
+
 	private void markTodayInCurrentTab(JTabbedPane tabs) {
 		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markToday);
 	}
 
-	private void setUpMenuBar(Path dir, JTabbedPane tabs) {
+	private void setUpMenuBar(JTabbedPane tabs) {
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu mainMenu = new JMenu("Main");
@@ -136,13 +143,13 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		{
 			JMenuItem addHabitMenuItem = new JMenuItem("Add habit");
 			addHabitMenuItem.setMnemonic('A');
-			addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(dir, tabs));
+			addHabitMenuItem.addActionListener(ignored -> openAddHabitDialog(tabs));
 			mainMenu.add(addHabitMenuItem);
 		}
 		{
 			JMenuItem reorderHabitsMenuItem = new JMenuItem("Reorder habits");
 			reorderHabitsMenuItem.setMnemonic('O');
-			reorderHabitsMenuItem.addActionListener(ignored -> openReorderHabitsDialog(dir, tabs));
+			reorderHabitsMenuItem.addActionListener(ignored -> openReorderHabitsDialog(tabs));
 			mainMenu.add(reorderHabitsMenuItem);
 		}
 		mainMenu.add(new JSeparator());
@@ -204,18 +211,18 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		window.setJMenuBar(menuBar);
 	}
 
-	private void openAddHabitDialog(Path dir, JTabbedPane tabs) {
+	private void openAddHabitDialog(JTabbedPane tabs) {
 		Set<String> names = histories.histories()
 			.map(YearHistory::getName)
 			.collect(toSet());
 		ChooseHabitNameDialog.show(window, "Add habit", "+", null, names::contains, habitName -> {
 			String newId = HabitFiles.createNewId();
 			String filename = HabitFiles.createNewFilename(newId, habitName);
-			Path newHabitPath = dir.resolve(filename);
-			YearHistory newHistory = new YearHistory(newHabitPath, habitName, newId);
+			YearHistory newHistory = new YearHistory(getDataDirSupplier(), Path.of(filename), habitName, newId);
 			HistoryPanel newPanel = new HistoryPanel(newHistory, this);
 			histories.add(newHistory, newPanel);
 			tabs.addTab(habitName, newPanel);
+			Path newHabitPath = dataDir.resolve(filename);
 			System.out.println("Added new habit '" + habitName + "' at path '" + newHabitPath.toAbsolutePath() + "'.");
 		});
 	}
@@ -296,11 +303,11 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		tabs.removeTabAt(i);
 	}
 
-	private void openReorderHabitsDialog(Path dir, JTabbedPane tabs) {
+	private void openReorderHabitsDialog(JTabbedPane tabs) {
 		String oldSelectedId = getCurrentHistoryPanel(tabs)
 			.map(HistoryPanel::getHistoryId)
 			.orElse(null);
-		histories.reorder(this.window, dir, this, () -> {
+		histories.reorder(this.window, getDataDirSupplier(), this, () -> {
 			for (int i = 0, n = tabs.getTabCount(); i < n; i++) {
 				tabs.removeTabAt(0); // removing all tabs
 			}

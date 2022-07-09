@@ -3,10 +3,10 @@ package dev.andrybak.resoday.gui;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.edithabits.ReorderHabitsDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
+import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 import dev.andrybak.resoday.storage.SortOrder;
 
 import java.awt.Window;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +49,12 @@ public class Histories {
 	}
 
 	/**
+	 * Show {@link ReorderHabitsDialog} and reorder habits in this {@code Histories} according to user inputs.
+	 *
 	 * @param editCallback called, if something was edited
 	 */
-	public void reorder(Window parent, Path dir, CalendarLayoutSettingProvider calendarLayoutSettingProvider,
+	public void reorder(Window parent, DataDirSupplier dataDirSupplier,
+		CalendarLayoutSettingProvider calendarLayoutSettingProvider,
 		Runnable editCallback)
 	{
 		List<ReorderHabitsDialog.Row> inputRows = new ArrayList<>();
@@ -101,7 +104,7 @@ public class Histories {
 				.map(ReorderHabitsDialog.Row::getId)
 				.collect(Collectors.toList());
 			if (!inputOrder.equals(outputOrder)) {
-				SortOrder.save(dir, outputOrder);
+				SortOrder.save(dataDirSupplier, outputOrder);
 			}
 			editCallback.run();
 		});

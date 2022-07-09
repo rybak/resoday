@@ -1,5 +1,7 @@
 package dev.andrybak.resoday.storage;
 
+import dev.andrybak.resoday.gui.settings.DataDirSupplier;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,8 +25,8 @@ public class SortOrder {
 		this.order = new ArrayList<>(order);
 	}
 
-	public static void save(Path rootDir, List<String> ids) {
-		Path p = rootDir.resolve(ORDER_FILE);
+	public static void save(DataDirSupplier dataDirSupplier, List<String> ids) {
+		Path p = dataDirSupplier.getDataDir().resolve(ORDER_FILE);
 		try {
 			Files.write(p, ids);
 		} catch (IOException e) {
