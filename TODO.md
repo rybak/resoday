@@ -68,12 +68,6 @@
 
 ## In dev
 
-- Custom data directory
-    > https://github.com/rybak/resoday/issues/2
-    * [x] Loading custom dir
-    * [ ] Saving custom dir
-    * [ ] DataDirProvider refactoring? -- separate commit to update all places which use the dir
-    * [ ] Moving when getting new setting
 
 ## Done
 
@@ -218,3 +212,9 @@
 - Use Java 17 features in tests
 - Introduce Help > Help
     > Describe what Resoday is used for
+- Custom data directory
+    > https://github.com/rybak/resoday/issues/2
+    * [x] Loading custom dir
+    * [x] Saving custom dir
+    * [x] DataDirProvider refactoring? -- separate commit to update all places which use the dir
+    * [x] Moving when getting new setting
