@@ -7,8 +7,12 @@ import dev.dirs.ProjectDirectories;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -81,7 +85,14 @@ public final class Resoday {
 			printWriter.println(t.getMessage());
 			t.printStackTrace(printWriter);
 			exceptionText.setText(sw.toString());
-			message.add(exceptionText, BorderLayout.CENTER);
+			JScrollPane scrollPane = new JScrollPane(exceptionText,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 200));
+			JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+			// scroll up, so that Exception message is visible
+			SwingUtilities.invokeLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMinimum()));
+			message.add(scrollPane, BorderLayout.CENTER);
 		}
 		message.add(new JLabel(StringConstants.APP_NAME_GUI + " is going to close"), BorderLayout.SOUTH);
 		JOptionPane.showMessageDialog(
