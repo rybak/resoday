@@ -20,8 +20,6 @@ import java.util.List;
  * Shows to the user {@link YearHistory habit histories}, with access to one year at a time.
  */
 final class HistoryPanel extends JPanel {
-	private static final Year currentYear = Year.now();
-
 	private final YearHistory history;
 	/**
 	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
@@ -58,6 +56,7 @@ final class HistoryPanel extends JPanel {
 		topPanel.add(futureButton);
 		this.add(topPanel, BorderLayout.NORTH);
 
+		final Year currentYear = Year.now();
 		shownYear = history.years()
 			.boxed()
 			.min(Comparator.comparingInt(y -> Math.abs(currentYear.getValue() - y)))

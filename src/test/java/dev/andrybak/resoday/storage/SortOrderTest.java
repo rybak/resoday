@@ -1,5 +1,6 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.storage;
 
+import dev.andrybak.resoday.storage.SortOrder;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

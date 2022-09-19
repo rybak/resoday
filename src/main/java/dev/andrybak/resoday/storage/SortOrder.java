@@ -1,4 +1,6 @@
-package dev.andrybak.resoday;
+package dev.andrybak.resoday.storage;
+
+import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,18 +21,12 @@ public class SortOrder {
 
 	private final List<String> order;
 
-	public SortOrder(List<String> order) {
+	SortOrder(List<String> order) {
 		this.order = new ArrayList<>(order);
 	}
 
-	public static void save(Path rootDir, List<String> ids) {
-		Path p = rootDir.resolve(ORDER_FILE);
-		try {
-			Files.write(p, ids);
-		} catch (IOException e) {
-			System.err.println("Could not write '" + p + "'. Got error: " + e);
-			e.printStackTrace();
-		}
+	public static void save(DataDirSupplier dataDirSupplier, List<String> ids) {
+		new SortOrder(ids).save(dataDirSupplier);
 	}
 
 	public static Optional<SortOrder> read(Path rootDir) {
@@ -47,6 +43,16 @@ public class SortOrder {
 			System.err.println("Could not read '" + p + "'. Got error: " + e);
 			e.printStackTrace();
 			return Optional.empty();
+		}
+	}
+
+	public void save(DataDirSupplier dataDirSupplier) {
+		Path p = dataDirSupplier.getDataDir().resolve(ORDER_FILE);
+		try {
+			Files.write(p, order);
+		} catch (IOException e) {
+			System.err.println("Could not write '" + p + "'. Got error: " + e);
+			e.printStackTrace();
 		}
 	}
 
