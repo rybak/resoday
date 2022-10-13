@@ -1,19 +1,25 @@
 package dev.andrybak.resoday.gui.help;
 
 import dev.andrybak.resoday.StringConstants;
+import dev.andrybak.resoday.gui.Logo;
 import dev.andrybak.resoday.gui.util.Dialogs;
 import dev.andrybak.resoday.gui.util.Hyperlinks;
 import dev.andrybak.resoday.gui.util.ScrollPanes;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -55,6 +61,15 @@ public final class AboutDialog {
 	private static JPanel createResodayTab(JDialog d) {
 		JPanel resodayTab = new JPanel(new BorderLayout());
 
+		{
+			JPanel alignmentPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 10));
+			{
+				JLabel logoLabel = new JLabel(new ImageIcon(Logo.getResodayImage()));
+				alignmentPanel.add(logoLabel);
+			}
+			resodayTab.add(alignmentPanel, BorderLayout.NORTH);
+		}
+
 		JTextPane textPane = new JTextPane();
 		textPane.setEditable(false);
 		/*
@@ -74,7 +89,9 @@ public final class AboutDialog {
 		}
 		Hyperlinks.setUpHyperlinkListener(textPane);
 		textPane.setBackground(resodayTab.getBackground());
-		resodayTab.add(ScrollPanes.vertical(textPane), BorderLayout.CENTER);
+		JScrollPane scrollPane = ScrollPanes.vertical(textPane);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		resodayTab.add(scrollPane, BorderLayout.CENTER);
 
 		return resodayTab;
 	}

@@ -34,15 +34,12 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -61,7 +58,6 @@ import static java.util.stream.Collectors.toSet;
 
 public final class MainGui implements CalendarLayoutSettingProvider {
 	private static final Duration AUTO_SAVE_PERIOD = Duration.ofMinutes(10);
-	private static final String APP_ICON_FILENAME = "resoday-icon.png";
 
 	private final JFrame window = new JFrame(StringConstants.APP_NAME_GUI);
 	private final JPanel content;
@@ -121,11 +117,6 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
 
 		setUpMenuBar(tabs, configDir);
-	}
-
-	private static Image getResodayImage() {
-		URL resodayIconUrl = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_FILENAME));
-		return Toolkit.getDefaultToolkit().getImage(resodayIconUrl);
 	}
 
 	private DataDirSupplier getDataDirSupplier() {
@@ -380,7 +371,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.pack();
-		window.setIconImage(getResodayImage());
+		window.setIconImage(Logo.getResodayImage());
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {
 			@Override
