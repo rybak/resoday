@@ -42,6 +42,7 @@
 
 ## Refactoring
 
+- Add invokeLater to the startup code
 - write tests for GuiSettings serialization
 - Gradle: figure out `with jar`
     > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
