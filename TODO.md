@@ -16,9 +16,6 @@
 - new button style: override JComponent#paint & addMouseListener instead of boring buttons
 - Streak sound
 - Streak animation 
-- Add debug ui for opening the habit directory via Desktop.open
-    * [ ] Or some kind of "Help > Debug > Open data dir" menu
-    * [ ] JTable with data about habits (Name | Path | number of dates, for example)
 - Make "Today" more noticeable
 - Save button
     > Just a kind of "peace of mind" thing. Although auto-saving is much more intuitive, because save location is pre-determined. Users don't quote-unquote "edit" their .habit files, they are turning lights (toggle buttons) on and off
@@ -39,6 +36,10 @@
     > And both scripts would point to the empty directory from the zip file.
 - Skin support
 - When adding more than (some small number) of habits, warn the user
+- Add directory/folder "path" text field to habits for organizing
+    > Nested tab layouts. For example, useful for separating "Daily" / "Weekly"  / "Monthly"
+    * [ ] Requires a fancy manager for tree of tabs to keep track of which tab is currently selected 
+    * [ ] Folders should be ephemeral -- don't exist when empty. Similar to how IntelliJ stores run configs
 
 ## Refactoring
 
@@ -60,9 +61,13 @@
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Upgrade Gradle, Gradle plugins, dependencies
+- Maybe replace timer for highlighting of today's button with checks on some events
 
 ## In dev
 
+- Add debug ui for opening the habit directory via Desktop.open
+    * [x] Or some kind of "Help > Debug > Open data dir" menu (implemented on 2022-07-09)
+    * [ ] JTable with data about habits (Name | Path | number of dates, for example)
 
 ## Done
 
