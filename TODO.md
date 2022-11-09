@@ -60,12 +60,6 @@
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Upgrade Gradle, Gradle plugins, dependencies
-- Checkout Chatty's source code
-    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
-    * [ ] browser opening
-    * [x] directory for saving (~/.chatty)
-    * [ ] something else?
-    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
 
 ## In dev
 
@@ -219,3 +213,9 @@
     * [x] Saving custom dir
     * [x] DataDirProvider refactoring? -- separate commit to update all places which use the dir
     * [x] Moving when getting new setting
+- Checkout Chatty's source code
+    > Chatty seems to be doing a lot of nice things with Java 8, desktop integration-wise.
+    * [x] browser opening (implemented on 2021-11-29)
+    * [x] directory for saving (~/.chatty)
+    * [x] something else?
+    * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
