@@ -68,6 +68,7 @@
 - Add debug ui for opening the habit directory via Desktop.open
     * [x] Or some kind of "Help > Debug > Open data dir" menu (implemented on 2022-07-09)
     * [ ] JTable with data about habits (Name | Path | number of dates, for example)
+- Fix frame icon rendering on Windows
 
 ## Done
 
