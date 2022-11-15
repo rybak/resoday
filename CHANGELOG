@@ -1,3 +1,8 @@
+v1.4
+- Menu "Main > Statistics" has been introduced
+- About dialog now shows the Resoday logo
+- UI for crash handler has been improved
+
 v1.3
 - Custom data directory setting has been introduced
 - Simple crash handler has been introduced
