@@ -12,6 +12,7 @@ import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
+import dev.andrybak.resoday.gui.stats.StatisticsDialog;
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
 import dev.andrybak.resoday.settings.storage.CustomDataDirectory;
@@ -162,6 +163,13 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			deleteHabitMenuItem.setMnemonic('D');
 			deleteHabitMenuItem.addActionListener(ignored -> openDeleteHabitDialog(tabs));
 			mainMenu.add(deleteHabitMenuItem);
+		}
+		mainMenu.add(new JSeparator());
+		{
+			JMenuItem statsMenuItem = new JMenuItem("Statistics");
+			statsMenuItem.setMnemonic('S');
+			statsMenuItem.addActionListener(ignored -> StatisticsDialog.show(window, histories));
+			mainMenu.add(statsMenuItem);
 		}
 		menuBar.add(mainMenu);
 

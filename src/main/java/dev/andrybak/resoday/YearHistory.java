@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -276,6 +278,10 @@ public final class YearHistory {
 			hasChanges = true;
 		}
 		this.visibility = visibility;
+	}
+
+	public NavigableSet<LocalDate> toNavigableSet() {
+		return new TreeSet<>(dates);
 	}
 
 	public enum Visibility {
