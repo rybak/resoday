@@ -367,6 +367,11 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 	}
 
 	public void go(Path configDir) {
+		// all GUI manipulations should be done in AWT event dispatching thread
+		SwingUtilities.invokeLater(() -> goInEdt(configDir));
+	}
+
+	private void goInEdt(Path configDir) {
 		window.setMinimumSize(new Dimension(640, 480));
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

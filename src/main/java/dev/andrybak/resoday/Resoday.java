@@ -25,8 +25,10 @@ public final class Resoday {
 
 	public static void main(String... args) {
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-			showCrashError(thread, throwable);
-			System.exit(1);
+			SwingUtilities.invokeLater(() -> {
+				showCrashError(thread, throwable);
+				System.exit(1);
+			});
 		});
 		Path dataDir;
 		Path configDir;
