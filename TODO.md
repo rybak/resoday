@@ -43,7 +43,6 @@
 
 ## Refactoring
 
-- Add invokeLater to the startup code
 - write tests for GuiSettings serialization
 - Gradle: figure out `with jar`
     > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
@@ -65,9 +64,6 @@
 
 ## In dev
 
-- Add debug ui for opening the habit directory via Desktop.open
-    * [x] Or some kind of "Help > Debug > Open data dir" menu (implemented on 2022-07-09)
-    * [ ] JTable with data about habits (Name | Path | number of dates, for example)
 - Fix frame icon rendering on Windows
 
 ## Done
@@ -225,3 +221,9 @@
     * [x] directory for saving (~/.chatty)
     * [x] something else?
     * [x] icon for JAR file -- lol what? that's not possible. OS/DE decides the icon. Doable only for an .exe file
+- Add debug ui for opening the habit directory via Desktop.open
+    * [x] Or some kind of "Help > Debug > Open data dir" menu (implemented on 2022-07-09)
+- Add invokeLater to the startup code
+- Add stats UI
+    * [x] JTable with data about habits (Name | Path | number of dates, for example)
+- Release v1.4
