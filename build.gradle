@@ -20,8 +20,8 @@ dependencies {
 	implementation 'dev.dirs:directories:26' // https://github.com/dirs-dev/directories-jvm
 	implementation 'com.google.code.gson:gson:2.10'
 
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
 }
 
 tasks.named('test', Test) {
