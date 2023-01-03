@@ -18,7 +18,7 @@ repositories {
 dependencies {
 	// don't forget to update "third-party-software.html"
 	implementation 'dev.dirs:directories:26' // https://github.com/dirs-dev/directories-jvm
-	implementation 'com.google.code.gson:gson:2.9.0'
+	implementation 'com.google.code.gson:gson:2.10'
 
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
