@@ -59,7 +59,6 @@
 - Gradle: migrate to Kotlin build scripts?
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
-- Upgrade Gradle, Gradle plugins, dependencies
 - Maybe replace timer for highlighting of today's button with checks on some events
 
 ## In dev
@@ -227,3 +226,5 @@
 - Add stats UI
     * [x] JTable with data about habits (Name | Path | number of dates, for example)
 - Release v1.4
+- Upgrade Gradle, Gradle plugins, dependencies
+    > Skipped updating Grgit for now - 2023-01-03
