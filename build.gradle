@@ -56,7 +56,7 @@ tasks.named('test', Test) {
  * TODO maybe generate Version.java from Gradle?
  */
 String calculateVersion() {
-	final String defaultVersion = '1.4-nongit'
+	final String defaultVersion = '1.5-nongit'
 	final Grgit git = Grgit.open(dir: project.rootDir)
 	try {
 		/*
