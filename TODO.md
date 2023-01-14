@@ -60,6 +60,8 @@
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Maybe replace timer for highlighting of today's button with checks on some events
+- Use GitLab CLI tool for releases
+    > If I understood docs correctly, it will be much faster than doing manually.
 
 ## In dev
 
