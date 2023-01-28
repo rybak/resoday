@@ -4,9 +4,12 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 
+/**
+ * Utility methods for wrapping {@link Component}s and {@link JComponent}s into scrollable panes.
+ */
 public class ScrollPanes {
 	/**
-	 * By default, scrollbars in Java Swings are slow to scroll. 15 is an arbitrarily chosen "unit increment", that
+	 * By default, scrollbars in Java Swing are slow to scroll. 15 is an arbitrarily chosen "unit increment", that
 	 * seems to be usable.
 	 */
 	private static final int UNIT_INCREMENT = 15;
