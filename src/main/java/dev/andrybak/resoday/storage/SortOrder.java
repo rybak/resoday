@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-@SuppressWarnings("ClassCanBeRecord") // can't make `order` public
 public class SortOrder {
 	private static final Path ORDER_FILE = Paths.get("resoday-order.txt");
 

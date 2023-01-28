@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-@SuppressWarnings("ClassCanBeRecord") // cannot be a record due to Gson limitations
 public final class GuiSettings {
 	public static final GuiSettings DEFAULT = new GuiSettings(CalendarLayoutSetting.COLUMNS_SIMONE_GIERTZ);
 	private static final Path GUI_SETTINGS_FILE = Paths.get("gui_settings.json");
