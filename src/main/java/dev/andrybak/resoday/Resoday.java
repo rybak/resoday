@@ -65,15 +65,9 @@ public final class Resoday {
 	}
 
 	private static Path getDataDir(Path configDir, Path defaultDataDir) {
-		final Path dataDir;
 		final Optional<Path> maybeCustomDataDir = CustomDataDirectory.from(configDir);
-		if (maybeCustomDataDir.isPresent()) {
-			dataDir = maybeCustomDataDir.get();
-			System.out.println("Using custom data directory: " + dataDir);
-		} else {
-			dataDir = defaultDataDir;
-		}
-		return dataDir;
+		maybeCustomDataDir.ifPresent(dir -> System.out.println("Using custom data directory: " + dir));
+		return maybeCustomDataDir.orElse(defaultDataDir);
 	}
 
 	private static void showCrashError(Thread thread, Throwable t) {
