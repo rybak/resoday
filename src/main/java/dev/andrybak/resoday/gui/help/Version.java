@@ -5,6 +5,10 @@ import dev.andrybak.resoday.StringConstants;
 public class Version {
 	private static final String DIRTY_DEVELOPMENT_BUILD = "dirty development build";
 
+	private Version() {
+		throw new UnsupportedOperationException();
+	}
+
 	public static String extractVersion() {
 		String versionFromPackage = versionFromPackage();
 		if (versionFromPackage == null) {

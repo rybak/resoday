@@ -16,6 +16,10 @@ import java.time.LocalDate;
 import java.util.NavigableSet;
 
 public class StatisticsDialog {
+	private StatisticsDialog() {
+		throw new UnsupportedOperationException();
+	}
+
 	private static JDialog create(Window parent, Histories histories) {
 		JDialog d = new JDialog(parent, "Statistics", Dialog.ModalityType.APPLICATION_MODAL);
 		d.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

@@ -23,6 +23,10 @@ public final class HelpDialog {
 	private static final String HELP_HTML_RESOURCE_FILENAME = "help.html";
 	private static final String HTML_UTF_8_CONTENT_TYPE = "text/html;charset=UTF-8";
 
+	private HelpDialog() {
+		throw new UnsupportedOperationException();
+	}
+
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, StringConstants.APP_NAME_GUI + " help",
 			Dialog.ModalityType.APPLICATION_MODAL);

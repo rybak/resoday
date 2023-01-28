@@ -34,6 +34,10 @@ public final class DebugDialog {
 		"file.encoding",
 	};
 
+	private DebugDialog() {
+		throw new UnsupportedOperationException();
+	}
+
 	public static void show(Window parent) {
 		JDialog d = create(parent);
 		d.setVisible(true);

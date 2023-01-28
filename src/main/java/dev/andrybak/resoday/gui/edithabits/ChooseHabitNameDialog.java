@@ -29,6 +29,7 @@ public final class ChooseHabitNameDialog {
 	private static final String NEW_HABIT_NAME_BASE = "New habit";
 
 	private ChooseHabitNameDialog() {
+		throw new UnsupportedOperationException();
 	}
 
 	/**

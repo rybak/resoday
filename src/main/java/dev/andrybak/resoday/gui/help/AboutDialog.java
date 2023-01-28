@@ -35,6 +35,10 @@ public final class AboutDialog {
 	private static final String THIRD_PARTY_HTML_RESOURCE_FILENAME = "third-party-software.html";
 	private static final String HTML_UTF_8_CONTENT_TYPE = "text/html;charset=UTF-8";
 
+	private AboutDialog() {
+		throw new UnsupportedOperationException();
+	}
+
 	private static JDialog create(Window parent) {
 		JDialog d = new JDialog(parent, "About " + StringConstants.APP_NAME_GUI,
 			Dialog.ModalityType.APPLICATION_MODAL);
