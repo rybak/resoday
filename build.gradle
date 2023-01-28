@@ -4,7 +4,7 @@ plugins {
 }
 import org.ajoberstar.grgit.Grgit
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.with {
 		encoding = 'UTF-8'
 		release.set(17) // don't forget to update README.md
@@ -31,17 +31,17 @@ tasks.named('test', Test) {
 		lifecycle {
 			events "passed", "skipped", "failed"
 			exceptionFormat 'full'
+		}
+	}
 
-			afterSuite { description, result ->
-				if (!description.parent) { // will match the outermost suite
-					def stats = "${result.testCount} tests run, ${result.successfulTestCount} successes, " +
-						"${result.failedTestCount} failures, ${result.skippedTestCount} ignored"
-					println('-' * stats.length())
-					println("Testing result for ${project.name}: ${result.resultType}")
-					println(stats)
-					println('-' * stats.length())
-				}
-			}
+	afterSuite { description, result ->
+		if (!description.parent) { // will match the outermost suite
+			def stats = "${result.testCount} tests run, ${result.successfulTestCount} successes, " +
+				"${result.failedTestCount} failures, ${result.skippedTestCount} ignored"
+			println('-' * stats.length())
+			println("Testing result for ${project.name}: ${result.resultType}")
+			println(stats)
+			println('-' * stats.length())
 		}
 	}
 
@@ -117,8 +117,8 @@ tasks.register('releaseJar', Jar) {
 	group = 'release'
 	description = 'Create a release jar of Resoday'
 
-	archiveBaseName = 'resoday'
-	archiveAppendix = 'release'
+	archiveBaseName.set('resoday')
+	archiveAppendix.set('release')
 
 	destinationDirectory.set(file('build/distributions/'))
 
