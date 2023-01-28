@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Histories {
+public final class Histories {
 	private final List<YearHistory> histories = new ArrayList<>();
 	private final Map<String, HistoryPanel> panels = new HashMap<>();
 
