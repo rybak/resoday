@@ -60,8 +60,8 @@ String calculateVersion() {
 	final Grgit git = Grgit.open(dir: project.rootDir)
 	try {
 		/*
-	 * If possible, use an annotated tag which starts with letter 'v' and some numbers.
-	 */
+		 * If possible, use an annotated tag which starts with letter 'v' and some numbers.
+		 */
 		final String description = git.describe(match: ["v[0-9]*"], commit: "HEAD")
 		if (description != null && description.matches("^v[0-9]+[^ ]*")) {
 			def updateIndex = 'git update-index -q --refresh'.execute()
