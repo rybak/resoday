@@ -53,6 +53,8 @@ tasks.named('test', Test) {
 
 /**
  * Generate a version string with a lot of information.
+ * Logic is based on a Shell script used for generating version string of Git:
+ * https://git.kernel.org/pub/scm/git/git.git/tree/GIT-VERSION-GEN
  * TODO maybe generate Version.java from Gradle?
  */
 String calculateVersion() {
