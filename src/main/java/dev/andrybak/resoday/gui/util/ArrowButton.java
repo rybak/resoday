@@ -2,7 +2,6 @@ package dev.andrybak.resoday.gui.util;
 
 import javax.swing.JButton;
 import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
