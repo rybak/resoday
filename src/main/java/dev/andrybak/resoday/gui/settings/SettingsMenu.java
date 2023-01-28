@@ -93,7 +93,7 @@ public final class SettingsMenu {
 						System.out.println("Aborted choosing custom directory after file chooser.");
 						return;
 					}
-					final Path newDataDir = maybePath.get();
+					final Path newDataDir = maybePath.orElseThrow();
 					if (dataDirSupplier.getDataDir().equals(newDataDir)) {
 						System.out.println("Same directory was chosen: " + newDataDir.toAbsolutePath());
 						System.out.println("Aborted changing data directory.");

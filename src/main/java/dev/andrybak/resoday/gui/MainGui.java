@@ -245,8 +245,8 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			return;
 		}
 
-		String id = maybeHistoryPanel.get().getHistoryId();
-		String oldName = maybeHistoryPanel.get().getHistoryName();
+		String id = maybeHistoryPanel.orElseThrow().getHistoryId();
+		String oldName = maybeHistoryPanel.orElseThrow().getHistoryName();
 		// collect names which we won't allow to be used
 		Set<String> names = histories.histories()
 			.map(YearHistory::getName)
@@ -274,7 +274,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			return;
 		}
 
-		HistoryPanel historyPanel = maybeHistoryPanel.get();
+		HistoryPanel historyPanel = maybeHistoryPanel.orElseThrow();
 		switch (HideHabitDialog.show(window, historyPanel.getHistoryName())) {
 		case YES:
 			hideHabit(tabs, historyPanel);
@@ -298,7 +298,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			return;
 		}
 
-		HistoryPanel historyPanel = maybeHistoryPanel.get();
+		HistoryPanel historyPanel = maybeHistoryPanel.orElseThrow();
 		switch (DeleteHabitDialog.show(window, historyPanel.getHistoryName())) {
 		case YES:
 			deleteHabit(tabs, historyPanel);
@@ -332,7 +332,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 					.filter(hp -> hp.getHistoryId().equals(oldSelectedId))
 					.findFirst();
 				if (maybeNewSelected.isPresent()) {
-					tabs.setSelectedComponent(maybeNewSelected.get());
+					tabs.setSelectedComponent(maybeNewSelected.orElseThrow());
 				} else {
 					tabs.setSelectedIndex(0);
 				}
@@ -344,7 +344,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		Optional<HistoryPanel> maybeHistoryPanel = getCurrentHistoryPanel(tabs);
 		final String title;
 		if (maybeHistoryPanel.isPresent()) {
-			HistoryPanel historyPanel = maybeHistoryPanel.get();
+			HistoryPanel historyPanel = maybeHistoryPanel.orElseThrow();
 			title = historyPanel.getHistoryName() + " – " + StringConstants.APP_NAME_GUI;
 		} else {
 			title = StringConstants.APP_NAME_GUI;

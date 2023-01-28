@@ -131,7 +131,7 @@ public class Histories {
 			System.err.println("Warning: could not rename history ID='" + id + "'");
 			return;
 		}
-		maybeHistory.get().setName(newHabitName);
+		maybeHistory.orElseThrow().setName(newHabitName);
 	}
 
 	public void delete(String historyId) {
@@ -143,7 +143,7 @@ public class Histories {
 			System.err.println("Warning: could not delete history ID='" + historyId + "'");
 			return;
 		}
-		YearHistory yearHistory = maybeHistory.get();
+		YearHistory yearHistory = maybeHistory.orElseThrow();
 		histories.remove(yearHistory);
 		yearHistory.delete();
 	}
