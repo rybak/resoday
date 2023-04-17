@@ -1,5 +1,8 @@
 ## Features
 
+- Gradle: add date to jar manifest
+- https://openjdk.java.net/jeps/392 ?
+    > Use packaging tool of JDK instead of distributing just the jar file
 - Habit description
     * [x] depends on the JSON rewrite
     * [ ] add field for habit description
@@ -55,7 +58,6 @@
     * [ ] Is GSON library modularized?
 - Improve .habit format
     * [ ] Compress size somehow
-- https://openjdk.java.net/jeps/392 ?
 - Gradle: migrate to Kotlin build scripts?
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
