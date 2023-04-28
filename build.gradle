@@ -109,7 +109,7 @@ def resodayJarAttributes = [
 	'Main-Class'            : 'dev.andrybak.resoday.Resoday'
 ]
 
-tasks.named('jar', Jar) {
+TaskProvider<Jar> jarTask = tasks.named('jar', Jar) {
 	manifest {
 		attributes(resodayJarAttributes)
 	}
@@ -128,8 +128,7 @@ tasks.register('releaseJar', Jar) {
 		attributes(resodayJarAttributes)
 	}
 
-	dependsOn(jar)
-	from(zipTree(jar.getArchiveFile()))
+	with(jarTask.get() as CopySpec)
 	from(configurations.runtimeClasspath.collect {
 		it.isDirectory() ? it : zipTree(it)
 	})
