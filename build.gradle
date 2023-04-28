@@ -130,11 +130,9 @@ tasks.register('releaseJar', Jar) {
 
 	dependsOn(jar)
 	from(zipTree(jar.getArchiveFile()))
-	from {
-		configurations.runtimeClasspath.collect {
-			it.isDirectory() ? it : zipTree(it)
-		}
-	}
+	from(configurations.runtimeClasspath.collect {
+		it.isDirectory() ? it : zipTree(it)
+	})
 }
 
 tasks.register('release') {
