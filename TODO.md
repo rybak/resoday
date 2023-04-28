@@ -46,9 +46,8 @@
 
 ## Refactoring
 
+- Gradle: migrate to Kotlin build scripts?
 - write tests for GuiSettings serialization
-- Gradle: figure out `with jar`
-    > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
     * [ ] Check how TOS play sounds
@@ -58,7 +57,6 @@
     * [ ] Is GSON library modularized?
 - Improve .habit format
     * [ ] Compress size somehow
-- Gradle: migrate to Kotlin build scripts?
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
 - Maybe replace timer for highlighting of today's button with checks on some events
@@ -232,3 +230,5 @@
 - Release v1.4
 - Upgrade Gradle, Gradle plugins, dependencies
     > Skipped updating Grgit for now - 2023-01-03
+- Gradle: figure out `with jar`
+    > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
