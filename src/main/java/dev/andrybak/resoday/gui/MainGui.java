@@ -385,9 +385,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.pack();
-		window.setIconImage(Logo.getResodayImage());
+		window.setIconImage(Logo.getMultiResolutionImage());
 		if (Taskbar.isTaskbarSupported() && Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE)) {
-			Taskbar.getTaskbar().setIconImage(Logo.getResodayImage());
+			Taskbar.getTaskbar().setIconImage(Logo.getMultiResolutionImage());
 		}
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {

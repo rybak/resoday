@@ -68,7 +68,7 @@ public final class AboutDialog {
 		{
 			JPanel alignmentPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 10));
 			{
-				JLabel logoLabel = new JLabel(new ImageIcon(Logo.getResodayImage()));
+				JLabel logoLabel = new JLabel(new ImageIcon(Logo.getFixedResolutionImage()));
 				alignmentPanel.add(logoLabel);
 			}
 			resodayTab.add(alignmentPanel, BorderLayout.NORTH);

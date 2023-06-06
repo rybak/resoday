@@ -14,11 +14,18 @@ public class Logo {
 		throw new UnsupportedOperationException();
 	}
 
-	public static Image getResodayImage() {
-		URL resodayIcon64Url = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_64_FILENAME));
-		URL resodayIcon32Url = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_32_FILENAME));
-		var icon64 = Toolkit.getDefaultToolkit().getImage(resodayIcon64Url);
-		var icon32 = Toolkit.getDefaultToolkit().getImage(resodayIcon32Url);
+	public static Image getFixedResolutionImage() {
+		return getImage(APP_ICON_64_FILENAME);
+	}
+
+	public static Image getMultiResolutionImage() {
+		var icon64 = getFixedResolutionImage();
+		var icon32 = getImage(APP_ICON_32_FILENAME);
 		return new BaseMultiResolutionImage(icon32, icon64);
+	}
+
+	private static Image getImage(String filename) {
+		URL url = Objects.requireNonNull(MainGui.class.getResource(filename));
+		return Toolkit.getDefaultToolkit().getImage(url);
 	}
 }
