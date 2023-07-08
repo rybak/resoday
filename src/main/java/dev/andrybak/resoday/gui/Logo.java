@@ -12,7 +12,7 @@ public class Logo {
 		throw new UnsupportedOperationException();
 	}
 
-	public static Image getResodayImage() {
+	public static Image getFixedResolutionImage() {
 		URL resodayIconUrl = Objects.requireNonNull(MainGui.class.getResource(APP_ICON_FILENAME));
 		return Toolkit.getDefaultToolkit().getImage(resodayIconUrl);
 	}

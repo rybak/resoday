@@ -384,7 +384,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.pack();
-		window.setIconImage(Logo.getResodayImage());
+		window.setIconImage(Logo.getFixedResolutionImage());
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {
 			@Override
