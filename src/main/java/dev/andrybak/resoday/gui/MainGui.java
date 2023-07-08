@@ -384,7 +384,10 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		window.setContentPane(content);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.pack();
-		window.setIconImage(Logo.getFixedResolutionImage());
+		/*
+		 * Can't use Logo.getMultiResolutionImage() here because of a JDK bug on Linux.
+		 */
+		window.setIconImages(Logo.getImages());
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {
 			@Override
