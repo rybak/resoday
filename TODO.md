@@ -66,6 +66,7 @@
 ## In dev
 
 - Fix frame icon rendering on Windows
+    * [ ] Fix the 32px icon (forgot to commit on the Window PC, I think?)
 
 ## Done
 
