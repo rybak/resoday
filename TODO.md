@@ -1,5 +1,7 @@
 ## Features
 
+- Debug button to open config directory
+    > There is already a menu item to open data directory.  Config directory is a separate dir on some of the OSs. There should be a button/menu item to easily access it.
 - Gradle: add date to jar manifest
 - https://openjdk.java.net/jeps/392 ?
     > Use packaging tool of JDK instead of distributing just the jar file
