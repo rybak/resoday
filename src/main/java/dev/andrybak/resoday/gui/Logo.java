@@ -26,6 +26,12 @@ public class Logo {
 		);
 	}
 
+	public static Image getMultiResolutionImage() {
+		Image icon32 = getImage(APP_ICON_32_FILENAME);
+		Image icon64 = getFixedResolutionImage();
+		return new BaseMultiResolutionImage(icon32, icon64);
+	}
+
 	private static Image getImage(String filename) {
 		URL url = Objects.requireNonNull(MainGui.class.getResource(filename));
 		return Toolkit.getDefaultToolkit().getImage(url);

@@ -1,5 +1,7 @@
 - Rendering of the icon in the title bar of the main window has been
   fixed in Microsoft Windows.
+- Dock on macOS will now show the Resoday icon instead of the default
+  Duke icon of the JVM.
 
 v1.5
 - Fixed dead link in "About" dialog
