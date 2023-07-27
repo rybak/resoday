@@ -35,6 +35,7 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Taskbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -388,6 +389,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		 * Can't use Logo.getMultiResolutionImage() here because of a JDK bug on Linux.
 		 */
 		window.setIconImages(Logo.getImages());
+		if (Taskbar.isTaskbarSupported() && Taskbar.getTaskbar().isSupported(Taskbar.Feature.ICON_IMAGE)) {
+			Taskbar.getTaskbar().setIconImage(Logo.getMultiResolutionImage());
+		}
 		window.setVisible(true);
 		window.addWindowListener(new WindowAdapter() {
 			@Override
