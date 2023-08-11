@@ -1,4 +1,4 @@
-![Resoday icon](src/main/resources/dev/andrybak/resoday/gui/resoday-icon.png)
+![Resoday icon][icon]
 
 Resoday – habit tracking calendar
 =================================
@@ -41,6 +41,7 @@ TODO
 ----
 [TODO list in Taskell (Markdown-like) format][TODO]
 
+[icon]: src/main/resources/dev/andrybak/resoday/gui/resoday-icon-64px.png
 [Simone]: http://www.simonegiertz.com/every-day-calendar
 [Veritasium]: https://www.youtube.com/watch?v=Pm9CQn07OjU&t=4m26s
 [TODO]: https://github.com/rybak/resoday/blob/todo/TODO.md
