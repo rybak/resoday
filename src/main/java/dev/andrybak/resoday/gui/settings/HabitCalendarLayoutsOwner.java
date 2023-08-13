@@ -16,4 +16,8 @@ public interface HabitCalendarLayoutsOwner {
 
 	void acceptNewCurrentHabitLayout(HabitCalendarLayout habitCalendarLayout);
 
+	/**
+	 * Must be called exactly once.
+	 */
+	void addDefaultLayoutChangeListener(DefaultLayoutChangeListener listener);
 }

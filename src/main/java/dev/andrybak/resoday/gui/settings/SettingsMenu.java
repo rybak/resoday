@@ -43,6 +43,12 @@ public final class SettingsMenu {
 			ButtonGroup habitLayoutButtonGroup = new ButtonGroup();
 			for (HabitCalendarLayout hcl : HabitCalendarLayout.values()) {
 				JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(hcl.getGuiName(), hcl == currentHabitLayout);
+				if (hcl == HabitCalendarLayout.DEFAULT) {
+					setDefaultHabitLayoutMenuItemText(menuItem, current.getButtonLayoutSetting());
+					layoutsOwner.addDefaultLayoutChangeListener(newDefaultLayout ->
+						setDefaultHabitLayoutMenuItemText(menuItem, newDefaultLayout)
+					);
+				}
 				layoutsOwner.addVisibleHabitChangedListener(() ->
 					layoutsOwner.getCurrentTabLayout().ifPresent(layout -> menuItem.setSelected(hcl == layout)));
 				habitLayoutButtonGroup.add(menuItem);
@@ -148,6 +154,12 @@ public final class SettingsMenu {
 			menu.add(dataDirMenu);
 		}
 		return menu;
+	}
+
+	private static void setDefaultHabitLayoutMenuItemText(JRadioButtonMenuItem menuItem,
+		CalendarLayoutSetting defaultLayout)
+	{
+		menuItem.setText(HabitCalendarLayout.DEFAULT.getGuiName() + " (" + defaultLayout.getGuiName() + ")");
 	}
 
 	private static void showDataDirError(JMenu menu, Path dataDir) {

@@ -10,6 +10,7 @@ import dev.andrybak.resoday.gui.help.DebugDialog;
 import dev.andrybak.resoday.gui.help.HelpDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.DataDirSupplier;
+import dev.andrybak.resoday.gui.settings.DefaultLayoutChangeListener;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
 import dev.andrybak.resoday.gui.settings.HabitCalendarLayoutsOwner;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
@@ -55,6 +56,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -178,10 +181,15 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		}
 		menuBar.add(mainMenu);
 
+		/*
+		 * A hack to pass new default layout between two `JMenu`s
+		 */
+		AtomicReference<DefaultLayoutChangeListener> ref = new AtomicReference<>();
 		JMenu settingsMenu = SettingsMenu.create(
 			guiSettings, newSettings -> {
 				guiSettings = newSettings;
 				histories.forEachPanel(p -> p.newSettings(this));
+				ref.get().onDefaultLayoutChange(newSettings.getButtonLayoutSetting());
 			},
 			getDataDirSupplier(), newDataDir -> {
 				System.out.println("Trying to move data to directory '" + newDataDir + "'");
@@ -193,7 +201,7 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				histories.forEachHistory(YearHistory::forceSave);
 				CustomDataDirectory.save(configDir, dataDir);
 			},
-			createHabitCalendarLayoutsOwner(tabs)
+			createHabitCalendarLayoutsOwner(tabs, ref::set)
 		);
 		menuBar.add(settingsMenu);
 
@@ -351,7 +359,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		});
 	}
 
-	private HabitCalendarLayoutsOwner createHabitCalendarLayoutsOwner(JTabbedPane tabs) {
+	private HabitCalendarLayoutsOwner createHabitCalendarLayoutsOwner(JTabbedPane tabs,
+		Consumer<DefaultLayoutChangeListener> listenerAdder)
+	{
 		return new HabitCalendarLayoutsOwner() {
 			@Override
 			public Optional<HabitCalendarLayout> getCurrentTabLayout() {
@@ -373,6 +383,11 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 			@Override
 			public void addVisibleHabitChangedListener(VisibleHabitChangedListener listener) {
 				tabs.addChangeListener(ignored -> listener.onVisibleHabitChanged());
+			}
+
+			@Override
+			public void addDefaultLayoutChangeListener(DefaultLayoutChangeListener listener) {
+				listenerAdder.accept(listener);
 			}
 		};
 	}
