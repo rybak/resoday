@@ -335,7 +335,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				if (maybeNewSelected.isPresent()) {
 					tabs.setSelectedComponent(maybeNewSelected.orElseThrow());
 				} else {
-					tabs.setSelectedIndex(0);
+					if (tabs.getTabCount() > 0) {
+						tabs.setSelectedIndex(0);
+					}
 				}
 			}
 		});
