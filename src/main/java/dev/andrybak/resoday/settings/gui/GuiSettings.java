@@ -58,6 +58,9 @@ public final class GuiSettings {
 		}
 	}
 
+	/**
+	 * Default calendar layout for habits that don't specify their own setting.
+	 */
 	public CalendarLayoutSetting getButtonLayoutSetting() {
 		return calendarLayoutSetting;
 	}

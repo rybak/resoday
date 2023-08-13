@@ -1,6 +1,7 @@
 package dev.andrybak.resoday.storage;
 
 import dev.andrybak.resoday.YearHistory;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -17,11 +18,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class YearHistoryJsonTest {
 
 	private static final String V1_TEST_ID = "13e42334-22fa-7e4c-32fd-7d6126554ecd-V1TestFile";
+	private static final String V2_HORIZONTAL_BASE_NAME = "v2-Horizontal-example";
+	private static final String V2_NO_LAYOUT_BASE_NAME = "v2-no-layout-Example";
 
 	private static <T> void testJsonRoundTrip(Function<T, String> toJson, Function<String, T> fromJson, T before) {
 		String s = toJson.apply(before);
 		T after = fromJson.apply(s);
 		assertEquals(before, after, () -> "Object of " + before.getClass() + " should be the equal after Gson round trip");
+	}
+
+	private static SerializableYearHistory testJsonDeserialization(String filename, String fallbackName,
+		SerializableYearHistory expected)
+	{
+		InputStream inputStream = YearHistoryJsonTest.class.getResourceAsStream(filename);
+		assert inputStream != null;
+		SerializableYearHistory actual = SerializableYearHistory.fromJson(new InputStreamReader(inputStream),
+			fallbackName, Path.of(filename));
+		assertEquals(expected, actual);
+		return actual;
 	}
 
 	@Test
@@ -30,7 +44,7 @@ class YearHistoryJsonTest {
 			LocalDate.of(2021, 5, 1),
 			LocalDate.of(1961, 1, 1),
 			LocalDate.of(2121, 12, 31)
-		), "Testing123", "UniqueId", YearHistory.Visibility.VISIBLE);
+		), "Testing123", "UniqueId", YearHistory.Visibility.VISIBLE, HabitCalendarLayout.COLUMNS);
 
 		testJsonRoundTrip(SerializableYearHistory::toJson,
 			s -> SerializableYearHistory.fromJson(s, "UniqueId.habit", "fallbackIdShouldNotBeUsed"), history);
@@ -39,10 +53,6 @@ class YearHistoryJsonTest {
 	@Test
 	void testThatV1CanBeDeserialized() {
 		String v1Filename = V1_TEST_ID + HabitFiles.HABIT_FILE_EXT;
-		InputStream v1File = getClass().getResourceAsStream(v1Filename);
-		assert v1File != null;
-		SerializableYearHistory actual = SerializableYearHistory.fromJson(new InputStreamReader(v1File),
-			V1_TEST_ID, Path.of(v1Filename));
 		SerializableYearHistory expected = new SerializableYearHistory(
 			Arrays.asList( // order should be preserved
 				LocalDate.of(2021, 11, 20),
@@ -51,16 +61,47 @@ class YearHistoryJsonTest {
 			),
 			"TestNameFoobar",
 			V1_TEST_ID,
-			YearHistory.Visibility.VISIBLE
+			YearHistory.Visibility.VISIBLE,
+			HabitCalendarLayout.DEFAULT
 		);
-		assertEquals(expected, actual);
+		testJsonDeserialization(v1Filename, V1_TEST_ID, expected);
 	}
 
 	@Test
 	void testThatEmptyVersionZeroFileCanBeDeserialized() {
 		String fileContent = "";
 		SerializableYearHistory actual = SerializableYearHistory.fromJson(fileContent, "Foobar", "Foobar");
-		SerializableYearHistory expected = new SerializableYearHistory(Collections.emptyList(), "Foobar", "Foobar", YearHistory.Visibility.VISIBLE);
+		SerializableYearHistory expected = new SerializableYearHistory(Collections.emptyList(), "Foobar", "Foobar",
+			YearHistory.Visibility.VISIBLE, HabitCalendarLayout.DEFAULT);
 		assertEquals(expected, actual);
+	}
+
+	@Test
+	void testThatV2WithoutLayoutCanBeDeserialized() {
+		String v2Filename = V2_NO_LAYOUT_BASE_NAME + HabitFiles.HABIT_FILE_EXT;
+		SerializableYearHistory expected = new SerializableYearHistory(
+			List.of(
+				LocalDate.of(2023, 8, 12)
+			),
+			"No layout example",
+			"7131211f-f397-434e-917e-f24e7be62ef4",
+			YearHistory.Visibility.VISIBLE,
+			null // main assertion
+		);
+		var actual = testJsonDeserialization(v2Filename, "garbage", expected);
+		assertEquals(HabitCalendarLayout.DEFAULT, actual.getHabitCalendarLayout());
+	}
+
+	@Test
+	void testThatV2WithLayoutCanBeDeserialized() {
+		String v2Filename = V2_HORIZONTAL_BASE_NAME + HabitFiles.HABIT_FILE_EXT;
+		SerializableYearHistory expected = new SerializableYearHistory(
+			Collections.emptyList(),
+			"Horizontal example",
+			"36df74b4-0976-4689-a412-bf8e18795205",
+			YearHistory.Visibility.VISIBLE,
+			HabitCalendarLayout.CLASSIC_HORIZONTAL // main assertion
+		);
+		testJsonDeserialization(v2Filename, "garbage", expected);
 	}
 }

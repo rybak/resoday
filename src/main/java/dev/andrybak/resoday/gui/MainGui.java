@@ -11,10 +11,14 @@ import dev.andrybak.resoday.gui.help.HelpDialog;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
 import dev.andrybak.resoday.gui.settings.DataDirSupplier;
 import dev.andrybak.resoday.gui.settings.GuiSettingsSaver;
+import dev.andrybak.resoday.gui.settings.HabitCalendarLayoutsOwner;
 import dev.andrybak.resoday.gui.settings.SettingsMenu;
+import dev.andrybak.resoday.gui.settings.VisibleHabitChangedListener;
+import dev.andrybak.resoday.gui.settings.VisibleHabitCountListener;
 import dev.andrybak.resoday.gui.stats.StatisticsDialog;
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 import dev.andrybak.resoday.settings.storage.CustomDataDirectory;
 import dev.andrybak.resoday.storage.HabitFiles;
 import dev.andrybak.resoday.storage.SortOrder;
@@ -188,7 +192,8 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				SortOrder.read(oldDataDir).ifPresent(order -> order.save(getDataDirSupplier()));
 				histories.forEachHistory(YearHistory::forceSave);
 				CustomDataDirectory.save(configDir, dataDir);
-			}
+			},
+			createHabitCalendarLayoutsOwner(tabs)
 		);
 		menuBar.add(settingsMenu);
 
@@ -344,6 +349,32 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				}
 			}
 		});
+	}
+
+	private HabitCalendarLayoutsOwner createHabitCalendarLayoutsOwner(JTabbedPane tabs) {
+		return new HabitCalendarLayoutsOwner() {
+			@Override
+			public Optional<HabitCalendarLayout> getCurrentTabLayout() {
+				return getCurrentHistoryPanel(tabs).map(HistoryPanel::getHabitCalendarLayout);
+			}
+
+			@Override
+			public void addVisibleHabitCountListener(VisibleHabitCountListener listener) {
+				tabs.addChangeListener(ignored -> listener.consumeHabitCount(tabs.getTabCount()));
+			}
+
+			@Override
+			public void acceptNewCurrentHabitLayout(HabitCalendarLayout habitCalendarLayout) {
+				getCurrentHistoryPanel(tabs).ifPresent(historyPanel ->
+					historyPanel.setHabitCalendarLayout(habitCalendarLayout, MainGui.this)
+				);
+			}
+
+			@Override
+			public void addVisibleHabitChangedListener(VisibleHabitChangedListener listener) {
+				tabs.addChangeListener(ignored -> listener.onVisibleHabitChanged());
+			}
+		};
 	}
 
 	private void updateWindowTitle(JTabbedPane tabs) {

@@ -2,6 +2,7 @@ package dev.andrybak.resoday.gui.settings;
 
 import dev.andrybak.resoday.settings.gui.CalendarLayoutSetting;
 import dev.andrybak.resoday.settings.gui.GuiSettings;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -25,12 +26,34 @@ public final class SettingsMenu {
 	}
 
 	public static JMenu create(GuiSettings current, Consumer<GuiSettings> newSettingsConsumer,
-		DataDirSupplier dataDirSupplier, Consumer<Path> newDataDirConsumer)
+		DataDirSupplier dataDirSupplier, Consumer<Path> newDataDirConsumer,
+		HabitCalendarLayoutsOwner layoutsOwner)
 	{
 		JMenu menu = new JMenu("Settings");
 		menu.setMnemonic('S');
 		{
-			JMenu calendarLayoutMenu = new JMenu("Calendar layout");
+			JMenu habitLayoutItem = new JMenu("Habit calendar layout");
+			habitLayoutItem.setToolTipText("Change layout of an individual habit (tab)");
+			habitLayoutItem.setMnemonic('L');
+			Optional<HabitCalendarLayout> maybeCurrentLayout = layoutsOwner.getCurrentTabLayout();
+			habitLayoutItem.setEnabled(maybeCurrentLayout.isPresent());
+			layoutsOwner.addVisibleHabitCountListener(newVisibleHabitCount ->
+				habitLayoutItem.setEnabled(newVisibleHabitCount > 0));
+			HabitCalendarLayout currentHabitLayout = maybeCurrentLayout.orElse(HabitCalendarLayout.DEFAULT);
+			ButtonGroup habitLayoutButtonGroup = new ButtonGroup();
+			for (HabitCalendarLayout hcl : HabitCalendarLayout.values()) {
+				JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(hcl.getGuiName(), hcl == currentHabitLayout);
+				layoutsOwner.addVisibleHabitChangedListener(() ->
+					layoutsOwner.getCurrentTabLayout().ifPresent(layout -> menuItem.setSelected(hcl == layout)));
+				habitLayoutButtonGroup.add(menuItem);
+				menuItem.addActionListener(ignored -> layoutsOwner.acceptNewCurrentHabitLayout(hcl));
+				habitLayoutItem.add(menuItem);
+			}
+			menu.add(habitLayoutItem);
+		}
+		{
+			JMenu calendarLayoutMenu = new JMenu("Default calendar layout");
+			calendarLayoutMenu.setToolTipText("Calendar layout applied to all habits by default");
 			calendarLayoutMenu.setMnemonic('C');
 			CalendarLayoutSetting currentCalendarLayout = current.getButtonLayoutSetting();
 			ButtonGroup calendarLayoutButtonGroup = new ButtonGroup();

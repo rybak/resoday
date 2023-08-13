@@ -3,6 +3,7 @@ package dev.andrybak.resoday.gui;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.YearHistoryListener;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,9 +26,9 @@ final class HistoryPanel extends JPanel {
 	 * Shows to the user, which year is currently presented by {@link #shownYearPanel}.
 	 */
 	private final JLabel shownYearLabel;
+	private final List<Runnable> listenerRemovals = new ArrayList<>();
 	private Year shownYear;
 	private YearPanel shownYearPanel;
-	private final List<Runnable> listenerRemovals = new ArrayList<>();
 
 	HistoryPanel(YearHistory history, CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		super(new BorderLayout());
@@ -67,7 +68,12 @@ final class HistoryPanel extends JPanel {
 
 	private void createShownYearPanel(CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
 		shownYearLabel.setText(shownYear.toString());
-		shownYearPanel = new YearPanel(history, shownYear, calendarLayoutSettingProvider);
+		shownYearPanel = new YearPanel(history, shownYear,
+			() -> history
+				.getHabitCalendarLayout()
+				.toSetting()
+				.orElseGet(calendarLayoutSettingProvider::getCalendarLayoutSetting)
+		);
 		this.add(shownYearPanel, BorderLayout.CENTER);
 	}
 
@@ -106,6 +112,10 @@ final class HistoryPanel extends JPanel {
 		return history.getId();
 	}
 
+	HabitCalendarLayout getHabitCalendarLayout() {
+		return history.getHabitCalendarLayout();
+	}
+
 	/**
 	 * Must be called when this panel is no longer in use.
 	 */
@@ -114,6 +124,11 @@ final class HistoryPanel extends JPanel {
 	}
 
 	public void newSettings(CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
+		recreateShownYearPanel(calendarLayoutSettingProvider);
+	}
+
+	public void setHabitCalendarLayout(HabitCalendarLayout habitCalendarLayout, CalendarLayoutSettingProvider calendarLayoutSettingProvider) {
+		history.setHabitCalendarLayout(habitCalendarLayout);
 		recreateShownYearPanel(calendarLayoutSettingProvider);
 	}
 

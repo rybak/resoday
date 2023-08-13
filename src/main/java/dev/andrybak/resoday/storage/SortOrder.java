@@ -15,6 +15,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+/**
+ * Saved as part of the data, near the {@code .habit} files.
+ */
 public class SortOrder {
 	private static final Path ORDER_FILE = Paths.get("resoday-order.txt");
 

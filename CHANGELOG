@@ -1,3 +1,6 @@
+Features
+- Layout of buttons can now be changed for each habit (tab) separately.
+Bugfixes
 - Hiding last visible habit from "Reorder habits" dialog caused an exception to
   be thrown, which has been corrected.
 

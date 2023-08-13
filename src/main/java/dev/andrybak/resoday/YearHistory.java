@@ -2,6 +2,7 @@ package dev.andrybak.resoday;
 
 import com.google.gson.JsonParseException;
 import dev.andrybak.resoday.gui.settings.DataDirSupplier;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 import dev.andrybak.resoday.storage.HabitFiles;
 import dev.andrybak.resoday.storage.SerializableYearHistory;
 import dev.andrybak.resoday.storage.SerializableYearHistoryV1;
@@ -56,6 +57,10 @@ public final class YearHistory {
 	 */
 	private Visibility visibility;
 	/**
+	 * TODO
+	 */
+	private HabitCalendarLayout habitCalendarLayout;
+	/**
 	 * Whether this {@code YearHistory} has any changes since last {@linkplain #save saving}.
 	 *
 	 * @implSpec All methods which modify {@link #dates} must set this flag to true.
@@ -63,11 +68,12 @@ public final class YearHistory {
 	private boolean hasChanges = true;
 
 	public YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath, String name, String id) {
-		this(dataDirSupplier, relativeStatePath, emptySet(), name, id, Visibility.VISIBLE);
+		this(dataDirSupplier, relativeStatePath, emptySet(), name, id, Visibility.VISIBLE,
+			HabitCalendarLayout.DEFAULT);
 	}
 
 	private YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath, Collection<LocalDate> dates,
-		String name, String id, Visibility visibility)
+		String name, String id, Visibility visibility, HabitCalendarLayout habitCalendarLayout)
 	{
 		this.dataDirSupplier = dataDirSupplier;
 		this.relativeStatePath = relativeStatePath;
@@ -75,6 +81,7 @@ public final class YearHistory {
 		this.name = name;
 		this.id = id;
 		this.visibility = visibility;
+		this.habitCalendarLayout = habitCalendarLayout;
 	}
 
 	private YearHistory(DataDirSupplier dataDirSupplier, Path relativeStatePath,
@@ -82,7 +89,7 @@ public final class YearHistory {
 	{
 		this(dataDirSupplier, relativeStatePath, serializableYearHistory.getDates(),
 			serializableYearHistory.getName(), serializableYearHistory.getId(),
-			serializableYearHistory.getVisibility());
+			serializableYearHistory.getVisibility(), serializableYearHistory.getHabitCalendarLayout());
 	}
 
 	/**
@@ -146,7 +153,8 @@ public final class YearHistory {
 				dates,
 				HabitFiles.pathToName(statePath),
 				HabitFiles.v0v1PathToId(statePath),
-				isV0V1HiddenFile ? Visibility.HIDDEN : Visibility.VISIBLE
+				isV0V1HiddenFile ? Visibility.HIDDEN : Visibility.VISIBLE,
+				HabitCalendarLayout.DEFAULT
 			);
 		} catch (IOException | UncheckedIOException e) {
 			System.err.println("Could not read '" + statePath.toAbsolutePath() + "': " + e);
@@ -206,7 +214,8 @@ public final class YearHistory {
 		try {
 			System.out.println("\tSaving to '" + statePath.toAbsolutePath() + "'...");
 			Path tmpFile = Files.createTempFile(statePath.getParent(), "resoday", ".habit.tmp");
-			SerializableYearHistory toSave = new SerializableYearHistory(dates, name, id, visibility);
+			SerializableYearHistory toSave = new SerializableYearHistory(dates, name, id, visibility,
+				habitCalendarLayout);
 			try (BufferedWriter w = Files.newBufferedWriter(tmpFile)) {
 				toSave.writeToJson(w);
 			}
@@ -278,6 +287,18 @@ public final class YearHistory {
 			hasChanges = true;
 		}
 		this.visibility = visibility;
+	}
+
+	public HabitCalendarLayout getHabitCalendarLayout() {
+		return habitCalendarLayout;
+	}
+
+	public void setHabitCalendarLayout(HabitCalendarLayout habitCalendarLayout) {
+		if (this.habitCalendarLayout == habitCalendarLayout) {
+			return;
+		}
+		this.habitCalendarLayout = habitCalendarLayout;
+		hasChanges = true;
 	}
 
 	public NavigableSet<LocalDate> toNavigableSet() {

@@ -10,6 +10,10 @@ import java.time.Year;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
+/**
+ * A layout of the calendar of a tab. Stored in config as a default layout for all habits
+ * that have {@link HabitCalendarLayout#DEFAULT} set as their habit.
+ */
 public enum CalendarLayoutSetting {
 	COLUMNS_SIMONE_GIERTZ("Columns", ColumnsCalendarPanel::new),
 	CLASSIC_VERTICAL("Vertical", VerticalCalendarPanel::new),

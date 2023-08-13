@@ -1,6 +1,7 @@
 package dev.andrybak.resoday.storage;
 
 import dev.andrybak.resoday.YearHistory;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ public final class SerializableYearHistoryV1 implements Serializable {
 	public SerializableYearHistory toCurrentVersion() {
 		// Note about id==null:
 		//   After JSON deserialization, SerializableYearHistory#convert will set the id.
-		return new SerializableYearHistory(dates, name, null, YearHistory.Visibility.VISIBLE);
+		return new SerializableYearHistory(dates, name, null, YearHistory.Visibility.VISIBLE,
+			HabitCalendarLayout.DEFAULT);
 	}
 }

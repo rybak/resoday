@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 import dev.andrybak.resoday.YearHistory;
+import dev.andrybak.resoday.settings.gui.HabitCalendarLayout;
 
 import java.io.Reader;
 import java.io.Serializable;
@@ -37,16 +38,18 @@ public final class SerializableYearHistory implements Serializable {
 
 	private final List<LocalDate> dates;
 	private final YearHistory.Visibility visibility;
+	private final HabitCalendarLayout habitCalendarLayout;
 	private String name;
 	private String id;
 
 	public SerializableYearHistory(Collection<LocalDate> dates, String name, String id,
-		YearHistory.Visibility visibility)
+		YearHistory.Visibility visibility, HabitCalendarLayout habitCalendarLayout)
 	{
 		this.dates = new ArrayList<>(Objects.requireNonNull(dates));
 		this.name = Objects.requireNonNull(name);
 		this.id = id;
 		this.visibility = visibility;
+		this.habitCalendarLayout = habitCalendarLayout;
 	}
 
 	public static SerializableYearHistory fromJson(String s, String name, String fallbackId) throws JsonParseException
@@ -69,7 +72,7 @@ public final class SerializableYearHistory implements Serializable {
 		if (versionedHistory == null) {
 			// empty version 0 file
 			return new SerializableYearHistory(Collections.emptyList(), fallbackName,
-				fallbackId, YearHistory.Visibility.VISIBLE);
+				fallbackId, YearHistory.Visibility.VISIBLE, HabitCalendarLayout.DEFAULT);
 		}
 		SerializableYearHistory deserialized = versionedHistory.data;
 		if (deserialized.name == null) {
@@ -97,6 +100,10 @@ public final class SerializableYearHistory implements Serializable {
 		return visibility == null ? YearHistory.Visibility.VISIBLE : visibility;
 	}
 
+	public HabitCalendarLayout getHabitCalendarLayout() {
+		return habitCalendarLayout == null ? HabitCalendarLayout.DEFAULT : habitCalendarLayout;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -106,7 +113,8 @@ public final class SerializableYearHistory implements Serializable {
 			return false;
 		}
 		SerializableYearHistory that = (SerializableYearHistory)o;
-		return dates.equals(that.dates) && Objects.equals(name, that.name) && Objects.equals(id, that.id) && visibility == that.visibility;
+		return dates.equals(that.dates) && Objects.equals(name, that.name) && Objects.equals(id, that.id) &&
+			visibility == that.visibility && habitCalendarLayout == that.habitCalendarLayout;
 	}
 
 	@Override
@@ -129,6 +137,7 @@ public final class SerializableYearHistory implements Serializable {
 			", id='" + id + '\'' +
 			", dates=" + dates +
 			", visibility=" + visibility +
+			", habitCalendarLayout=" + habitCalendarLayout +
 			'}';
 	}
 
