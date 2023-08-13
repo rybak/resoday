@@ -39,6 +39,7 @@
     > - a batch fon Windows
     > 
     > And both scripts would point to the empty directory from the zip file.
+    * [ ] Maybe just using the jpackage tool would be enough
 - Skin support
 - When adding more than (some small number) of habits, warn the user
 - Add directory/folder "path" text field to habits for organizing
@@ -67,8 +68,11 @@
 
 ## In dev
 
-- Fix frame icon rendering on Windows
-    * [ ] Fix the 32px icon (forgot to commit on the Window PC, I think?)
+- Per-habit calendar layout
+    > See branch per-habit-layout
+    * [ ] test
+    * [ ] merge to master
+    * [ ] release 1.next
 
 ## Done
 
@@ -235,3 +239,5 @@
     > Skipped updating Grgit for now - 2023-01-03
 - Gradle: figure out `with jar`
     > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
+- Fix frame icon rendering on Windows
+    * [x] Fix the 32px icon (forgot to commit on the Window PC, I think?)
