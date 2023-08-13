@@ -335,8 +335,11 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 				if (maybeNewSelected.isPresent()) {
 					tabs.setSelectedComponent(maybeNewSelected.orElseThrow());
 				} else {
+					// if all habits were hidden, then there will be zero tabs
 					if (tabs.getTabCount() > 0) {
 						tabs.setSelectedIndex(0);
+					} else {
+						tabs.setSelectedIndex(-1);
 					}
 				}
 			}

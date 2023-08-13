@@ -1,5 +1,5 @@
-- Hiding last visible habit caused an exception to be thrown, which
-  has been corrected.
+- Hiding last visible habit from "Reorder habits" dialog caused an exception to
+  be thrown, which has been corrected.
 
 v1.6
 - Rendering of the icon in the title bar of the main window has been
