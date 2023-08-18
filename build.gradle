@@ -99,9 +99,7 @@ project.version = calculateVersion()
 
 tasks.named("processResources", Copy) {
 	filesMatching("**/about.html") {
-		filter {
-			it.replace("@VERSION@", project.version)
-		}
+		expand(["version": project.version])
 	}
 }
 
