@@ -4,6 +4,7 @@ plugins {
 }
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.util.concurrent.TimeUnit
 
 tasks.withType(JavaCompile).configureEach {
 	options.with {
@@ -53,6 +54,12 @@ tasks.named("test", Test) {
 	}
 }
 
+static void waitForOrKill(Process self, long millis) {
+	if (!self.waitFor(millis, TimeUnit.MILLISECONDS)) {
+		self.destroy()
+	}
+}
+
 /**
  * Generate a version string with a lot of information.
  * Logic is based on a Shell script used for generating version string of Git:
@@ -68,9 +75,10 @@ String calculateVersion() {
 		 */
 		final String description = git.describe(match: ["v[0-9]*"], commit: "HEAD")
 		if (description != null && description.matches("^v[0-9]+[^ ]*")) {
-			final Process updateIndex = "git update-index -q --refresh".execute()
-			updateIndex.waitForOrKill(10000)
-			final Process diffIndex = "git diff-index --name-only HEAD -- .".execute()
+			final Process updateIndex = new ProcessBuilder("git", "update-index", "-q", "--refresh").start()
+			waitForOrKill(updateIndex, 10000)
+			final Process diffIndex = new ProcessBuilder("git", "diff-index", "--name-only", "HEAD", "--", ".").start()
+			waitForOrKill(diffIndex, 10000)
 			final String output = diffIndex.text
 			if (output.length() != 0) {
 				return description + "-dirty"
@@ -88,7 +96,8 @@ String calculateVersion() {
  */
 static String calculateResodayBuilderName() {
 	try {
-		final Process gitUserName = "git config user.name".execute()
+		final Process gitUserName = new ProcessBuilder("git", "config", "user.name").start()
+		waitForOrKill(gitUserName, 10000)
 		return gitUserName.text.trim() // git config outputs a newline, which must be trimmed
 	} catch (ignored) {
 		return System.getProperty("user.name")
