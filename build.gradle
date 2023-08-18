@@ -1,12 +1,12 @@
 plugins {
-	id 'java'
-	id 'org.ajoberstar.grgit' version '5.2.0'
+	id "java"
+	id "org.ajoberstar.grgit" version "5.2.0"
 }
 import org.ajoberstar.grgit.Grgit
 
 tasks.withType(JavaCompile).configureEach {
 	options.with {
-		encoding = 'UTF-8'
+		encoding = "UTF-8"
 		release.set(17) // don't forget to update README.md
 	}
 }
@@ -17,21 +17,21 @@ repositories {
 
 dependencies {
 	// don't forget to update "third-party-software.html"
-	implementation 'dev.dirs:directories:26' // https://github.com/dirs-dev/directories-jvm
-	implementation 'com.google.code.gson:gson:2.10'
+	implementation "dev.dirs:directories:26" // https://github.com/dirs-dev/directories-jvm
+	implementation "com.google.code.gson:gson:2.10"
 
 	testImplementation(platform("org.junit:junit-bom:5.10.0"))
 	testImplementation("org.junit.jupiter:junit-jupiter")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.named('test', Test) {
+tasks.named("test", Test) {
 	useJUnitPlatform()
 
 	testLogging { // add stdout logging for running `./gradlew test`
 		lifecycle {
 			events "passed", "skipped", "failed"
-			exceptionFormat 'full'
+			exceptionFormat "full"
 		}
 	}
 
@@ -39,10 +39,10 @@ tasks.named('test', Test) {
 		if (!description.parent) { // will match the outermost suite
 			def stats = "${result.testCount} tests run, ${result.successfulTestCount} successes, " +
 				"${result.failedTestCount} failures, ${result.skippedTestCount} ignored"
-			println('-' * stats.length())
+			println("-" * stats.length())
 			println("Testing result for ${project.name}: ${result.resultType}")
 			println(stats)
-			println('-' * stats.length())
+			println("-" * stats.length())
 		}
 	}
 
@@ -59,7 +59,7 @@ tasks.named('test', Test) {
  * TODO maybe generate Version.java from Gradle?
  */
 String calculateVersion() {
-	final String defaultVersion = '1.6-nongit'
+	final String defaultVersion = "1.6-nongit"
 	final Grgit git = Grgit.open(dir: project.rootDir)
 	try {
 		/*
@@ -67,12 +67,12 @@ String calculateVersion() {
 		 */
 		final String description = git.describe(match: ["v[0-9]*"], commit: "HEAD")
 		if (description != null && description.matches("^v[0-9]+[^ ]*")) {
-			def updateIndex = 'git update-index -q --refresh'.execute()
+			def updateIndex = "git update-index -q --refresh".execute()
 			updateIndex.waitForOrKill(10000)
-			Process diffIndex = 'git diff-index --name-only HEAD -- .'.execute()
+			Process diffIndex = "git diff-index --name-only HEAD -- .".execute()
 			String output = diffIndex.text
 			if (output.length() != 0) {
-				return description + '-dirty'
+				return description + "-dirty"
 			}
 			return description
 		}
@@ -87,7 +87,7 @@ String calculateVersion() {
  */
 static String calculateResodayBuilderName() {
 	try {
-		final Process gitUserName = 'git config user.name'.execute()
+		final Process gitUserName = "git config user.name".execute()
 		return gitUserName.text.trim() // git config outputs a newline, which must be trimmed
 	} catch (ignored) {
 		return System.getProperty("user.name")
@@ -96,34 +96,34 @@ static String calculateResodayBuilderName() {
 
 project.version = calculateVersion()
 
-tasks.named('processResources', Copy) {
-	filesMatching('**/about.html') {
+tasks.named("processResources", Copy) {
+	filesMatching("**/about.html") {
 		filter {
-			it.replace('@VERSION@', project.version)
+			it.replace("@VERSION@", project.version)
 		}
 	}
 }
 
 def resodayJarAttributes = [
-	'Implementation-Title'  : 'Resoday built by ' + calculateResodayBuilderName(),
-	'Implementation-Version': project.version,
-	'Main-Class'            : 'dev.andrybak.resoday.Resoday'
+	"Implementation-Title"  : "Resoday built by " + calculateResodayBuilderName(),
+	"Implementation-Version": project.version,
+	"Main-Class"            : "dev.andrybak.resoday.Resoday"
 ]
 
-TaskProvider<Jar> jarTask = tasks.named('jar', Jar) {
+TaskProvider<Jar> jarTask = tasks.named("jar", Jar) {
 	manifest {
 		attributes(resodayJarAttributes)
 	}
 }
 
-tasks.register('releaseJar', Jar) {
-	group = 'release'
-	description = 'Create a release jar of Resoday'
+tasks.register("releaseJar", Jar) {
+	group = "release"
+	description = "Create a release jar of Resoday"
 
-	archiveBaseName.set('resoday')
-	archiveAppendix.set('release')
+	archiveBaseName.set("resoday")
+	archiveAppendix.set("release")
 
-	destinationDirectory.set(file('build/distributions/'))
+	destinationDirectory.set(file("build/distributions/"))
 
 	manifest {
 		attributes(resodayJarAttributes)
@@ -135,12 +135,12 @@ tasks.register('releaseJar', Jar) {
 	})
 }
 
-tasks.register('release') {
-	group = 'release'
-	description = 'Run all tests and create a release jar'
-	dependsOn('build', 'releaseJar')
+tasks.register("release") {
+	group = "release"
+	description = "Run all tests and create a release jar"
+	dependsOn("build", "releaseJar")
 }
 
-tasks.named('wrapper') {
+tasks.named("wrapper") {
     distributionType = Wrapper.DistributionType.ALL
 }
