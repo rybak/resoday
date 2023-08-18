@@ -48,8 +48,8 @@ tasks.named("test", Test) {
 	}
 
 	reports {
-		junitXml.required = true
-		html.required = true // see ./build/reports/tests/test/index.html
+		junitXml.required.set(true)
+		html.required.set(true) // see ./build/reports/tests/test/index.html
 	}
 }
 
