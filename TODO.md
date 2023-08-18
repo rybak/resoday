@@ -49,7 +49,6 @@
 
 ## Refactoring
 
-- Gradle: migrate to Kotlin build scripts?
 - write tests for GuiSettings serialization
 - Maybe cache resource files
     > I don't know if there are any guarantees by Java runtime that a resource is cached or not.  We might want to just cache a byte array, and convert it into a ByteInputStream for playing the sound.
@@ -62,17 +61,15 @@
     * [ ] Compress size somehow
 - Use Gradle properties for versions of dependencies
     * [ ] maybe use ReplaceTokens to automatically generate parts of third-party-software.html
+    * [ ] Use version catalog
 - Maybe replace timer for highlighting of today's button with checks on some events
 - Use GitLab CLI tool for releases
     > If I understood docs correctly, it will be much faster than doing manually.
 
 ## In dev
 
-- Per-habit calendar layout
-    > See branch per-habit-layout
-    * [ ] test
-    * [ ] merge to master
-    * [ ] release 1.next
+- Extract Git version convention into a pre-compiled plugin
+    > Resoday uses Git tags as the source of truth for the version information during the build. I want to use it in other projects (including Either-JVM). Extracting it in the Gradle build of Resoday into a pre-compiled plugin would be a first step in producing a separate plugin.
 
 ## Done
 
@@ -241,3 +238,11 @@
     > In `releaseJar` task, it seems that all mentions of `:jar` can be replaced with `with jar`. `with` is probably a method of `Zip`
 - Fix frame icon rendering on Windows
     * [x] Fix the 32px icon (forgot to commit on the Window PC, I think?)
+- Convert Gradle build script to Kotlin DSL
+    > https://docs.gradle.org/8.3/userguide/migrating_from_groovy_to_kotlin_dsl.html
+- Fix a bug with zero tabs after reordering
+- Per-habit calendar layout
+    > See branch per-habit-layout
+    * [x] test
+    * [x] merge to master
+    * [x] release 1.7
