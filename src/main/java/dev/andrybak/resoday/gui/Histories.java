@@ -21,7 +21,7 @@ public final class Histories {
 	private final List<YearHistory> histories = new ArrayList<>();
 	private final Map<String, HistoryPanel> panels = new HashMap<>();
 
-	public void add(YearHistory yearHistory, HistoryPanel panel) {
+	void add(YearHistory yearHistory, HistoryPanel panel) {
 		histories.add(yearHistory);
 		if (panel != null) {
 			if (!yearHistory.getId().equals(panel.getHistoryId())) {
@@ -41,7 +41,7 @@ public final class Histories {
 			.filter(h -> h.getVisibility() == YearHistory.Visibility.VISIBLE);
 	}
 
-	public List<HistoryPanel> getOrderedPanels() {
+	List<HistoryPanel> getOrderedPanels() {
 		return visibleHistories()
 			.map(YearHistory::getId)
 			.map(panels::get)
@@ -114,7 +114,7 @@ public final class Histories {
 		histories.forEach(action);
 	}
 
-	public void forEachPanel(Consumer<HistoryPanel> action) {
+	void forEachPanel(Consumer<HistoryPanel> action) {
 		panels.values().forEach(action);
 	}
 
