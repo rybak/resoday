@@ -105,6 +105,7 @@ tasks.named("processResources", Copy) {
 		expand([
 			"directoriesVersion": libs.directories.get().version,
 			"gsonVersion": libs.gson.get().version,
+			"gradleVersion": rootProject.gradle.gradleVersion,
 			"junitVersion": libs.junitBom.get().version,
 			"grgitVersion": libs.plugins.grgit.get().version,
 		])
