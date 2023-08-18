@@ -68,8 +68,8 @@ fun Process.waitForOrKill(millis: Long) {
  */
 fun calculateVersion(): String {
 	val defaultVersion: String = "1.6-nongit"
-	val git: Grgit = Grgit.open(mapOf("dir" to project.rootDir))
 	try {
+		val git: Grgit = Grgit.open(mapOf("dir" to project.rootDir))
 		/*
 		 * If possible, use an annotated tag which starts with letter 'v' and some numbers.
 		 */
