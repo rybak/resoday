@@ -12,8 +12,7 @@ fun Process.waitForOrKill(millis: Long) {
  * https://git.kernel.org/pub/scm/git/git.git/tree/GIT-VERSION-GEN
  * TODO maybe generate Version.java from Gradle?
  */
-fun calculateVersion(): String {
-	val defaultVersion: String = "1.7-nongit"
+fun calculateVersion(defaultVersion: String): String {
 	try {
 		val git: Grgit = Grgit.open(mapOf("dir" to project.rootDir))
 		/*
@@ -37,4 +36,4 @@ fun calculateVersion(): String {
 	return defaultVersion
 }
 
-project.version = calculateVersion()
+project.version = calculateVersion(project.property("defaultVersion") as String)
