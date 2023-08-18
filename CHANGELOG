@@ -10,35 +10,44 @@ Improvements
 - Version of Resoday shown in the "About" dialog no longer starts with a "v".
 
 v1.6
-- Rendering of the icon in the title bar of the main window has been
-  fixed in Microsoft Windows.
+Improvements
 - Dock on macOS will now show the Resoday icon instead of the default
   Duke icon of the JVM.
+Bugfixes
+- Rendering of the icon in the title bar of the main window has been
+  fixed in Microsoft Windows.
 
 v1.5
+Bugfixes
 - Fixed dead link in "About" dialog
+Improvements
 - Upgraded dependencies
 
 v1.4
+Features
 - Menu "Main > Statistics" has been introduced
+Improvements
 - About dialog now shows the Resoday logo
 - UI for crash handler has been improved
 
 v1.3
+Features
 - Custom data directory setting has been introduced
 - Simple crash handler has been introduced
 
 v1.2
+Breaking change
 - Java 17 is now required to run Resoday
+Features
 - Menu "Help > Help" has been introduced
 - Horizontal layout has been introduced
 
 v1.1
-Bugfixes
-- "About" dialog now has a better default size on vertical monitors.
-- Sounds of button toggles used to multiply after using the "Reorder habits"
-  dialog, which has been corrected.
-
 Features
 - Layout of buttons can now be changed from the new "Settings > Calendar layout"
   menu.
+Improvements
+- "About" dialog now has a better default size on vertical monitors.
+Bugfixes
+- Sounds of button toggles used to multiply after using the "Reorder habits"
+  dialog, which has been corrected.
