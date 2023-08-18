@@ -12,6 +12,4 @@ junitBom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junitJupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junitPlatformLauncher = { module = "org.junit.platform:junit-platform-launcher" }
 
-[plugins]
-grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
-
+grgit = { module = "org.ajoberstar.grgit:grgit-gradle", version.ref = "grgit" }
