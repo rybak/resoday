@@ -20,8 +20,9 @@ dependencies {
 	implementation 'dev.dirs:directories:26' // https://github.com/dirs-dev/directories-jvm
 	implementation 'com.google.code.gson:gson:2.10'
 
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+	testImplementation(platform("org.junit:junit-bom:5.10.0"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.named('test', Test) {
