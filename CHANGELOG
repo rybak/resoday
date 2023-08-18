@@ -3,6 +3,8 @@ Features
 Bugfixes
 - Hiding last visible habit from "Reorder habits" dialog caused an exception to
   be thrown, which has been corrected.
+- Gathering of statistics for habits with zero recorded dates used to throw
+  an exception, which has been corrected.
 Improvements
 - Version of Resoday shown in the "About" dialog no longer starts with a "v".
 

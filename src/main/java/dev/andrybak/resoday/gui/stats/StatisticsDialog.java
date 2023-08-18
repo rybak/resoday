@@ -50,6 +50,9 @@ public class StatisticsDialog {
 		);
 		histories.forEachHistory(h -> {
 			NavigableSet<LocalDate> ns = h.toNavigableSet();
+			if (ns.isEmpty()) {
+				return;
+			}
 			tableModel.addRow(new Object[]{
 				h.getName(),
 				ns.size(),
