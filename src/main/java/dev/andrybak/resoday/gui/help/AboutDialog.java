@@ -79,10 +79,10 @@ public final class AboutDialog {
 		/*
 		 * We don't want to do `textPane.setFocusable(false)`, because it makes it impossible for the
 		 * user to select text.  And text panes that do not allow selecting text are dumb.
-		 * However, since JTextPane takes away focus, it means that it will it up escape key presses
-		 * mean for the JDialog.  So we have to set up a "separate" hotkey.
+		 * However, since JTextPane takes away focus, it means that it will consume escape key presses
+		 * meant for the JDialog.  So we have to set up a "separate" hotkey.
 		 */
-		Dialogs.setUpEscapeKeyClosing(d, textPane); // JTextPane takes away focus,
+		Dialogs.setUpEscapeKeyClosing(d, textPane);
 		textPane.setContentType(HTML_UTF_8_CONTENT_TYPE);
 		try {
 			textPane.setPage(AboutDialog.class.getResource(ABOUT_HTML_RESOURCE_FILENAME));
