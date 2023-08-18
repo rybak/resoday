@@ -3,6 +3,8 @@ Features
 Bugfixes
 - Hiding last visible habit from "Reorder habits" dialog caused an exception to
   be thrown, which has been corrected.
+Improvements
+- Version of Resoday shown in the "About" dialog no longer starts with a "v".
 
 v1.6
 - Rendering of the icon in the title bar of the main window has been

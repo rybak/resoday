@@ -79,10 +79,11 @@ fun calculateVersion(): String {
 			updateIndex.waitForOrKill(10000)
 			val diffIndex: Process = ProcessBuilder("git", "diff-index", "--name-only", "HEAD", "--", ".").start()
 			val outputIsEmpty: Boolean = diffIndex.inputReader().read() == -1
+			val version = description.substring(1) // cut off initial 'v'
 			if (!outputIsEmpty) {
-				return description + "-dirty"
+				return "$version-dirty"
 			}
-			return description
+			return version
 		}
 	} catch (e: Exception) {
 		logger.warn("Could not use Git.", e)
