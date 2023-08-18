@@ -1,0 +1,17 @@
+[versions]
+directories = "26"
+gson = "2.10"
+junit = "5.10.0"
+grgit = "5.2.0"
+
+[libraries]
+directories = { module = "dev.dirs:directories", version.ref = "directories" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+junitBom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junitPlatformLauncher = { module = "org.junit.platform:junit-platform-launcher" }
+
+[plugins]
+grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
+

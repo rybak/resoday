@@ -1,6 +1,6 @@
 plugins {
 	id("java")
-	id("org.ajoberstar.grgit") version "5.2.0"
+	alias(libs.plugins.grgit)
 }
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
@@ -18,12 +18,12 @@ repositories {
 
 dependencies {
 	// don't forget to update "third-party-software.html"
-	implementation("dev.dirs:directories:26") // https://github.com/dirs-dev/directories-jvm
-	implementation("com.google.code.gson:gson:2.10")
+	implementation(libs.directories) // https://github.com/dirs-dev/directories-jvm
+	implementation(libs.gson)
 
-	testImplementation(platform("org.junit:junit-bom:5.10.0"))
-	testImplementation("org.junit.jupiter:junit-jupiter")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation(platform(libs.junitBom))
+	testImplementation(libs.junitJupiter)
+	testRuntimeOnly(libs.junitPlatformLauncher)
 }
 
 tasks.named("test", Test) {
