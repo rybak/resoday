@@ -38,7 +38,7 @@ tasks.named("test", Test) {
 
 	afterSuite { description, result ->
 		if (!description.parent) { // will match the outermost suite
-			def stats = "${result.testCount} tests run, ${result.successfulTestCount} successes, " +
+			final String stats = "${result.testCount} tests run, ${result.successfulTestCount} successes, " +
 				"${result.failedTestCount} failures, ${result.skippedTestCount} ignored"
 			println("-" * stats.length())
 			println("Testing result for ${project.name}: ${result.resultType}")
@@ -68,10 +68,10 @@ String calculateVersion() {
 		 */
 		final String description = git.describe(match: ["v[0-9]*"], commit: "HEAD")
 		if (description != null && description.matches("^v[0-9]+[^ ]*")) {
-			def updateIndex = "git update-index -q --refresh".execute()
+			final Process updateIndex = "git update-index -q --refresh".execute()
 			updateIndex.waitForOrKill(10000)
-			Process diffIndex = "git diff-index --name-only HEAD -- .".execute()
-			String output = diffIndex.text
+			final Process diffIndex = "git diff-index --name-only HEAD -- .".execute()
+			final String output = diffIndex.text
 			if (output.length() != 0) {
 				return description + "-dirty"
 			}
@@ -111,7 +111,7 @@ def resodayJarAttributes = [
 	"Main-Class"            : "dev.andrybak.resoday.Resoday"
 ]
 
-TaskProvider<Jar> jarTask = tasks.named("jar", Jar) {
+final TaskProvider<Jar> jarTask = tasks.named("jar", Jar) {
 	manifest {
 		attributes(resodayJarAttributes)
 	}
