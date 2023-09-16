@@ -1,3 +1,8 @@
+Bugfixes
+- The calendar panel now shows scrollbars, if the window doesn't have enough
+  room to show all buttons in the layout.
+  https://github.com/rybak/resoday/issues/4
+
 v1.7
 Features
 - Layout of buttons can now be changed for each habit (tab) separately.

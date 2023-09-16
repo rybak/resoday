@@ -3,8 +3,11 @@ package dev.andrybak.resoday.gui;
 import dev.andrybak.resoday.YearHistory;
 import dev.andrybak.resoday.gui.calendar.CalendarPanel;
 import dev.andrybak.resoday.gui.settings.CalendarLayoutSettingProvider;
+import dev.andrybak.resoday.gui.util.ScrollPanes;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.time.LocalDate;
 import java.time.Year;
@@ -16,7 +19,9 @@ final class YearPanel extends JPanel {
 		super(new BorderLayout());
 		calendarPanel = calendarLayoutSettingProvider.getCalendarLayoutSetting().createButtonLayout(history, year);
 		calendarPanel.addHighlight(LocalDate.now());
-		this.add(calendarPanel.getView(), BorderLayout.CENTER);
+		JScrollPane scrollableCalendarView = ScrollPanes.regular(calendarPanel.getView());
+		scrollableCalendarView.setBorder(BorderFactory.createEmptyBorder());
+		this.add(scrollableCalendarView, BorderLayout.CENTER);
 	}
 
 	void turnOnButton(LocalDate d) {
