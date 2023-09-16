@@ -289,12 +289,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		}
 
 		HistoryPanel historyPanel = maybeHistoryPanel.orElseThrow();
-		switch (HideHabitDialog.show(window, historyPanel.getHistoryName())) {
-		case YES:
+		HideHabitDialog.Response show = HideHabitDialog.show(window, historyPanel.getHistoryName());
+		if (Objects.requireNonNull(show) == HideHabitDialog.Response.YES) {
 			hideHabit(tabs, historyPanel);
-			break;
-		case NO:
-			break;
 		}
 	}
 
@@ -313,12 +310,9 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		}
 
 		HistoryPanel historyPanel = maybeHistoryPanel.orElseThrow();
-		switch (DeleteHabitDialog.show(window, historyPanel.getHistoryName())) {
-		case YES:
+		DeleteHabitDialog.Response show = DeleteHabitDialog.show(window, historyPanel.getHistoryName());
+		if (Objects.requireNonNull(show) == DeleteHabitDialog.Response.YES) {
 			deleteHabit(tabs, historyPanel);
-			break;
-		case NO:
-			break;
 		}
 	}
 
