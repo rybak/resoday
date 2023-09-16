@@ -67,7 +67,7 @@ fun Process.waitForOrKill(millis: Long) {
  * TODO maybe generate Version.java from Gradle?
  */
 fun calculateVersion(): String {
-	val defaultVersion: String = "1.7-nongit"
+	val defaultVersion: String = "1.8-nongit"
 	try {
 		val git: Grgit = Grgit.open(mapOf("dir" to project.rootDir))
 		/*
