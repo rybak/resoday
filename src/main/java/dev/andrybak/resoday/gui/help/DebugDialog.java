@@ -49,7 +49,7 @@ public final class DebugDialog {
 		JPanel content = new JPanel(new BorderLayout());
 		Dialogs.setUpEscapeKeyClosing(d, content);
 
-		JTable table = createTable();
+		JTable table = createTable(parent);
 		content.add(ScrollPanes.regular(table), BorderLayout.CENTER);
 		{
 			JButton copyButton = new JButton("Copy");
@@ -80,7 +80,7 @@ public final class DebugDialog {
 		clipboard.setContents(new StringSelection(sb.toString()), null);
 	}
 
-	private static JTable createTable() {
+	private static JTable createTable(Window parent) {
 		DefaultTableModel tableModel = new DefaultTableModel(
 			new Object[]{
 				"Key        ",
@@ -102,7 +102,13 @@ public final class DebugDialog {
 		tableModel.addRow(new Object[]{"Resoday.title", Version.extractTitle()});
 		tableModel.addRow(new Object[]{"Resoday.version", Version.extractVersion()});
 		tableModel.addRow(new Object[]{"Resoday.formatVersion", SerializableYearHistory.CURRENT_FORMAT_VERSION});
+		tableModel.addRow(new Object[]{"Toolkit.screenSize", toString(Toolkit.getDefaultToolkit().getScreenSize())});
+		tableModel.addRow(new Object[]{"Window.size", toString(parent.getSize())});
 		return new JTable(tableModel);
+	}
+
+	private static String toString(Dimension d) {
+		return d.width + "x" + d.height;
 	}
 
 	/**
