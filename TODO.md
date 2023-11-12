@@ -1,5 +1,12 @@
 ## Features
 
+- Stats: human-readable "times/<unit of time>" column
+- Stats: next day to "stay on track"
+    > Could be cool if something like this was a widget kind of thing that could be added to a tab. A "status string".
+- Status string
+    * [ ] number of days
+    * [ ] rate (times/<unit of time>), where unit of time is chosen to make the number in 1-10-small-ish range
+    * [ ] next day to "Stay on track"
 - Debug button to open config directory
     > There is already a menu item to open data directory.  Config directory is a separate dir on some of the OSs. There should be a button/menu item to easily access it.
 - Gradle: add date to jar manifest
