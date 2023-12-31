@@ -10,6 +10,25 @@ Succeed_][Veritasium] by Veritasium.
 
 ![Resoday screenshot](screenshot.png)
 
+Examples
+--------
+
+Resoday helps answer the questions like the following:
+
+- When was the last time I did laundry?
+- Did I take vitamins today?
+- How often do I journal?
+
+Examples of what you can keep track of using Resoday:
+
+- Fitness and physical exercise
+- Housekeeping chores: cleaning the floor, doing laundry, etc)
+- Hardware maintenance: changing the oil, recharging batteries, etc)
+- Mental health exercises:
+  - Journaling
+  - Meditation
+- Studying: homework, revision, etc
+
 Usage
 -----
 
