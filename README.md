@@ -22,8 +22,8 @@ Resoday helps answer the questions like the following:
 Examples of what you can keep track of using Resoday:
 
 - Fitness and physical exercise
-- Housekeeping chores: cleaning the floor, doing laundry, etc)
-- Hardware maintenance: changing the oil, recharging batteries, etc)
+- Housekeeping chores: cleaning the floor, doing laundry, etc
+- Hardware maintenance: changing the oil, recharging batteries, etc
 - Mental health exercises:
   - Journaling
   - Meditation
