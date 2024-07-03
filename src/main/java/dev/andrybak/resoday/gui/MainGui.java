@@ -121,6 +121,10 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 		initKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK), () ->
 			markTodayInCurrentTab(tabs)
 		);
+		initKeyStroke(
+			KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK),
+			() -> markYesterdayInCurrentTab(tabs)
+		);
 
 		autoSaveTimer = new Timer(Math.toIntExact(AUTO_SAVE_PERIOD.toMillis()), ignored -> autoSave(configDir));
 		autoSaveTimer.addActionListener(ignored -> histories.forEachPanel(HistoryPanel::updateDecorations));
@@ -134,6 +138,10 @@ public final class MainGui implements CalendarLayoutSettingProvider {
 
 	private void markTodayInCurrentTab(JTabbedPane tabs) {
 		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markToday);
+	}
+
+	private void markYesterdayInCurrentTab(JTabbedPane tabs) {
+		getCurrentHistoryPanel(tabs).ifPresent(HistoryPanel::markYesterday);
 	}
 
 	private void setUpMenuBar(JTabbedPane tabs, Path configDir) {

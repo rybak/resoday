@@ -97,6 +97,15 @@ final class HistoryPanel extends JPanel {
 		}
 	}
 
+	void markYesterday() {
+		LocalDate yesterday = LocalDate.now().minusDays(1);
+		if (history.isTurnedOn(yesterday)) {
+			history.turnOff(yesterday);
+		} else {
+			history.turnOn(yesterday);
+		}
+	}
+
 	/**
 	 * Update UI decorations (bells and whistles) of this panel, which may depend on current time.
 	 */
